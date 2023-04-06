@@ -1,0 +1,20 @@
+server:
+ port: 5000
+spring:
+ data:
+  mongodb:
+   uri: mongodb+srv://Kaedin:Themba2002!@workout-progress.0efupov.mongodb.net/?retryWrites=true&w=majority
+   database: test
+
+graphql:
+ servlet:
+  enabled: true
+  mapping: /graphql
+#  actuator-metrics: true
+#  corsEnabled: true
+#  cors:
+#   allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost}
+  exception-handlers-enabled: true
+  contextSetting: PER_REQUEST_WITH_INSTRUMENTATION
+ tools:
+  schema-location-pattern: "/graphql/*.graphqls"
