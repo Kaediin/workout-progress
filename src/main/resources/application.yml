@@ -5,6 +5,7 @@ spring:
   mongodb:
    uri: mongodb+srv://Kaedin:Themba2002!@workout-progress.0efupov.mongodb.net/?retryWrites=true&w=majority
    database: test
+   auto-index-creation: true
 
 graphql:
  servlet:
