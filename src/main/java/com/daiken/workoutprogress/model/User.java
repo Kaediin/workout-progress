@@ -18,6 +18,9 @@ public class User {
 
     public String password;
 
+    public User() {
+    }
+
     public User(UserInput userInput) {
         this.firstName = userInput.firstName;
         this.lastName = userInput.lastName;

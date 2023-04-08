@@ -18,6 +18,7 @@ type User {
 }
 
 type Query {
+    users: [User]
     userById(id: String!): User
     userByEmail(email: String!): User
 }
