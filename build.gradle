@@ -16,6 +16,18 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // Auth0 JWT authorization
+    implementation 'com.auth0:jwks-rsa:0.21.1'
+    implementation 'com.auth0:java-jwt:3.19.2'
+
+    // Friendly ID
+    implementation 'com.devskiller.friendly-id:friendly-id-spring-boot-starter:1.1.0'
+
+    // Mongo
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
     // Graphql
@@ -25,6 +37,13 @@ dependencies {
     testImplementation 'junit:junit:4.13.1'
 //    implementation 'com.zhokhov.graphql:graphql-datetime-spring-boot-starter:4.1.0'
     runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:7.2.0'
+
+    // AWS
+    implementation platform('software.amazon.awssdk:bom:2.17.196')
+    implementation 'software.amazon.awssdk:auth'
+    implementation 'software.amazon.awssdk:cognitoidentityprovider'
+    implementation 'software.amazon.awssdk:regions'
+    implementation 'software.amazon.awssdk:sdk-core'
 
     // testing facilities
     testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:7.2.0'
