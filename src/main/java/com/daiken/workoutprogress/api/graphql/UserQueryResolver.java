@@ -25,8 +25,4 @@ public class UserQueryResolver implements GraphQLQueryResolver {
     public User userById(String id) {
         return userRepository.findById(id).orElse(null);
     }
-
-    public User userByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
-    }
 }

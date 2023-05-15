@@ -1,26 +1,23 @@
 input UserInput {
     firstName: String!
-    infix: String!
+    middleName: String!
     lastName: String!
     email: String!
     password: String!
-
 }
 
 type User {
     id: ID!
     firstName: String!
-    infix: String!
+    middleName: String!
     lastName: String!
     email: String!
-    password: String!
-
+    #    password: String!
 }
 
 type Query {
     users: [User]
     userById(id: String!): User
-    userByEmail(email: String!): User
 }
 
 type Mutation {

@@ -1,0 +1,36 @@
+enum MuscleGroup {
+    ABDUCTOR
+    ABS
+    ADDUCTOR
+    BACK_SHOULDERS
+    BICEPS
+    CALVES
+    CHEST
+    FOREARMS
+    FRONT_SHOULDERS
+    GLUTES
+    HAMSTRINGS
+    HANDS
+    LATS
+    LOWER_BACK
+    NECK
+    OBLIQUES
+    QUADS
+    SHINS
+    TRICEPS
+    UPPER_BACK
+}
+
+type Workout {
+    id: ID!
+    name: String!
+    muscleGroups: [MuscleGroup!]!
+}
+
+extend type Query {
+    workouts: [Workout]
+}
+
+extend type Mutation {
+    meStartWorkout: Boolean
+}
