@@ -3,11 +3,11 @@ server:
 spring:
  data:
   mongodb:
-   uri: ${MONGO_URI:mongodb://localhost:27017/nonexistent}
+   uri: ${MONGO_URI:}
    database: test
    auto-index-creation: true
 cors:
- allowed_origins: ${CORS_ALLOWED_ORIGINS:http://localhost}
+ allowed_origins: ${CORS_ALLOWED_ORIGINS:}
 whitelist:
  allowed_client_id: ${WHITELIST_ALLOWED_CLIENT_ID:}
  allowed_client_secret: ${WHITELIST_ALLOWED_CLIENT_SECRET:}
@@ -17,7 +17,7 @@ aws:
   cognitoId: ${AWS_COGNITO_ID:}
   cognitoKey: ${AWS_COGNITO_KEY:}
   userPoolId: ${AWS_COGNITO_USER_POOL_ID:}
-  region: ${AWS_COGNITO_REGION:eu-central-1}
+  region: ${AWS_COGNITO_REGION:}
 graphql:
  servlet:
   enabled: true
@@ -25,7 +25,7 @@ graphql:
   #  actuator-metrics: true
   corsEnabled: true
   cors:
-   allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost}
+   allowed-origins: ${CORS_ALLOWED_ORIGINS:}
   exception-handlers-enabled: true
   contextSetting: PER_REQUEST_WITH_INSTRUMENTATION
  tools:

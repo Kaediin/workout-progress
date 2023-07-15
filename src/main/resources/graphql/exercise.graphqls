@@ -1,0 +1,54 @@
+enum WeightUnit {
+    KG, LBS
+}
+
+type Exercise {
+    id: ID!
+    name: String!
+
+    primaryMuscles: [MuscleGroup]
+    secondaryMuscles: [MuscleGroup]
+
+    user: User
+}
+
+input ExerciseInput {
+    name: String!
+
+    primaryMuscles: [MuscleGroup]
+    secondaryMuscles: [MuscleGroup]
+}
+
+
+type ExerciseLog {
+    id: ID!
+    logDateTime: LocalDateTime!
+    exercise: Exercise!
+    user: User!
+    repetitions: Float!
+    weightLeft: Float!
+    weightRight: Float!
+    unit: WeightUnit!
+}
+
+type GroupedExerciseLog {
+    exercise: Exercise!
+    logs: [ExerciseLog!]!
+}
+
+input ExerciseLogInput {
+    exerciseId: String!
+    zonedDateTimeString: String!
+    repetitions: Float!
+    weightLeft: Float!
+    weightRight: Float!
+    unit: WeightUnit!
+}
+
+extend type Query {
+    myExercises: [Exercise!]
+}
+
+extend type Mutation {
+    createExercise(input: ExerciseInput): Exercise
+}

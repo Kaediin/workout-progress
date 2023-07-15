@@ -1,6 +1,7 @@
 package com.daiken.workoutprogress.services;
 
 import com.daiken.workoutprogress.model.CognitoUser;
+import com.devskiller.friendly_id.FriendlyId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -58,7 +59,7 @@ public class CognitoService {
     public Optional<CognitoUser> findUser(String fid) {
         if (fid == null) return Optional.empty();
 
-        return findCognitoUserBySubjectFilter(fid);
+        return findCognitoUserBySubjectFilter("sub=\"" + FriendlyId.toUuid(fid) + "\"");
     }
 
     public Optional<CognitoUser> findCognitoUserBySubjectFilter(String subjectFilter) {
@@ -70,7 +71,7 @@ public class CognitoService {
         ListUsersResponse listUsersResult = getIdentityProvider().listUsers(listUsersRequest);
 
         return Optional.ofNullable(listUsersResult.users()).stream().flatMap(Collection::stream)
-                .map(it -> new CognitoUser(it))
+                .map(CognitoUser::new)
                 .findFirst();
     }
 

@@ -1,25 +1,84 @@
 package com.daiken.workoutprogress.api.graphql;
 
+import com.daiken.workoutprogress.api.graphql.input.ExerciseLogInput;
+import com.daiken.workoutprogress.api.graphql.input.WorkoutInput;
+import com.daiken.workoutprogress.model.Exercise;
+import com.daiken.workoutprogress.model.ExerciseLog;
+import com.daiken.workoutprogress.model.User;
+import com.daiken.workoutprogress.model.Workout;
+import com.daiken.workoutprogress.repository.ExerciseLogRepository;
+import com.daiken.workoutprogress.repository.ExerciseRepository;
+import com.daiken.workoutprogress.repository.WorkoutRepository;
+import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.security.core.context.SecurityContextHolder.getContext;
-
+import java.time.ZonedDateTime;
 
 @Component
 public class WorkoutMutationResolver implements GraphQLMutationResolver {
 
+    private final ExerciseLogRepository exerciseLogRepository;
+    private final ExerciseRepository exerciseRepository;
+    private final UserService userService;
+    private final WorkoutRepository workoutRepository;
+
     @Autowired
-    public WorkoutMutationResolver() {
+    public WorkoutMutationResolver(
+            ExerciseLogRepository exerciseLogRepository,
+            ExerciseRepository exerciseRepository,
+            UserService userService,
+            WorkoutRepository workoutRepository
+    ) {
+        this.exerciseLogRepository = exerciseLogRepository;
+        this.exerciseRepository = exerciseRepository;
+        this.userService = userService;
+        this.workoutRepository = workoutRepository;
     }
 
-    public void meStartWorkout() {
-        Authentication auth = getContext().getAuthentication();
+    @PreAuthorize("isAuthenticated()")
+    public Workout meStartWorkout(WorkoutInput input) {
+        if (input.name == null || input.muscleGroups.isEmpty()) {
+            throw new NullPointerException("Input is not filled properly!");
+        }
+        User user = userService.getContextUser();
+        Workout workout = new Workout(input, userService.getContextUser(), true);
 
-        System.out.println(auth);
+        Workout activeWorkout = workoutRepository.findWorkoutByUserIdAndActive(user.id, true).orElse(null);
+        if (activeWorkout != null) {
+            activeWorkout.active = false;
+            workoutRepository.save(activeWorkout);
+        }
 
-        return;
+        return workoutRepository.save(workout);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public Workout addExerciseLogToWorkout(String workoutId, ExerciseLogInput input) {
+        User me = userService.getContextUser();
+        if (me == null) {
+            throw new NullPointerException("Me not found!");
+        }
+
+        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
+        Exercise exercise = exerciseRepository.findById(input.exerciseId).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
+        exerciseLogRepository.save(new ExerciseLog(input, me, currentWorkout, exercise));
+        return currentWorkout;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public Boolean removeExerciseLog(String exerciseLogId) {
+        ExerciseLog exerciseLog = exerciseLogRepository.findById(exerciseLogId).orElseThrow(() -> new NullPointerException("ExerciseLog not found with given id"));
+        exerciseLogRepository.delete(exerciseLog);
+        return true;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public Workout endWorkout(String workoutId, String zonedDateTimeString) {
+        Workout workout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
+        workout.endWorkout(ZonedDateTime.parse(zonedDateTimeString).toLocalDateTime());
+        return workoutRepository.save(workout);
     }
 }

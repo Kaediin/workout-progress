@@ -1,3 +1,5 @@
+scalar LocalDateTime
+
 enum MuscleGroup {
     ABDUCTOR
     ABS
@@ -25,12 +27,29 @@ type Workout {
     id: ID!
     name: String!
     muscleGroups: [MuscleGroup!]!
+    startDateTime: LocalDateTime
+    endDateTime: LocalDateTime
+    active: Boolean
+    exerciseLogs: [ExerciseLog!]!
+    groupedExerciseLogs: [GroupedExerciseLog!]!
+}
+
+input WorkoutInput {
+    name: String!
+    muscleGroups: [MuscleGroup!]!
+    zonedDateTime: String!
 }
 
 extend type Query {
-    workouts: [Workout]
+    myWorkouts: [Workout!]
+
+    meHasActiveWorkout: Boolean!
+    workoutById(id: ID!): Workout
 }
 
 extend type Mutation {
-    meStartWorkout: Boolean
+    meStartWorkout(input: WorkoutInput!): Workout
+    addExerciseLogToWorkout(workoutId: ID!, input: ExerciseLogInput): Workout
+    removeExerciseLog(exerciseLogId: String!): Boolean!
+    endWorkout(workoutId: ID!, zonedDateTimeString: String!): Workout
 }

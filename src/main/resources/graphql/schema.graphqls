@@ -8,16 +8,25 @@ input UserInput {
 
 type User {
     id: ID!
-    firstName: String!
-    middleName: String!
-    lastName: String!
+    fid: String!
+    cognitoUser: CognitoUser!
+}
+
+type CognitoUser {
     email: String!
-    #    password: String!
+    family_name: String!
+    gender: String!
+    given_name: String!
+    locale: String!
+    name: String!
+    nickname: String!
+    zoneinfo: String!
 }
 
 type Query {
     users: [User]
     userById(id: String!): User
+    me: User
 }
 
 type Mutation {
