@@ -1,7 +1,7 @@
 package com.daiken.workoutprogress.api.graphql;
 
+import com.daiken.workoutprogress.api.graphql.input.UserInput;
 import com.daiken.workoutprogress.model.User;
-import com.daiken.workoutprogress.model.UserInput;
 import com.daiken.workoutprogress.repository.UserRepository;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class UserMutationResolver implements GraphQLMutationResolver {
     }
 
     public User createUser(UserInput userInput) {
-        User user = new User(userInput);
-        return userRepository.save(user);
+//        User user = new User(userInput);
+        return null;
     }
 }

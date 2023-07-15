@@ -1,4 +1,4 @@
-package com.daiken.workoutprogress.model;
+package com.daiken.workoutprogress.api.graphql.input;
 
 
 public class UserInput {
