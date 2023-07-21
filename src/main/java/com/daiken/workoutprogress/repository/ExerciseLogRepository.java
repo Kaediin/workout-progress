@@ -1,11 +1,24 @@
 package com.daiken.workoutprogress.repository;
 
 import com.daiken.workoutprogress.model.ExerciseLog;
+import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 
 
 public interface ExerciseLogRepository extends MongoRepository<ExerciseLog, String> {
     Stream<ExerciseLog> findAllByUserIdAndWorkoutId(String user_id, String workout_id);
+
+    @Aggregation(pipeline = {
+            "{ '$match': {$and: [" +
+                    "{ 'user.id': ?0}," +
+                    "{ 'workout.id': ?1 }," +
+                    "]}" +
+                    "}",
+            "{ '$sort' : { 'logDateTime' : -1 } }",
+            "{ '$limit' : 1 }"
+    })
+    Optional<ExerciseLog> findLastLogByUserIdAndWorkoutId(String user_id, String workout_id);
 }
