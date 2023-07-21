@@ -30,4 +30,10 @@ public class Exercise {
 
     public Exercise() {
     }
+
+    public void update(ExerciseInput input) {
+        this.name = input.name;
+        this.primaryMuscles = input.primaryMuscles;
+        this.secondaryMuscles = input.secondaryMuscles;
+    }
 }

@@ -51,4 +51,6 @@ extend type Query {
 
 extend type Mutation {
     createExercise(input: ExerciseInput): Exercise
+    updateExercise(id: ID! input: ExerciseInput): Exercise
+    deleteExercise(id: ID!): Boolean!
 }
