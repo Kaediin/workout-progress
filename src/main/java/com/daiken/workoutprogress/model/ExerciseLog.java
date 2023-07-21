@@ -14,7 +14,7 @@ public class ExerciseLog {
     @Id
     String id;
 
-    LocalDateTime logDateTime;
+    public LocalDateTime logDateTime;
 
     @DBRef(lazy = true)
     public Exercise exercise;

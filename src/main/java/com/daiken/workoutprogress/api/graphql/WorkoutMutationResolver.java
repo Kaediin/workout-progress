@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 @Component
 public class WorkoutMutationResolver implements GraphQLMutationResolver {
@@ -77,8 +78,17 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
 
     @PreAuthorize("isAuthenticated()")
     public Workout endWorkout(String workoutId, String zonedDateTimeString) {
+        User me = userService.getContextUser();
+        if (me == null) {
+            throw new NullPointerException("Me not found!");
+        }
         Workout workout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
-        workout.endWorkout(ZonedDateTime.parse(zonedDateTimeString).toLocalDateTime());
+        Optional<ExerciseLog> exerciseLog = exerciseLogRepository.findLastLogByUserIdAndWorkoutId(me.id, workoutId);
+        if (exerciseLog.isPresent() && exerciseLog.get().logDateTime != null) {
+            workout.endWorkout(exerciseLog.get().logDateTime);
+        } else {
+            workout.endWorkout(ZonedDateTime.parse(zonedDateTimeString).toLocalDateTime());
+        }
         return workoutRepository.save(workout);
     }
 }
