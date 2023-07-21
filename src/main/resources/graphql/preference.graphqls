@@ -1,0 +1,17 @@
+input PreferenceInput {
+    unit: WeightUnit
+    defaultRepetitions: Int
+}
+
+type Preference {
+    unit: WeightUnit
+    defaultRepetitions: Int
+}
+
+extend type Query {
+    myPreference: Preference
+}
+
+extend type Mutation {
+    updateMyPreference(input: PreferenceInput!): Preference!
+}
