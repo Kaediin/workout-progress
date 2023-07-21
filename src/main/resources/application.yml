@@ -4,7 +4,7 @@ spring:
  data:
   mongodb:
    uri: ${MONGO_URI:}
-   database: test
+   database: ${MONGO_DB:test}
    auto-index-creation: true
 cors:
  allowed_origins: ${CORS_ALLOWED_ORIGINS:}
