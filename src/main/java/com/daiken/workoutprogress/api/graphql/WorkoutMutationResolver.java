@@ -16,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Component
@@ -90,5 +91,14 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
             workout.endWorkout(ZonedDateTime.parse(zonedDateTimeString).toLocalDateTime());
         }
         return workoutRepository.save(workout);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public Boolean deleteWorkout(String id) {
+        Workout workout = workoutRepository.findById(id).orElseThrow(() -> new NullPointerException("Cant find workout with given id"));
+        List<ExerciseLog> logs = exerciseLogRepository.findAllByWorkoutId(workout.id);
+        exerciseLogRepository.deleteAll(logs);
+        workoutRepository.delete(workout);
+        return true;
     }
 }
