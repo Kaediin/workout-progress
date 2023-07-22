@@ -30,6 +30,7 @@ type ExerciseLog {
     weightRight: Float!
     unit: WeightUnit!
     warmup: Boolean
+    remark: String
 }
 
 type GroupedExerciseLog {
@@ -45,6 +46,7 @@ input ExerciseLogInput {
     weightRight: Float!
     unit: WeightUnit!
     warmup: Boolean!
+    remark: String
 }
 
 extend type Query {

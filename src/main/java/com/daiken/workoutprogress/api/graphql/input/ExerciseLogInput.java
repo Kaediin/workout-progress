@@ -15,6 +15,8 @@ public class ExerciseLogInput {
 
     public Boolean warmup;
 
+    public String remark;
+
     public ExerciseLogInput() {
     }
 }

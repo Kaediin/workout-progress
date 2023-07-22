@@ -34,11 +34,12 @@ public class ExerciseLog {
 
     Boolean warmup;
 
+    String remark;
+
     public ExerciseLog() {
     }
 
     public ExerciseLog(ExerciseLogInput input, User user, Workout workout, Exercise exercise) {
-        this.logDateTime = ZonedDateTime.parse(input.zonedDateTimeString).toLocalDateTime();
         this.user = user;
         this.exercise = exercise;
         this.workout = workout;
@@ -46,10 +47,12 @@ public class ExerciseLog {
     }
 
     public void update(ExerciseLogInput input) {
+        this.logDateTime = ZonedDateTime.parse(input.zonedDateTimeString).toLocalDateTime();
         this.repetitions = input.repetitions;
         this.weightLeft = input.weightLeft;
         this.weightRight = input.weightRight;
         this.unit = input.unit;
         this.warmup = input.warmup;
+        this.remark = input.remark;
     }
 }
