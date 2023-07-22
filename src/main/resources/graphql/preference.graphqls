@@ -1,10 +1,12 @@
 input PreferenceInput {
     unit: WeightUnit
     defaultRepetitions: Int
+    hideUnitSelector: Boolean
 }
 
 type Preference {
     unit: WeightUnit
+    hideUnitSelector: Boolean
     defaultRepetitions: Int
 }
 
