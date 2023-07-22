@@ -20,7 +20,7 @@ public class ExerciseLog {
     public Exercise exercise;
 
     @DBRef(lazy = true)
-    Workout workout;
+    public Workout workout;
 
     @DBRef(lazy = true)
     User user;
@@ -32,6 +32,8 @@ public class ExerciseLog {
 
     WeightUnit unit;
 
+    Boolean warmup;
+
     public ExerciseLog() {
     }
 
@@ -40,9 +42,14 @@ public class ExerciseLog {
         this.user = user;
         this.exercise = exercise;
         this.workout = workout;
+        update(input);
+    }
+
+    public void update(ExerciseLogInput input) {
         this.repetitions = input.repetitions;
         this.weightLeft = input.weightLeft;
         this.weightRight = input.weightRight;
         this.unit = input.unit;
+        this.warmup = input.warmup;
     }
 }
