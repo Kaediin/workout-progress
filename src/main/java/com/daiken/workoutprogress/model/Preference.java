@@ -19,6 +19,7 @@ public class Preference {
 
     public WeightUnit unit;
     public int defaultRepetitions;
+    public boolean hideUnitSelector;
 
     public Preference() {
     }
@@ -37,5 +38,6 @@ public class Preference {
     public void update(PreferenceInput input) {
         this.unit = input.unit;
         this.defaultRepetitions = input.defaultRepetitions;
+        this.hideUnitSelector = input.hideUnitSelector;
     }
 }
