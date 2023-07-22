@@ -13,6 +13,8 @@ public class ExerciseLogInput {
 
     public WeightUnit unit;
 
+    public String remark;
+
     public ExerciseLogInput() {
     }
 }

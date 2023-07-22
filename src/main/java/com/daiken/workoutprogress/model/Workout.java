@@ -27,6 +27,8 @@ public class Workout implements Comparable<Workout> {
 
     public boolean active;
 
+    public String remark;
+
     public Workout(String id, String name, List<MuscleGroup> muscleGroups) {
         this.id = id;
         this.name = name;
@@ -34,11 +36,16 @@ public class Workout implements Comparable<Workout> {
     }
 
     public Workout(WorkoutInput input, User user, boolean active) {
-        this.name = input.name;
-        this.muscleGroups = input.muscleGroups;
         this.user = user;
         this.active = active;
+        update(input);
+    }
+
+    public void update(WorkoutInput input) {
+        this.name = input.name;
+        this.muscleGroups = input.muscleGroups;
         this.startDateTime = ZonedDateTime.parse(input.zonedDateTime).toLocalDateTime();
+        this.remark = input.remark;
     }
 
     public Workout() {

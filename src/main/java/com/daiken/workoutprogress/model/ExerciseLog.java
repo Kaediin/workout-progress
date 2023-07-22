@@ -32,17 +32,24 @@ public class ExerciseLog {
 
     WeightUnit unit;
 
+    String remark;
+
     public ExerciseLog() {
     }
 
     public ExerciseLog(ExerciseLogInput input, User user, Workout workout, Exercise exercise) {
-        this.logDateTime = ZonedDateTime.parse(input.zonedDateTimeString).toLocalDateTime();
         this.user = user;
         this.exercise = exercise;
         this.workout = workout;
+        update(input);
+    }
+
+    public void update(ExerciseLogInput input) {
+        this.logDateTime = ZonedDateTime.parse(input.zonedDateTimeString).toLocalDateTime();
         this.repetitions = input.repetitions;
         this.weightLeft = input.weightLeft;
         this.weightRight = input.weightRight;
         this.unit = input.unit;
+        this.remark = input.remark;
     }
 }

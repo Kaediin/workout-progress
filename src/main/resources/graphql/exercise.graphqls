@@ -29,6 +29,7 @@ type ExerciseLog {
     weightLeft: Float!
     weightRight: Float!
     unit: WeightUnit!
+    remark: String
 }
 
 type GroupedExerciseLog {
@@ -43,6 +44,7 @@ input ExerciseLogInput {
     weightLeft: Float!
     weightRight: Float!
     unit: WeightUnit!
+    remark: String
 }
 
 extend type Query {
