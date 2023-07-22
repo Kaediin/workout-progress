@@ -49,9 +49,10 @@ dependencies {
     implementation 'software.amazon.awssdk:sdk-core'
 
     // testing facilities
-    testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:7.2.0'
+//    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+    testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework:spring-webflux'
+    testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:7.2.0'
 }
 
 tasks.named('test') {
