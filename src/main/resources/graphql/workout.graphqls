@@ -32,12 +32,14 @@ type Workout {
     active: Boolean
     exerciseLogs: [ExerciseLog!]!
     groupedExerciseLogs: [GroupedExerciseLog!]!
+    remark: String
 }
 
 input WorkoutInput {
     name: String!
     muscleGroups: [MuscleGroup!]!
     zonedDateTime: String!
+    remark: String
 }
 
 extend type Query {
