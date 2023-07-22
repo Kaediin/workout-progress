@@ -38,7 +38,6 @@ public class ExerciseMutationResolver implements GraphQLMutationResolver {
 
     @PreAuthorize("isAuthenticated()")
     public Exercise updateExercise(String id, ExerciseInput input) {
-        User me = userService.getContextUser();
         Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
         exercise.update(input);
         return exerciseRepository.save(exercise);

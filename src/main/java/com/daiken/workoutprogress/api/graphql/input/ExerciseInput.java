@@ -10,4 +10,6 @@ public class ExerciseInput {
 
     public List<MuscleGroup> primaryMuscles;
     public List<MuscleGroup> secondaryMuscles;
+
+    public WeightValueInput defaultAppliedWeight;
 }

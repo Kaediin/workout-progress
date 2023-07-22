@@ -21,11 +21,11 @@ public class Exercise {
     List<MuscleGroup> primaryMuscles;
     List<MuscleGroup> secondaryMuscles;
 
+    public WeightValue defaultAppliedWeight;
+
     public Exercise(ExerciseInput input, User me) {
-        this.name = input.name;
-        this.primaryMuscles = input.primaryMuscles;
-        this.secondaryMuscles = input.secondaryMuscles;
         this.user = me;
+        update(input);
     }
 
     public Exercise() {
@@ -35,5 +35,6 @@ public class Exercise {
         this.name = input.name;
         this.primaryMuscles = input.primaryMuscles;
         this.secondaryMuscles = input.secondaryMuscles;
+        this.defaultAppliedWeight = new WeightValue(input.defaultAppliedWeight);
     }
 }
