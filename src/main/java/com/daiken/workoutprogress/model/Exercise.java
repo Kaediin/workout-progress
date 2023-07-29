@@ -35,6 +35,8 @@ public class Exercise {
         this.name = input.name;
         this.primaryMuscles = input.primaryMuscles;
         this.secondaryMuscles = input.secondaryMuscles;
-        this.defaultAppliedWeight = new WeightValue(input.defaultAppliedWeight);
+        if (input.defaultAppliedWeight != null) {
+            this.defaultAppliedWeight = new WeightValue(input.defaultAppliedWeight);
+        }
     }
 }
