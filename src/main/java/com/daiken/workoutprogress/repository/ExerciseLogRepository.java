@@ -26,4 +26,6 @@ public interface ExerciseLogRepository extends MongoRepository<ExerciseLog, Stri
     List<ExerciseLog> findAllByUserIdAndExerciseId(String user_id, String exercise_id);
 
     List<ExerciseLog> findAllByWorkoutId(String workout_id);
+
+    Stream<ExerciseLog> findAllByWeightLeftExistsOrWeightRightExists(boolean existsLeft, boolean existsRight);
 }
