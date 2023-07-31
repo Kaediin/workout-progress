@@ -43,9 +43,13 @@ type ExerciseLog {
     exercise: Exercise!
     user: User!
     repetitions: Float!
-    weightLeft: Float!
-    weightRight: Float!
-    unit: WeightUnit!
+    weightLeft: Float! @deprecated
+    weightRight: Float! @deprecated
+
+    weightValueLeft: WeightValue!
+    weightValueRight: WeightValue!
+
+    unit: WeightUnit! @deprecated
     warmup: Boolean
     remark: String
 }
@@ -59,9 +63,8 @@ input ExerciseLogInput {
     exerciseId: String!
     zonedDateTimeString: String!
     repetitions: Float!
-    weightLeft: Float!
-    weightRight: Float!
-    unit: WeightUnit!
+    weightLeft: WeightValueInput!
+    weightRight: WeightValueInput!
     warmup: Boolean!
     remark: String
 }

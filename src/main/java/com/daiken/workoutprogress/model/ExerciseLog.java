@@ -27,9 +27,15 @@ public class ExerciseLog {
 
     long repetitions;
 
-    double weightLeft;
-    double weightRight;
+    @Deprecated(forRemoval = true)
+    public double weightLeft;
+    @Deprecated(forRemoval = true)
+    public double weightRight;
 
+    public WeightValue weightValueLeft;
+    public WeightValue weightValueRight;
+
+    @Deprecated(forRemoval = true)
     WeightUnit unit;
 
     Boolean warmup;
@@ -49,10 +55,21 @@ public class ExerciseLog {
     public void update(ExerciseLogInput input) {
         this.logDateTime = ZonedDateTime.parse(input.zonedDateTimeString).toLocalDateTime();
         this.repetitions = input.repetitions;
-        this.weightLeft = input.weightLeft;
-        this.weightRight = input.weightRight;
-        this.unit = input.unit;
+        this.weightValueLeft = new WeightValue(input.weightLeft);
+        this.weightValueRight = new WeightValue(input.weightRight);
         this.warmup = input.warmup;
         this.remark = input.remark;
+    }
+
+    public ExerciseLog convertWeightToWeightValue() {
+        String[] weightFraction = String.valueOf(this.weightLeft).split("\\.");
+        WeightValue value = new WeightValue(
+                Integer.parseInt(weightFraction[0]),
+                Integer.parseInt(weightFraction[1]),
+                this.unit
+        );
+        this.weightValueLeft = value;
+        this.weightValueRight = value;
+        return this;
     }
 }
