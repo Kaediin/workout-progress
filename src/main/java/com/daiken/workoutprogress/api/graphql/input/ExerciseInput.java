@@ -12,4 +12,6 @@ public class ExerciseInput {
     public List<MuscleGroup> secondaryMuscles;
 
     public WeightValueInput defaultAppliedWeight;
+
+    public String notes;
 }

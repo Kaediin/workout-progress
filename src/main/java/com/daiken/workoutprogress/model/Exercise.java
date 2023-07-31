@@ -23,6 +23,8 @@ public class Exercise {
 
     public WeightValue defaultAppliedWeight;
 
+    public String notes;
+
     public Exercise(ExerciseInput input, User me) {
         this.user = me;
         update(input);
@@ -35,6 +37,7 @@ public class Exercise {
         this.name = input.name;
         this.primaryMuscles = input.primaryMuscles;
         this.secondaryMuscles = input.secondaryMuscles;
+        this.notes = input.notes;
         if (input.defaultAppliedWeight != null) {
             this.defaultAppliedWeight = new WeightValue(input.defaultAppliedWeight);
         }
