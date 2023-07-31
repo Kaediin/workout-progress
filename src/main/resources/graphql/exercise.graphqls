@@ -25,6 +25,7 @@ type Exercise {
     user: User
 
     defaultAppliedWeight: WeightValue
+    notes: String
 }
 
 input ExerciseInput {
@@ -34,6 +35,7 @@ input ExerciseInput {
     secondaryMuscles: [MuscleGroup]
 
     defaultAppliedWeight: WeightValueInput
+    notes: String
 }
 
 
