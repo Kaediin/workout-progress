@@ -18,8 +18,8 @@ public class Exercise {
     @DBRef(lazy = true)
     User user;
 
-    List<MuscleGroup> primaryMuscles;
-    List<MuscleGroup> secondaryMuscles;
+    public List<MuscleGroup> primaryMuscles;
+    public List<MuscleGroup> secondaryMuscles;
 
     public WeightValue defaultAppliedWeight;
 

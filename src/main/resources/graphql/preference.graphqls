@@ -2,12 +2,14 @@ input PreferenceInput {
     unit: WeightUnit
     defaultRepetitions: Int
     hideUnitSelector: Boolean
+    autoAdjustWorkoutMuscleGroups: Boolean
 }
 
 type Preference {
     unit: WeightUnit
     hideUnitSelector: Boolean
     defaultRepetitions: Int
+    autoAdjustWorkoutMuscleGroups: Boolean
 }
 
 extend type Query {

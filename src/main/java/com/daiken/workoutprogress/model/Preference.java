@@ -21,6 +21,8 @@ public class Preference {
     public int defaultRepetitions;
     public boolean hideUnitSelector;
 
+    public boolean autoAdjustWorkoutMuscleGroups;
+
     public Preference() {
     }
 
@@ -39,5 +41,6 @@ public class Preference {
         this.unit = input.unit;
         this.defaultRepetitions = input.defaultRepetitions;
         this.hideUnitSelector = input.hideUnitSelector;
+        this.autoAdjustWorkoutMuscleGroups = input.autoAdjustWorkoutMuscleGroups;
     }
 }

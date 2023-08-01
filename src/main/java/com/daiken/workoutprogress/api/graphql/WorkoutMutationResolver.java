@@ -1,8 +1,6 @@
 package com.daiken.workoutprogress.api.graphql;
 
-import com.daiken.workoutprogress.api.graphql.input.ExerciseLogInput;
 import com.daiken.workoutprogress.api.graphql.input.WorkoutInput;
-import com.daiken.workoutprogress.model.Exercise;
 import com.daiken.workoutprogress.model.ExerciseLog;
 import com.daiken.workoutprogress.model.User;
 import com.daiken.workoutprogress.model.Workout;
@@ -42,7 +40,7 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
 
     @PreAuthorize("isAuthenticated()")
     public Workout meStartWorkout(WorkoutInput input) {
-        if (input.name == null || input.muscleGroups.isEmpty()) {
+        if (input.name == null) {
             throw new NullPointerException("Input is not filled properly!");
         }
         User user = userService.getContextUser();
@@ -55,38 +53,6 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         }
 
         return workoutRepository.save(workout);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    public Workout addExerciseLogToWorkout(String workoutId, ExerciseLogInput input) {
-        User me = userService.getContextUser();
-        if (me == null) {
-            throw new NullPointerException("Me not found!");
-        }
-
-        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
-        Exercise exercise = exerciseRepository.findById(input.exerciseId).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
-        exerciseLogRepository.save(new ExerciseLog(input, me, currentWorkout, exercise));
-        return currentWorkout;
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    public Workout updateExerciseLog(String exerciseLogId, ExerciseLogInput input) {
-        User me = userService.getContextUser();
-        if (me == null) {
-            throw new NullPointerException("Me not found!");
-        }
-        ExerciseLog exerciseLog = exerciseLogRepository.findById(exerciseLogId).orElseThrow(() -> new NullPointerException("Can't find exerciselog with given id"));
-        exerciseLog.update(input);
-        exerciseLogRepository.save(exerciseLog);
-        return workoutRepository.findById(exerciseLog.workout.id).orElse(null);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    public Boolean removeExerciseLog(String exerciseLogId) {
-        ExerciseLog exerciseLog = exerciseLogRepository.findById(exerciseLogId).orElseThrow(() -> new NullPointerException("ExerciseLog not found with given id"));
-        exerciseLogRepository.delete(exerciseLog);
-        return true;
     }
 
     @PreAuthorize("isAuthenticated()")

@@ -6,4 +6,5 @@ public class PreferenceInput {
     public WeightUnit unit;
     public int defaultRepetitions;
     public boolean hideUnitSelector;
+    public boolean autoAdjustWorkoutMuscleGroups;
 }
