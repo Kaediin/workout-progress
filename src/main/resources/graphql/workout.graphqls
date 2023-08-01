@@ -51,9 +51,6 @@ extend type Query {
 
 extend type Mutation {
     meStartWorkout(input: WorkoutInput!): Workout
-    addExerciseLogToWorkout(workoutId: ID!, input: ExerciseLogInput!): Workout
-    updateExerciseLog(exerciseLogId: ID!, input: ExerciseLogInput!): Workout
-    removeExerciseLog(exerciseLogId: String!): Boolean!
     endWorkout(workoutId: ID!, zonedDateTimeString: String!): Workout
     deleteWorkout(id: ID!): Boolean
 }

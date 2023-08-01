@@ -17,7 +17,7 @@ public class Workout implements Comparable<Workout> {
     public String id;
 
     String name;
-    List<MuscleGroup> muscleGroups;
+    public List<MuscleGroup> muscleGroups;
 
     @DBRef(lazy = true)
     User user;
