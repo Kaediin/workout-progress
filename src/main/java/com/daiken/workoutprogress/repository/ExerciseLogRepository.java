@@ -23,6 +23,17 @@ public interface ExerciseLogRepository extends MongoRepository<ExerciseLog, Stri
     })
     Optional<ExerciseLog> findLastLogByUserIdAndWorkoutId(String user_id, String workout_id);
 
+    @Aggregation(pipeline = {
+            "{ '$match': {$and: [" +
+                    "{ 'user.id': ?0}," +
+                    "{ 'exercise.id': ?1 }," +
+                    "]}" +
+                    "}",
+            "{ '$sort' : { 'logDateTime' : -1 } }",
+            "{ '$limit' : 1 }"
+    })
+    Optional<ExerciseLog> findLastLogByUserIdAndExerciseId(String user_id, String exercise_id);
+
     List<ExerciseLog> findAllByUserIdAndExerciseId(String user_id, String exercise_id);
 
     List<ExerciseLog> findAllByWorkoutId(String workout_id);

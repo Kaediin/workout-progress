@@ -1,3 +1,7 @@
+extend type Query {
+    latestLogByExerciseId(exerciseId: ID!): ExerciseLog
+}
+
 extend type Mutation {
     addExerciseLog(workoutId: ID!, input: ExerciseLogInput!, autoAdjust: Boolean!): Workout
     updateExerciseLog(exerciseLogId: ID!, input: ExerciseLogInput!): Workout
