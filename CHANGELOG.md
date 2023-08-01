@@ -4,6 +4,10 @@
 - #7: Preference option for hiding unit selector
 - #8: Remarks for creating a workout and logging an exercise
 - #9: Option to add a default applied weight to an exercises. Useful for some logging certain machines
+- #10: Migrated number value of logged weight to WeightValue object
+- #11: Notes to exercise
+- #13: Auto adjust workout muscle groups based on logged exercises
+- #14: Added query to get last logged exercise log by exercise id and user id
 
 ## [v0.0.1]
 
