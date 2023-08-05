@@ -1,5 +1,5 @@
 extend type Query {
-    latestLogByExerciseId(exerciseId: ID!): ExerciseLog
+    latestLogsByExerciseId(exerciseId: ID!): [ExerciseLog]
 }
 
 extend type Mutation {
