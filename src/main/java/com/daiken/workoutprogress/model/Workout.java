@@ -41,11 +41,12 @@ public class Workout implements Comparable<Workout> {
         update(input);
     }
 
-    public void update(WorkoutInput input) {
+    public Workout update(WorkoutInput input) {
         this.name = input.name;
         this.muscleGroups = input.muscleGroups;
         this.startDateTime = ZonedDateTime.parse(input.zonedDateTime).toLocalDateTime();
         this.remark = input.remark;
+        return this;
     }
 
     public Workout() {

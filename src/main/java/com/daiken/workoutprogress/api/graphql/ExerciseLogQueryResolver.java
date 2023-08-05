@@ -27,7 +27,8 @@ public class ExerciseLogQueryResolver implements GraphQLQueryResolver {
 
     public ExerciseLog latestLogByExerciseId(String exerciseLogId) {
         User me = userService.getContextUser();
-        ExerciseLog log = exerciseLogRepository.findLastLogByUserIdAndExerciseId(me.id, exerciseLogId).orElseThrow(() -> new NullPointerException("Cant find exerciselog by id"));
+        ExerciseLog log = exerciseLogRepository.findLastLogByUserIdAndExerciseId(me.id, exerciseLogId).orElse(null);
+        if (log == null) return null;
         log.exercise = exerciseRepository.findById(log.exercise.id).orElseThrow(() -> new NullPointerException("Cant find exercise by id"));
         return log;
     }
