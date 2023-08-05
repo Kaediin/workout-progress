@@ -79,4 +79,10 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         workoutRepository.delete(workout);
         return true;
     }
+
+    @PreAuthorize("isAuthenticated()")
+    public Workout updateWorkout(String id, WorkoutInput input) {
+        Workout workout = workoutRepository.findById(id).orElseThrow(() -> new NullPointerException("Cant find workout with given id"));
+        return workoutRepository.save(workout.update(input));
+    }
 }
