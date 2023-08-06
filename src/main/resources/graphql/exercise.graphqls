@@ -1,18 +1,5 @@
-enum WeightUnit {
-    KG, LBS
-}
-
-
-input WeightValueInput {
-    baseWeight: Int!
-    fraction: Int
-    unit: WeightUnit!
-}
-
-type WeightValue {
-    baseWeight: Int!
-    fraction: Int
-    unit: WeightUnit!
+enum LogUnit {
+    KG, LBS, KM, MI
 }
 
 type Exercise {
@@ -24,7 +11,7 @@ type Exercise {
 
     user: User
 
-    defaultAppliedWeight: WeightValue
+    defaultAppliedWeight: LogValue
     notes: String
 }
 
@@ -34,41 +21,8 @@ input ExerciseInput {
     primaryMuscles: [MuscleGroup]
     secondaryMuscles: [MuscleGroup]
 
-    defaultAppliedWeight: WeightValueInput
+    defaultAppliedWeight: LogValueInput
     notes: String
-}
-
-
-type ExerciseLog {
-    id: ID!
-    logDateTime: LocalDateTime!
-    exercise: Exercise!
-    user: User!
-    repetitions: Float!
-    weightLeft: Float! @deprecated
-    weightRight: Float! @deprecated
-
-    weightValueLeft: WeightValue!
-    weightValueRight: WeightValue!
-
-    unit: WeightUnit! @deprecated
-    warmup: Boolean
-    remark: String
-}
-
-type GroupedExerciseLog {
-    exercise: Exercise!
-    logs: [ExerciseLog!]!
-}
-
-input ExerciseLogInput {
-    exerciseId: String!
-    zonedDateTimeString: String!
-    repetitions: Float!
-    weightLeft: WeightValueInput!
-    weightRight: WeightValueInput!
-    warmup: Boolean!
-    remark: String
 }
 
 extend type Query {

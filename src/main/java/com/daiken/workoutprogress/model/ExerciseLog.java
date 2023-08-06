@@ -28,15 +28,20 @@ public class ExerciseLog {
     long repetitions;
 
     @Deprecated(forRemoval = true)
-    public double weightLeft;
+    public Double weightLeft;
     @Deprecated(forRemoval = true)
-    public double weightRight;
-
-    public WeightValue weightValueLeft;
-    public WeightValue weightValueRight;
+    public Double weightRight;
 
     @Deprecated(forRemoval = true)
-    WeightUnit unit;
+    public LogValue weightValueLeft;
+    @Deprecated(forRemoval = true)
+    public LogValue weightValueRight;
+
+    public LogValue logValue;
+
+
+    @Deprecated(forRemoval = true)
+    LogUnit unit;
 
     Boolean warmup;
 
@@ -55,21 +60,30 @@ public class ExerciseLog {
     public void update(ExerciseLogInput input) {
         this.logDateTime = ZonedDateTime.parse(input.zonedDateTimeString).toLocalDateTime();
         this.repetitions = input.repetitions;
-        this.weightValueLeft = new WeightValue(input.weightLeft);
-        this.weightValueRight = new WeightValue(input.weightRight);
+        this.logValue = new LogValue(input.logValue);
         this.warmup = input.warmup;
         this.remark = input.remark;
     }
 
     public ExerciseLog convertWeightToWeightValue() {
         String[] weightFraction = String.valueOf(this.weightLeft).split("\\.");
-        WeightValue value = new WeightValue(
+        LogValue value = new LogValue(
                 Integer.parseInt(weightFraction[0]),
                 Integer.parseInt(weightFraction[1]),
                 this.unit
         );
         this.weightValueLeft = value;
         this.weightValueRight = value;
+        return this;
+    }
+
+    public ExerciseLog convertWeightToLogValue() {
+        this.logValue = this.weightValueLeft.convertBaseWeightToBase();
+        this.weightValueLeft = null;
+        this.weightValueRight = null;
+        this.weightLeft = null;
+        this.weightRight = null;
+        this.unit = null;
         return this;
     }
 }
