@@ -17,7 +17,11 @@ public class Preference {
     @DBRef(lazy = true)
     public User user;
 
-    public WeightUnit unit;
+    public LogUnit distanceUnit;
+    public LogUnit weightUnit;
+
+    @Deprecated(forRemoval = true)
+    public LogUnit unit;
     public int defaultRepetitions;
     public boolean hideUnitSelector;
 
@@ -28,7 +32,8 @@ public class Preference {
 
     public Preference(User user) {
         this.user = user;
-        this.unit = WeightUnit.KG;
+        this.weightUnit = LogUnit.KG;
+        this.distanceUnit = LogUnit.KM;
         this.defaultRepetitions = 10;
     }
 
@@ -38,7 +43,8 @@ public class Preference {
     }
 
     public void update(PreferenceInput input) {
-        this.unit = input.unit;
+        this.weightUnit = input.weightUnit;
+        this.distanceUnit = input.distanceUnit;
         this.defaultRepetitions = input.defaultRepetitions;
         this.hideUnitSelector = input.hideUnitSelector;
         this.autoAdjustWorkoutMuscleGroups = input.autoAdjustWorkoutMuscleGroups;

@@ -21,7 +21,7 @@ public class Exercise {
     public List<MuscleGroup> primaryMuscles;
     public List<MuscleGroup> secondaryMuscles;
 
-    public WeightValue defaultAppliedWeight;
+    public LogValue defaultAppliedWeight;
 
     public String notes;
 
@@ -39,7 +39,7 @@ public class Exercise {
         this.secondaryMuscles = input.secondaryMuscles;
         this.notes = input.notes;
         if (input.defaultAppliedWeight != null) {
-            this.defaultAppliedWeight = new WeightValue(input.defaultAppliedWeight);
+            this.defaultAppliedWeight = new LogValue(input.defaultAppliedWeight);
         }
     }
 }

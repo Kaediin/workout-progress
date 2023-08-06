@@ -1,3 +1,40 @@
+input LogValueInput {
+    base: Int!
+    fraction: Int
+    unit: LogUnit!
+}
+
+type LogValue {
+    base: Int!
+    fraction: Int
+    unit: LogUnit!
+}
+
+type ExerciseLog {
+    id: ID!
+    logDateTime: LocalDateTime!
+    exercise: Exercise!
+    user: User!
+    repetitions: Float!
+    logValue: LogValue!
+    warmup: Boolean
+    remark: String
+}
+
+type GroupedExerciseLog {
+    exercise: Exercise!
+    logs: [ExerciseLog!]!
+}
+
+input ExerciseLogInput {
+    exerciseId: String!
+    zonedDateTimeString: String!
+    repetitions: Float!
+    logValue: LogValueInput!
+    warmup: Boolean!
+    remark: String
+}
+
 extend type Query {
     latestLogsByExerciseId(exerciseId: ID!): [ExerciseLog]
 }

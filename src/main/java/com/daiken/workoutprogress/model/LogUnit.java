@@ -1,5 +1,5 @@
 package com.daiken.workoutprogress.model;
 
-public enum WeightUnit {
-    KG, LBS
+public enum LogUnit {
+    KG, LBS, KM, MI
 }

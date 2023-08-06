@@ -6,8 +6,7 @@ public class ExerciseLogInput {
     public String exerciseId;
     public long repetitions;
 
-    public WeightValueInput weightLeft;
-    public WeightValueInput weightRight;
+    public LogValueInput logValue;
 
     public Boolean warmup;
 

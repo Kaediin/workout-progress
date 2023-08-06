@@ -18,4 +18,13 @@ public class ExerciseLogMigrations {
                 .toList();
         exerciseLogRepository.saveAll(logs);
     }
+
+    @Migration(key = "weightLogToLogValue", order = 3, author = "Kaedin")
+    public void weightLogToLogValue(List<String> messages, ExerciseLogRepository exerciseLogRepository) {
+        List<ExerciseLog> logs = exerciseLogRepository
+                .findAllByWeightLeftExistsOrWeightRightExists(true, true)
+                .map(ExerciseLog::convertWeightToLogValue)
+                .toList();
+        exerciseLogRepository.saveAll(logs);
+    }
 }
