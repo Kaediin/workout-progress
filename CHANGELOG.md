@@ -1,3 +1,14 @@
+## [v0.1.1]
+
+### Added
+
+- #18: Support for logging distance
+- #19: Editing support for workouts
+
+### Changed
+
+- #17: Last logged exercise is not last logged set
+
 ## [v0.1.0]
 
 - #6: Warmup toggle
