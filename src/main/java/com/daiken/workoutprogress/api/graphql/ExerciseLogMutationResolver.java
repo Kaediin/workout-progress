@@ -1,7 +1,10 @@
 package com.daiken.workoutprogress.api.graphql;
 
 import com.daiken.workoutprogress.api.graphql.input.ExerciseLogInput;
-import com.daiken.workoutprogress.model.*;
+import com.daiken.workoutprogress.model.Exercise;
+import com.daiken.workoutprogress.model.ExerciseLog;
+import com.daiken.workoutprogress.model.User;
+import com.daiken.workoutprogress.model.Workout;
 import com.daiken.workoutprogress.repository.ExerciseLogRepository;
 import com.daiken.workoutprogress.repository.ExerciseRepository;
 import com.daiken.workoutprogress.repository.WorkoutRepository;
@@ -11,8 +14,6 @@ import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
@@ -49,11 +50,7 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
 
 
         if (autoAdjust) {
-            List<MuscleGroup> newGroups = exercise.primaryMuscles.stream().filter(it -> !currentWorkout.muscleGroups.contains(it)).toList();
-            if (!newGroups.isEmpty()) {
-                currentWorkout.muscleGroups.addAll(newGroups);
-                workoutRepository.save(currentWorkout);
-            }
+            workoutService.adjustWorkoutMuscleGroups(currentWorkout);
         }
 
         return currentWorkout;
@@ -79,6 +76,25 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
             workoutService.adjustWorkoutMuscleGroups(exerciseLog.workout.id);
         }
         return true;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    public Workout reLogLatestLog(String workoutId, String zonedDateTimeString, Boolean autoAdjust) {
+        User me = userService.getContextUser();
+        if (me == null) {
+            throw new NullPointerException("Me not found!");
+        }
+
+        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
+        ExerciseLog exerciseLog = exerciseLogRepository.findLastLogByUserIdAndWorkoutId(me.id, workoutId)
+                .orElseThrow(() -> new NullPointerException("No log for given workout id!"));
+        exerciseLogRepository.save(new ExerciseLog(exerciseLog, zonedDateTimeString));
+
+        if (autoAdjust) {
+            workoutService.adjustWorkoutMuscleGroups(currentWorkout);
+        }
+
+        return currentWorkout;
     }
 
 }
