@@ -43,4 +43,5 @@ extend type Mutation {
     addExerciseLog(workoutId: ID!, input: ExerciseLogInput!, autoAdjust: Boolean!): Workout
     updateExerciseLog(exerciseLogId: ID!, input: ExerciseLogInput!): Workout
     removeExerciseLog(exerciseLogId: String!, autoAdjust: Boolean!): Boolean!
+    reLogLatestLog(workoutId: ID!, zonedDateTimeString: String!, autoAdjust: Boolean!): Workout
 }
