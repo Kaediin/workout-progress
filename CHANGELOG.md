@@ -1,3 +1,16 @@
+## [v0.1.2]
+
+### Added
+
+- #15: Integrated SentryIO for issue tracking
+- #16: Readme
+- #23: Endpoint to re-log last logged exercise of a workout
+
+### Changed
+
+- #23: For a logged secondary muscle group to be listed on the workout, that group must be logged at least once in 2
+  separate exercises.
+
 ## [v0.1.1]
 
 ### Added
