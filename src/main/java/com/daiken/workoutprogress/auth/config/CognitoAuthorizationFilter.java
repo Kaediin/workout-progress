@@ -10,6 +10,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.daiken.workoutprogress.services.CognitoService;
 import com.devskiller.friendly_id.FriendlyId;
+import io.sentry.Sentry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -132,6 +133,7 @@ public class CognitoAuthorizationFilter extends BasicAuthenticationFilter {
             logger.debug("Unable to verify JWT token", e);
             response.addHeader("Error", "[CognitoAuthorizationFilter] Unable to verify JWT token: "
                     + e.getMessage());
+            Sentry.captureException(e);
         }
 
         return null;
