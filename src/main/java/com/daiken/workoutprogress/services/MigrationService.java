@@ -5,6 +5,7 @@ import com.daiken.workoutprogress.annotation.Migration;
 import com.daiken.workoutprogress.model.MigrationRecord;
 import com.daiken.workoutprogress.utils.MigrationHelper;
 import com.daiken.workoutprogress.utils.MigrationUtil;
+import io.sentry.Sentry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class MigrationService {
                     .reduce(0, Integer::sum);
         } catch (Exception e) {
             logger.error("start: failure while computing duration of migrations to run", e);
-
+            Sentry.captureException(e);
             return;
         }
 
@@ -76,7 +77,7 @@ public class MigrationService {
             }
         } catch (Exception e) {
             logger.error("start: failure validating migrations: " + e.getMessage(), e);
-
+            Sentry.captureException(e);
             return;
         }
 
@@ -93,6 +94,7 @@ public class MigrationService {
         } catch (Exception e) {
             logger.error("start: failure executing migration: " + e.getMessage() + "\nmessages:\n" +
                     String.join("\n", messageList), e);
+            Sentry.captureException(e);
         }
 
         logger.info("start: finished running ordered migrations");
@@ -123,7 +125,7 @@ public class MigrationService {
         } catch (Exception e) {
             logger.error("runUnordered: failure while computing duration of migration '" + key + "': " +
                     e.getMessage(), e);
-
+            Sentry.captureException(e);
             return "failure while computing duration of migration '" + key + "': " + e.getMessage();
         }
 
@@ -139,7 +141,7 @@ public class MigrationService {
         } catch (Exception e) {
 
             logger.error("runUnordered: failure validating unordered migration '" + key + "': " + e.getMessage(), e);
-
+            Sentry.captureException(e);
             return "failure validating unordered migration '" + key + "': " + e.getMessage();
         }
 
@@ -169,7 +171,7 @@ public class MigrationService {
             for (String message : messageList) {
                 logger.error(message);
             }
-
+            Sentry.captureException(e);
             return "failure executing unordered migration '" + key + "': " + e.getMessage() + "\nmessages:\n" +
                     String.join("\n", messageList);
         }
