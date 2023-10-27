@@ -50,6 +50,17 @@ public class ExerciseLog {
     public ExerciseLog() {
     }
 
+    public ExerciseLog(ExerciseLog copyLog, String zonedDateTimeString) {
+        this.user = copyLog.user;
+        this.exercise = copyLog.exercise;
+        this.workout = copyLog.workout;
+        this.logDateTime = ZonedDateTime.parse(zonedDateTimeString).toLocalDateTime();
+        this.repetitions = copyLog.repetitions;
+        this.logValue = copyLog.logValue;
+        this.warmup = copyLog.warmup;
+        this.remark = copyLog.remark;
+    }
+
     public ExerciseLog(ExerciseLogInput input, User user, Workout workout, Exercise exercise) {
         this.user = user;
         this.exercise = exercise;
