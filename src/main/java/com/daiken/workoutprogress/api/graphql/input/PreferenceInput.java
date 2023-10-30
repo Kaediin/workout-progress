@@ -11,4 +11,6 @@ public class PreferenceInput {
     public int defaultRepetitions;
     public boolean hideUnitSelector;
     public boolean autoAdjustWorkoutMuscleGroups;
+    public int timerDuration;
+    public boolean autoStartTimer;
 }

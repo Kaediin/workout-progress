@@ -27,6 +27,9 @@ public class Preference {
 
     public boolean autoAdjustWorkoutMuscleGroups;
 
+    public int timerDuration;
+    public boolean autoStartTimer;
+
     public Preference() {
     }
 
@@ -35,6 +38,8 @@ public class Preference {
         this.weightUnit = LogUnit.KG;
         this.distanceUnit = LogUnit.KM;
         this.defaultRepetitions = 10;
+        this.timerDuration = 120; // 120 seconds
+        this.autoStartTimer = false;
     }
 
     public Preference(User user, PreferenceInput input) {
@@ -48,5 +53,7 @@ public class Preference {
         this.defaultRepetitions = input.defaultRepetitions;
         this.hideUnitSelector = input.hideUnitSelector;
         this.autoAdjustWorkoutMuscleGroups = input.autoAdjustWorkoutMuscleGroups;
+        this.timerDuration = input.timerDuration;
+        this.autoStartTimer = input.autoStartTimer;
     }
 }

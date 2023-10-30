@@ -5,6 +5,8 @@ input PreferenceInput {
     defaultRepetitions: Int
     hideUnitSelector: Boolean
     autoAdjustWorkoutMuscleGroups: Boolean
+    timerDuration: Int
+    autoStartTimer: Boolean
 }
 
 type Preference {
@@ -14,6 +16,8 @@ type Preference {
     hideUnitSelector: Boolean
     defaultRepetitions: Int
     autoAdjustWorkoutMuscleGroups: Boolean
+    timerDuration: Int
+    autoStartTimer: Boolean
 }
 
 extend type Query {
