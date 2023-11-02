@@ -12,7 +12,7 @@ plugins {
 }
 
 group = 'com.daiken'
-version = '0.1.2-SNAPSHOT'
+version = '0.1.3-SNAPSHOT'
 sourceCompatibility = '17'
 
 repositories {

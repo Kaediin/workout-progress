@@ -1,3 +1,10 @@
+## [v0.1.3]
+
+### Added
+
+- #26: Timer duration to preference
+- #26: Timer auto start after logging to preference
+
 ## [v0.1.2]
 
 ### Added
