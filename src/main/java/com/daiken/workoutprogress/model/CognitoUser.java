@@ -48,7 +48,7 @@ public class CognitoUser {
                 .collect(Collectors.joining(" "));
     }
 
-    private void parseUserTypeAttributes(List<AttributeType> attributeDataTypes) {
+    public void parseUserTypeAttributes(List<AttributeType> attributeDataTypes) {
         for (AttributeType type : attributeDataTypes) {
             String value = type.value();
 

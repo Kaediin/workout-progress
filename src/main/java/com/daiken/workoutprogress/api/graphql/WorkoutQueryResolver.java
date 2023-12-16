@@ -30,7 +30,7 @@ public class WorkoutQueryResolver implements GraphQLQueryResolver {
     @PreAuthorize("isAuthenticated()")
     public List<Workout> myWorkouts() {
         User me = userService.getContextUser();
-        List<Workout> workouts = workoutRepository.findWorkoutByUserId(me.id);
+        List<Workout> workouts = workoutRepository.findWorkoutByUserId(me.getId());
         Collections.sort(workouts);
         return workouts;
     }

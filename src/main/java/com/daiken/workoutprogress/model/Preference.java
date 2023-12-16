@@ -20,8 +20,6 @@ public class Preference {
     public LogUnit distanceUnit;
     public LogUnit weightUnit;
 
-    @Deprecated(forRemoval = true)
-    public LogUnit unit;
     public int defaultRepetitions;
     public boolean hideUnitSelector;
 
@@ -48,12 +46,12 @@ public class Preference {
     }
 
     public void update(PreferenceInput input) {
-        this.weightUnit = input.weightUnit;
-        this.distanceUnit = input.distanceUnit;
-        this.defaultRepetitions = input.defaultRepetitions;
-        this.hideUnitSelector = input.hideUnitSelector;
-        this.autoAdjustWorkoutMuscleGroups = input.autoAdjustWorkoutMuscleGroups;
-        this.timerDuration = input.timerDuration;
-        this.autoStartTimer = input.autoStartTimer;
+        this.weightUnit = input.getWeightUnit();
+        this.distanceUnit = input.getDistanceUnit();
+        this.defaultRepetitions = input.getDefaultRepetitions();
+        this.hideUnitSelector = input.isHideUnitSelector();
+        this.autoAdjustWorkoutMuscleGroups = input.isAutoAdjustWorkoutMuscleGroups();
+        this.timerDuration = input.getTimerDuration();
+        this.autoStartTimer = input.isAutoStartTimer();
     }
 }

@@ -27,21 +27,7 @@ public class ExerciseLog {
 
     long repetitions;
 
-    @Deprecated(forRemoval = true)
-    public Double weightLeft;
-    @Deprecated(forRemoval = true)
-    public Double weightRight;
-
-    @Deprecated(forRemoval = true)
-    public LogValue weightValueLeft;
-    @Deprecated(forRemoval = true)
-    public LogValue weightValueRight;
-
     public LogValue logValue;
-
-
-    @Deprecated(forRemoval = true)
-    LogUnit unit;
 
     Boolean warmup;
 
@@ -69,32 +55,18 @@ public class ExerciseLog {
     }
 
     public void update(ExerciseLogInput input) {
-        this.logDateTime = ZonedDateTime.parse(input.zonedDateTimeString).toLocalDateTime();
+        if (input.getZonedDateTimeString() != null) {
+            this.logDateTime = ZonedDateTime.parse(input.getZonedDateTimeString()).toLocalDateTime();
+        }
         this.repetitions = input.repetitions;
-        this.logValue = new LogValue(input.logValue);
-        this.warmup = input.warmup;
-        this.remark = input.remark;
-    }
-
-    public ExerciseLog convertWeightToWeightValue() {
-        String[] weightFraction = String.valueOf(this.weightLeft).split("\\.");
-        LogValue value = new LogValue(
-                Integer.parseInt(weightFraction[0]),
-                Integer.parseInt(weightFraction[1]),
-                this.unit
-        );
-        this.weightValueLeft = value;
-        this.weightValueRight = value;
-        return this;
-    }
-
-    public ExerciseLog convertWeightToLogValue() {
-        this.logValue = this.weightValueLeft.convertBaseWeightToBase();
-        this.weightValueLeft = null;
-        this.weightValueRight = null;
-        this.weightLeft = null;
-        this.weightRight = null;
-        this.unit = null;
-        return this;
+        if (input.logValue != null) {
+            this.logValue = new LogValue(input.logValue);
+        }
+        if (input.warmup != null) {
+            this.warmup = input.warmup;
+        }
+        if (input.remark != null) {
+            this.remark = input.remark;
+        }
     }
 }

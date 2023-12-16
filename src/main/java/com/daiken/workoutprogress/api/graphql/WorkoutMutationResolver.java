@@ -40,13 +40,13 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
 
     @PreAuthorize("isAuthenticated()")
     public Workout meStartWorkout(WorkoutInput input) {
-        if (input.name == null) {
+        if (input.getName() == null) {
             throw new NullPointerException("Input is not filled properly!");
         }
         User user = userService.getContextUser();
         Workout workout = new Workout(input, userService.getContextUser(), true);
 
-        Workout activeWorkout = workoutRepository.findWorkoutByUserIdAndActive(user.id, true).orElse(null);
+        Workout activeWorkout = workoutRepository.findWorkoutByUserIdAndActive(user.getId(), true).orElse(null);
         if (activeWorkout != null) {
             activeWorkout.active = false;
             workoutRepository.save(activeWorkout);
@@ -62,7 +62,7 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
             throw new NullPointerException("Me not found!");
         }
         Workout workout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
-        Optional<ExerciseLog> exerciseLog = exerciseLogRepository.findLastLogByUserIdAndWorkoutId(me.id, workoutId);
+        Optional<ExerciseLog> exerciseLog = exerciseLogRepository.findLastLogByUserIdAndWorkoutId(me.getId(), workoutId);
         if (exerciseLog.isPresent() && exerciseLog.get().logDateTime != null) {
             workout.endWorkout(exerciseLog.get().logDateTime);
         } else {

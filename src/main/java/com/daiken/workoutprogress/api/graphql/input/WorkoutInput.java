@@ -6,11 +6,43 @@ import java.util.List;
 
 public class WorkoutInput {
 
-    public String name;
-    public List<MuscleGroup> muscleGroups;
-    public String zonedDateTime;
-    public String remark;
+    private String name;
+    private List<MuscleGroup> muscleGroups;
+    private String zonedDateTime;
+    private String remark;
 
     public WorkoutInput() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<MuscleGroup> getMuscleGroups() {
+        return muscleGroups;
+    }
+
+    public void setMuscleGroups(List<MuscleGroup> muscleGroups) {
+        this.muscleGroups = muscleGroups;
+    }
+
+    public String getZonedDateTime() {
+        return zonedDateTime;
+    }
+
+    public void setZonedDateTime(String zonedDateTime) {
+        this.zonedDateTime = zonedDateTime;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

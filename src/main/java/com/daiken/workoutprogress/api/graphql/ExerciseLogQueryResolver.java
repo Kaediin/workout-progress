@@ -30,13 +30,13 @@ public class ExerciseLogQueryResolver implements GraphQLQueryResolver {
 
     public List<ExerciseLog> latestLogsByExerciseId(String exerciseLogId) {
         User me = userService.getContextUser();
-        ExerciseLog latestLoggedExercise = exerciseLogRepository.findLastLogByUserIdAndExerciseId(me.id, exerciseLogId).orElse(null);
+        ExerciseLog latestLoggedExercise = exerciseLogRepository.findLastLogByUserIdAndExerciseId(me.getId(), exerciseLogId).orElse(null);
         if (latestLoggedExercise == null || latestLoggedExercise.workout.id == null) return null;
 
         return exerciseLogRepository
                 .findLastLogsByWorkoutIdAndExerciseId(latestLoggedExercise.workout.id, exerciseLogId)
                 .stream()
-                .peek(it -> it.exercise = exerciseRepository.findById(it.exercise.id).orElse(null))
+                .peek(it -> it.exercise = exerciseRepository.findById(it.exercise.getId()).orElse(null))
                 .filter(it -> it.exercise != null)
                 .collect(Collectors.toList());
     }

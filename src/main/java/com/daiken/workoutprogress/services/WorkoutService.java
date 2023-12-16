@@ -39,18 +39,18 @@ public class WorkoutService {
         Set<MuscleGroup> groupsBasedOnPrimary = exerciseLogRepository
                 .findAllByWorkoutId(workout.id)
                 .stream()
-                .map(it -> exerciseRepository.findById(it.exercise.id).orElse(null))
+                .map(it -> exerciseRepository.findById(it.exercise.getId()).orElse(null))
                 .filter(Objects::nonNull)
-                .flatMap(it -> it.primaryMuscles.stream())
+                .flatMap(it -> it.getPrimaryMuscles().stream())
                 .collect(Collectors.toSet());
 
         Set<MuscleGroup> groupsBasedOnSecondary = exerciseLogRepository
                 .findAllByWorkoutId(workout.id)
                 .stream()
-                .map(it -> exerciseRepository.findById(it.exercise.id).orElse(null))
+                .map(it -> exerciseRepository.findById(it.exercise.getId()).orElse(null))
                 .filter(Objects::nonNull)
                 .filter(distinctByKey(Exercise::getId))
-                .flatMap(it -> it.secondaryMuscles.stream())
+                .flatMap(it -> it.getSecondaryMuscles().stream())
                 .collect(Collectors.groupingBy(i -> i, Collectors.counting()))
                 .entrySet().stream()
                 .filter(i -> i.getValue() > 1)

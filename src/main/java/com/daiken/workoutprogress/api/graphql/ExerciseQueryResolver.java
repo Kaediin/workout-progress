@@ -27,6 +27,6 @@ public class ExerciseQueryResolver implements GraphQLQueryResolver {
     @PreAuthorize("isAuthenticated()")
     public List<Exercise> myExercises() {
         User me = userService.getContextUser();
-        return exerciseRepository.findAllByUserId(me.id);
+        return exerciseRepository.findAllByUserId(me.getId());
     }
 }

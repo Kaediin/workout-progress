@@ -14,4 +14,8 @@ public class ExerciseLogInput {
 
     public ExerciseLogInput() {
     }
+
+    public String getZonedDateTimeString() {
+        return zonedDateTimeString;
+    }
 }

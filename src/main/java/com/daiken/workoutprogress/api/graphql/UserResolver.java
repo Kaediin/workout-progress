@@ -18,7 +18,7 @@ public class UserResolver implements GraphQLResolver<User> {
     }
 
     public CognitoUser cognitoUser(User user) {
-        CognitoUser cognitoUser = cognitoService.findUser(user.fid).orElse(null);
+        CognitoUser cognitoUser = cognitoService.findUser(user.getFid()).orElse(null);
         return cognitoUser;
     }
 }

@@ -1,7 +1,6 @@
 input PreferenceInput {
     distanceUnit: LogUnit
     weightUnit: LogUnit
-    unit: LogUnit @deprecated
     defaultRepetitions: Int
     hideUnitSelector: Boolean
     autoAdjustWorkoutMuscleGroups: Boolean
@@ -12,7 +11,6 @@ input PreferenceInput {
 type Preference {
     distanceUnit: LogUnit
     weightUnit: LogUnit
-    unit: LogUnit @deprecated
     hideUnitSelector: Boolean
     defaultRepetitions: Int
     autoAdjustWorkoutMuscleGroups: Boolean

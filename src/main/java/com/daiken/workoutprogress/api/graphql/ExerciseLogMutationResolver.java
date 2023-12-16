@@ -86,7 +86,7 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         }
 
         Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
-        ExerciseLog exerciseLog = exerciseLogRepository.findLastLogByUserIdAndWorkoutId(me.id, workoutId)
+        ExerciseLog exerciseLog = exerciseLogRepository.findLastLogByUserIdAndWorkoutId(me.getId(), workoutId)
                 .orElseThrow(() -> new NullPointerException("No log for given workout id!"));
         exerciseLogRepository.save(new ExerciseLog(exerciseLog, zonedDateTimeString));
 

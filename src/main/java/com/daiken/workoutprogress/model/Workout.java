@@ -42,10 +42,10 @@ public class Workout implements Comparable<Workout> {
     }
 
     public Workout update(WorkoutInput input) {
-        this.name = input.name;
-        this.muscleGroups = input.muscleGroups;
-        this.startDateTime = ZonedDateTime.parse(input.zonedDateTime).toLocalDateTime();
-        this.remark = input.remark;
+        this.name = input.getName();
+        this.muscleGroups = input.getMuscleGroups();
+        this.startDateTime = ZonedDateTime.parse(input.getZonedDateTime()).toLocalDateTime();
+        this.remark = input.getRemark();
         return this;
     }
 

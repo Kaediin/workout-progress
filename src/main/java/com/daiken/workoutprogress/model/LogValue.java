@@ -6,12 +6,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class LogValue {
 
-    @Deprecated(forRemoval = true)
-    public Integer baseWeight;
-
-    public Integer base;
-    public Integer fraction;
-    public LogUnit unit;
+    private Integer base;
+    private Integer fraction;
+    private LogUnit unit;
 
     public LogValue(Integer base, Integer fraction, LogUnit unit) {
         this.base = base;
@@ -20,17 +17,46 @@ public class LogValue {
     }
 
     public LogValue(LogValueInput input) {
-        this.base = input.base;
-        this.fraction = input.fraction;
-        this.unit = input.unit;
+        this.base = input.getBase();
+        this.fraction = input.getFraction();
+        this.unit = input.getUnit();
     }
 
     public LogValue() {
     }
 
-    public LogValue convertBaseWeightToBase() {
-        this.base = this.baseWeight;
-        this.baseWeight = null;
-        return this;
+    public Integer getBase() {
+        return base;
+    }
+
+    public void setBase(Integer base) {
+        this.base = base;
+    }
+
+    public Integer getFraction() {
+        return fraction;
+    }
+
+    public void setFraction(Integer fraction) {
+        this.fraction = fraction;
+    }
+
+    public LogUnit getUnit() {
+        return unit;
+    }
+
+    public void setUnit(LogUnit unit) {
+        this.unit = unit;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof LogValue)) {
+            return false;
+        }
+
+        return ((LogValue) obj).getBase().equals(getBase()) &&
+                ((LogValue) obj).getFraction().equals(getFraction()) &&
+                ((LogValue) obj).getUnit().equals(getUnit());
     }
 }

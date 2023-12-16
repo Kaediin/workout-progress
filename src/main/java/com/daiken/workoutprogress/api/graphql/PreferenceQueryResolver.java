@@ -25,7 +25,7 @@ public class PreferenceQueryResolver implements GraphQLQueryResolver {
     @PreAuthorize("isAuthenticated()")
     public Preference myPreference() {
         User me = userService.getContextUser();
-        Preference preference = preferenceRepository.findByUserId(me.id).orElse(null);
+        Preference preference = preferenceRepository.findByUserId(me.getId()).orElse(null);
         if (preference == null) {
             return preferenceRepository.save(new Preference(me));
         }
