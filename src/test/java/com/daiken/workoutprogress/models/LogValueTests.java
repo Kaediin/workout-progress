@@ -1,4 +1,4 @@
-package com.daiken.workoutprogress.model;
+package com.daiken.workoutprogress.models;
 
 import com.daiken.workoutprogress.api.graphql.input.LogValueInput;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,7 @@ public class LogValueTests {
 
     @BeforeEach
     public void setUp() {
-        // You can perform any setup here if needed.
+        // Perform any setup here if needed.
     }
 
     @Test

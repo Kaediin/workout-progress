@@ -1,6 +1,6 @@
-package com.daiken.workoutprogress.repository;
+package com.daiken.workoutprogress.repositories;
 
-import com.daiken.workoutprogress.model.Exercise;
+import com.daiken.workoutprogress.models.Exercise;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

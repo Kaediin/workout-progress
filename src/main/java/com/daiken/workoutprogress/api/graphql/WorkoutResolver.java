@@ -1,11 +1,11 @@
 package com.daiken.workoutprogress.api.graphql;
 
-import com.daiken.workoutprogress.model.ExerciseLog;
-import com.daiken.workoutprogress.model.GroupedExerciseLog;
-import com.daiken.workoutprogress.model.User;
-import com.daiken.workoutprogress.model.Workout;
-import com.daiken.workoutprogress.repository.ExerciseLogRepository;
-import com.daiken.workoutprogress.repository.ExerciseRepository;
+import com.daiken.workoutprogress.models.ExerciseLog;
+import com.daiken.workoutprogress.models.GroupedExerciseLog;
+import com.daiken.workoutprogress.models.User;
+import com.daiken.workoutprogress.models.Workout;
+import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
+import com.daiken.workoutprogress.repositories.ExerciseRepository;
 import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class WorkoutResolver implements GraphQLResolver<Workout> {
         User me = userService.getContextUser();
         return exerciseLogRepository
                 .findAllByUserIdAndWorkoutId(me.getId(), workout.id)
-                .peek(log -> log.exercise = exerciseRepository.findById(log.exercise.getId()).orElse(null))
+                .peek(log -> log.exercise = exerciseRepository.findById(log.exercise.id).orElse(null))
                 .filter(log -> log.exercise != null)
                 .collect(Collectors.toList());
 
@@ -48,7 +48,7 @@ public class WorkoutResolver implements GraphQLResolver<Workout> {
         User me = userService.getContextUser();
         List<ExerciseLog> logs = exerciseLogRepository
                 .findAllByUserIdAndWorkoutId(me.getId(), workout.id)
-                .peek(log -> log.exercise = exerciseRepository.findById(log.exercise.getId()).orElse(null))
+                .peek(log -> log.exercise = exerciseRepository.findById(log.exercise.id).orElse(null))
                 .filter(log -> log.exercise != null)
                 .toList();
 

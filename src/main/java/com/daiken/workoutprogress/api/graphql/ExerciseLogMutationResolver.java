@@ -1,13 +1,13 @@
 package com.daiken.workoutprogress.api.graphql;
 
 import com.daiken.workoutprogress.api.graphql.input.ExerciseLogInput;
-import com.daiken.workoutprogress.model.Exercise;
-import com.daiken.workoutprogress.model.ExerciseLog;
-import com.daiken.workoutprogress.model.User;
-import com.daiken.workoutprogress.model.Workout;
-import com.daiken.workoutprogress.repository.ExerciseLogRepository;
-import com.daiken.workoutprogress.repository.ExerciseRepository;
-import com.daiken.workoutprogress.repository.WorkoutRepository;
+import com.daiken.workoutprogress.models.Exercise;
+import com.daiken.workoutprogress.models.ExerciseLog;
+import com.daiken.workoutprogress.models.User;
+import com.daiken.workoutprogress.models.Workout;
+import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
+import com.daiken.workoutprogress.repositories.ExerciseRepository;
+import com.daiken.workoutprogress.repositories.WorkoutRepository;
 import com.daiken.workoutprogress.services.UserService;
 import com.daiken.workoutprogress.services.WorkoutService;
 import graphql.kickstart.tools.GraphQLMutationResolver;

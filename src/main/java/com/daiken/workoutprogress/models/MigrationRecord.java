@@ -1,4 +1,4 @@
-package com.daiken.workoutprogress.model;
+package com.daiken.workoutprogress.models;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;

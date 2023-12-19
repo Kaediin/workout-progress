@@ -1,6 +1,6 @@
 package com.daiken.workoutprogress.api.graphql.input;
 
-import com.daiken.workoutprogress.model.MuscleGroup;
+import com.daiken.workoutprogress.models.MuscleGroup;
 
 import java.util.List;
 

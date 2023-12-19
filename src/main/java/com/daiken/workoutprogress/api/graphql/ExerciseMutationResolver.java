@@ -1,11 +1,11 @@
 package com.daiken.workoutprogress.api.graphql;
 
 import com.daiken.workoutprogress.api.graphql.input.ExerciseInput;
-import com.daiken.workoutprogress.model.Exercise;
-import com.daiken.workoutprogress.model.ExerciseLog;
-import com.daiken.workoutprogress.model.User;
-import com.daiken.workoutprogress.repository.ExerciseLogRepository;
-import com.daiken.workoutprogress.repository.ExerciseRepository;
+import com.daiken.workoutprogress.models.Exercise;
+import com.daiken.workoutprogress.models.ExerciseLog;
+import com.daiken.workoutprogress.models.User;
+import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
+import com.daiken.workoutprogress.repositories.ExerciseRepository;
 import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +47,7 @@ public class ExerciseMutationResolver implements GraphQLMutationResolver {
     public Boolean deleteExercise(String id) {
         User me = userService.getContextUser();
         Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
-        List<ExerciseLog> logs = exerciseLogRepository.findAllByUserIdAndExerciseId(me.getId(), exercise.getId());
+        List<ExerciseLog> logs = exerciseLogRepository.findAllByUserIdAndExerciseId(me.getId(), exercise.id);
         exerciseLogRepository.deleteAll(logs);
         exerciseRepository.delete(exercise);
         return true;

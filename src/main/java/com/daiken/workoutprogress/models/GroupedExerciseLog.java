@@ -1,4 +1,4 @@
-package com.daiken.workoutprogress.model;
+package com.daiken.workoutprogress.models;
 
 import java.util.List;
 

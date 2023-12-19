@@ -1,6 +1,6 @@
-package com.daiken.workoutprogress.repository;
+package com.daiken.workoutprogress.repositories;
 
-import com.daiken.workoutprogress.model.ExerciseLog;
+import com.daiken.workoutprogress.models.ExerciseLog;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -47,6 +47,4 @@ public interface ExerciseLogRepository extends MongoRepository<ExerciseLog, Stri
     List<ExerciseLog> findAllByUserIdAndExerciseId(String user_id, String exercise_id);
 
     List<ExerciseLog> findAllByWorkoutId(String workout_id);
-
-//    Stream<ExerciseLog> findAllByWeightLeftExistsOrWeightRightExists(boolean existsLeft, boolean existsRight);
 }

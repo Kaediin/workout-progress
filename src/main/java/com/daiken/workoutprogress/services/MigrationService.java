@@ -2,7 +2,7 @@ package com.daiken.workoutprogress.services;
 
 import com.daiken.workoutprogress.annotation.Migratable;
 import com.daiken.workoutprogress.annotation.Migration;
-import com.daiken.workoutprogress.model.MigrationRecord;
+import com.daiken.workoutprogress.models.MigrationRecord;
 import com.daiken.workoutprogress.utils.MigrationHelper;
 import com.daiken.workoutprogress.utils.MigrationUtil;
 import io.sentry.Sentry;

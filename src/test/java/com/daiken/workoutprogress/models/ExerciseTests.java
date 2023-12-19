@@ -1,4 +1,4 @@
-package com.daiken.workoutprogress.model;
+package com.daiken.workoutprogress.models;
 
 import com.daiken.workoutprogress.api.graphql.input.ExerciseInput;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,7 +29,7 @@ public class ExerciseTests {
     @Test
     public void testDefaultConstructor() {
         Exercise exercise = new Exercise();
-        assertNull(exercise.getId());
+        assertNull(exercise.id);
         assertNull(exercise.getName());
         assertNull(exercise.getUser());
         assertNull(exercise.getPrimaryMuscles());
@@ -43,7 +43,7 @@ public class ExerciseTests {
         when(exerciseInput.getName()).thenReturn("Test Exercise");
         Exercise exercise = new Exercise(exerciseInput, user);
 
-        assertNull(exercise.getId()); // No id set in the constructor
+        assertNull(exercise.id); // No id set in the constructor
         assertEquals("Test Exercise", exercise.getName());
         assertEquals(user, exercise.getUser());
         assertIterableEquals(exercise.getPrimaryMuscles(), new ArrayList<>());
@@ -63,7 +63,7 @@ public class ExerciseTests {
 
         exercise.update(exerciseInput);
 
-        assertNull(exercise.getId()); // Id should remain null
+        assertNull(exercise.id); // Id should remain null
         assertEquals("Updated Exercise", exercise.getName());
         assertTrue(exercise.getPrimaryMuscles().isEmpty());
         assertTrue(exercise.getSecondaryMuscles().isEmpty());
@@ -75,7 +75,7 @@ public class ExerciseTests {
     public void testGetId() {
         Exercise exercise = new Exercise();
         exercise.setId("testId");
-        assertEquals("testId", exercise.getId());
+        assertEquals("testId", exercise.id);
     }
 
     @Test

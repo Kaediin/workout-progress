@@ -1,8 +1,8 @@
 package com.daiken.workoutprogress.api.graphql;
 
-import com.daiken.workoutprogress.model.User;
-import com.daiken.workoutprogress.model.Workout;
-import com.daiken.workoutprogress.repository.WorkoutRepository;
+import com.daiken.workoutprogress.models.User;
+import com.daiken.workoutprogress.models.Workout;
+import com.daiken.workoutprogress.repositories.WorkoutRepository;
 import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;

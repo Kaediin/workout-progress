@@ -1,9 +1,9 @@
 package com.daiken.workoutprogress.api.graphql;
 
-import com.daiken.workoutprogress.model.ExerciseLog;
-import com.daiken.workoutprogress.model.User;
-import com.daiken.workoutprogress.repository.ExerciseLogRepository;
-import com.daiken.workoutprogress.repository.ExerciseRepository;
+import com.daiken.workoutprogress.models.ExerciseLog;
+import com.daiken.workoutprogress.models.User;
+import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
+import com.daiken.workoutprogress.repositories.ExerciseRepository;
 import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class ExerciseLogQueryResolver implements GraphQLQueryResolver {
         return exerciseLogRepository
                 .findLastLogsByWorkoutIdAndExerciseId(latestLoggedExercise.workout.id, exerciseLogId)
                 .stream()
-                .peek(it -> it.exercise = exerciseRepository.findById(it.exercise.getId()).orElse(null))
+                .peek(it -> it.exercise = exerciseRepository.findById(it.exercise.id).orElse(null))
                 .filter(it -> it.exercise != null)
                 .collect(Collectors.toList());
     }

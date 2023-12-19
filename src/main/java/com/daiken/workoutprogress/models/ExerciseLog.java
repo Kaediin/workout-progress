@@ -1,4 +1,4 @@
-package com.daiken.workoutprogress.model;
+package com.daiken.workoutprogress.models;
 
 import com.daiken.workoutprogress.api.graphql.input.ExerciseLogInput;
 import org.springframework.data.annotation.Id;
@@ -23,7 +23,7 @@ public class ExerciseLog {
     public Workout workout;
 
     @DBRef(lazy = true)
-    User user;
+    public User user;
 
     long repetitions;
 
@@ -51,7 +51,9 @@ public class ExerciseLog {
         this.user = user;
         this.exercise = exercise;
         this.workout = workout;
-        update(input);
+        if (input != null) {
+            update(input);
+        }
     }
 
     public void update(ExerciseLogInput input) {

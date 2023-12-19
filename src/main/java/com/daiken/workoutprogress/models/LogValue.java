@@ -1,4 +1,4 @@
-package com.daiken.workoutprogress.model;
+package com.daiken.workoutprogress.models;
 
 import com.daiken.workoutprogress.api.graphql.input.LogValueInput;
 import org.springframework.data.mongodb.core.mapping.Document;

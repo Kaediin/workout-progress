@@ -1,9 +1,9 @@
 package com.daiken.workoutprogress.services;
 
 import com.daiken.workoutprogress.exceptions.UnauthorizedException;
-import com.daiken.workoutprogress.model.CognitoUser;
-import com.daiken.workoutprogress.model.User;
-import com.daiken.workoutprogress.repository.UserRepository;
+import com.daiken.workoutprogress.models.CognitoUser;
+import com.daiken.workoutprogress.models.User;
+import com.daiken.workoutprogress.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;

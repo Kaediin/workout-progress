@@ -1,4 +1,4 @@
-package com.daiken.workoutprogress.model;
+package com.daiken.workoutprogress.models;
 
 import com.daiken.workoutprogress.api.graphql.input.WorkoutInput;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +20,7 @@ public class Workout implements Comparable<Workout> {
     public List<MuscleGroup> muscleGroups;
 
     @DBRef(lazy = true)
-    User user;
+    public User user;
 
     public LocalDateTime startDateTime;
     public LocalDateTime endDateTime;

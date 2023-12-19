@@ -2,8 +2,8 @@ package com.daiken.workoutprogress.migrations;
 
 import com.daiken.workoutprogress.annotation.Migratable;
 import com.daiken.workoutprogress.annotation.Migration;
-import com.daiken.workoutprogress.model.Workout;
-import com.daiken.workoutprogress.repository.WorkoutRepository;
+import com.daiken.workoutprogress.models.Workout;
+import com.daiken.workoutprogress.repositories.WorkoutRepository;
 import com.daiken.workoutprogress.services.WorkoutService;
 
 import java.util.List;

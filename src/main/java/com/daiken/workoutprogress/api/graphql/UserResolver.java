@@ -1,7 +1,7 @@
 package com.daiken.workoutprogress.api.graphql;
 
-import com.daiken.workoutprogress.model.CognitoUser;
-import com.daiken.workoutprogress.model.User;
+import com.daiken.workoutprogress.models.CognitoUser;
+import com.daiken.workoutprogress.models.User;
 import com.daiken.workoutprogress.services.CognitoService;
 import graphql.kickstart.tools.GraphQLResolver;
 import org.springframework.beans.factory.annotation.Autowired;

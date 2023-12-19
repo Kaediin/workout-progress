@@ -1,9 +1,9 @@
 package com.daiken.workoutprogress.api.graphql;
 
 import com.daiken.workoutprogress.api.graphql.input.PreferenceInput;
-import com.daiken.workoutprogress.model.Preference;
-import com.daiken.workoutprogress.model.User;
-import com.daiken.workoutprogress.repository.PreferenceRepository;
+import com.daiken.workoutprogress.models.Preference;
+import com.daiken.workoutprogress.models.User;
+import com.daiken.workoutprogress.repositories.PreferenceRepository;
 import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.beans.factory.annotation.Autowired;

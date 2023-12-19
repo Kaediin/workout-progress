@@ -1,4 +1,4 @@
-package com.daiken.workoutprogress.model;
+package com.daiken.workoutprogress.models;
 
 import com.devskiller.friendly_id.FriendlyId;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;

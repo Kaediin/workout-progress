@@ -1,4 +1,4 @@
-package com.daiken.workoutprogress.model;
+package com.daiken.workoutprogress.models;
 
 import com.daiken.workoutprogress.api.graphql.input.WorkoutInput;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,14 +14,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class WorkoutTests {
-    private User user;
     private Workout workout;
 
     @BeforeEach
     public void setUp() {
-        // Initialize a new User instance before each test.
-        user = new User("12345");
-
         // Initialize a new Workout instance before each test.
         workout = new Workout();
     }

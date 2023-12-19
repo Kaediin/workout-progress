@@ -1,18 +1,15 @@
 package com.daiken.workoutprogress.services;
 
-import com.daiken.workoutprogress.model.Exercise;
-import com.daiken.workoutprogress.model.MuscleGroup;
-import com.daiken.workoutprogress.model.Workout;
-import com.daiken.workoutprogress.repository.ExerciseLogRepository;
-import com.daiken.workoutprogress.repository.ExerciseRepository;
-import com.daiken.workoutprogress.repository.WorkoutRepository;
+import com.daiken.workoutprogress.models.Exercise;
+import com.daiken.workoutprogress.models.MuscleGroup;
+import com.daiken.workoutprogress.models.Workout;
+import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
+import com.daiken.workoutprogress.repositories.ExerciseRepository;
+import com.daiken.workoutprogress.repositories.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,20 +33,22 @@ public class WorkoutService {
     }
 
     public void adjustWorkoutMuscleGroups(Workout workout) {
-        Set<MuscleGroup> groupsBasedOnPrimary = exerciseLogRepository
-                .findAllByWorkoutId(workout.id)
+        List<Exercise> exercisesDoneThisWorkout = exerciseLogRepository.findAllByWorkoutId(workout.id)
                 .stream()
-                .map(it -> exerciseRepository.findById(it.exercise.getId()).orElse(null))
+                .map(it -> exerciseRepository.findById(it.exercise.id).orElse(null))
                 .filter(Objects::nonNull)
+                .toList();
+
+        Set<MuscleGroup> groupsBasedOnPrimary = exercisesDoneThisWorkout
+                .stream()
+                .filter(it -> it.getPrimaryMuscles() != null)
                 .flatMap(it -> it.getPrimaryMuscles().stream())
                 .collect(Collectors.toSet());
 
-        Set<MuscleGroup> groupsBasedOnSecondary = exerciseLogRepository
-                .findAllByWorkoutId(workout.id)
+        Set<MuscleGroup> groupsBasedOnSecondary = exercisesDoneThisWorkout
                 .stream()
-                .map(it -> exerciseRepository.findById(it.exercise.getId()).orElse(null))
-                .filter(Objects::nonNull)
-                .filter(distinctByKey(Exercise::getId))
+                .filter(it -> it.getSecondaryMuscles() != null)
+                .filter(distinctByKey(it -> it.id))
                 .flatMap(it -> it.getSecondaryMuscles().stream())
                 .collect(Collectors.groupingBy(i -> i, Collectors.counting()))
                 .entrySet().stream()

@@ -1,8 +1,7 @@
 package com.daiken.workoutprogress.services;
 
-import com.daiken.workoutprogress.model.CognitoUser;
+import com.daiken.workoutprogress.models.CognitoUser;
 import com.devskiller.friendly_id.FriendlyId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,6 @@ public class CognitoService {
 
     private CognitoIdentityProviderClient identityProvider;
 
-    @Autowired
     public CognitoService() {
     }
 

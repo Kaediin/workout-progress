@@ -1,4 +1,4 @@
-package com.daiken.workoutprogress.model;
+package com.daiken.workoutprogress.models;
 
 import com.daiken.workoutprogress.api.graphql.input.ExerciseInput;
 import org.springframework.data.annotation.Id;
@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Exercise {
 
     @Id
-    private String id;
+    public String id;
 
     private String name;
 
@@ -83,10 +83,6 @@ public class Exercise {
 
     public void setNotes(String notes) {
         this.notes = notes;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getName() {

@@ -1,4 +1,4 @@
-package com.daiken.workoutprogress.model;
+package com.daiken.workoutprogress.models;
 
 import com.daiken.workoutprogress.api.graphql.input.PreferenceInput;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PreferenceTests {
     @BeforeEach
     public void setUp() {
-        // You can perform any setup here if needed.
+        // Perform any setup here if needed.
     }
 
     @Test
