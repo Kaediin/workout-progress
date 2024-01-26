@@ -1,3 +1,12 @@
+## [v0.1.4]
+
+### Added
+
+- #5: Added unit tests for model objects
+- #5: Added unit tests for services
+- #5: Added integration tests for repositories
+- #27: Endpoint to relog specific log
+
 ## [v0.1.3]
 
 ### Added
