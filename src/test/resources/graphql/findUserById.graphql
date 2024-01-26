@@ -1,0 +1,16 @@
+#query {
+#    userById(id: "user-1") {
+#        id
+#        fid
+#        cognitoUser {
+#            given_name
+#            family_name
+#            email
+#            gender
+#            locale
+#            name
+#            nickname
+#            zoneinfo
+#        }
+#    }
+#}

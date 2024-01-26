@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 public class ExerciseLog {
 
     @Id
-    String id;
+    public String id;
 
     public LocalDateTime logDateTime;
 
