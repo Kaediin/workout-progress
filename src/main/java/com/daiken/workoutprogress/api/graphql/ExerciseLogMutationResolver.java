@@ -97,4 +97,18 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         return currentWorkout;
     }
 
+    @PreAuthorize("isAuthenticated()")
+    public Workout reLogLog(String workoutId, ExerciseLogInput input) {
+        User me = userService.getContextUser();
+        if (me == null) {
+            throw new NullPointerException("Me not found!");
+        }
+
+        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
+        Exercise exercise = exerciseRepository.findById(input.exerciseId).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
+        exerciseLogRepository.save(new ExerciseLog(input, me, currentWorkout, exercise));
+
+        return currentWorkout;
+    }
+
 }
