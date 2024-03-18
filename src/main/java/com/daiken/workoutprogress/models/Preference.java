@@ -38,6 +38,7 @@ public class Preference {
         this.defaultRepetitions = 10;
         this.timerDuration = 120; // 120 seconds
         this.autoStartTimer = false;
+        this.autoAdjustWorkoutMuscleGroups = true;
     }
 
     public Preference(User user, PreferenceInput input) {
@@ -50,7 +51,7 @@ public class Preference {
         this.distanceUnit = input.getDistanceUnit();
         this.defaultRepetitions = input.getDefaultRepetitions();
         this.hideUnitSelector = input.isHideUnitSelector();
-        this.autoAdjustWorkoutMuscleGroups = input.isAutoAdjustWorkoutMuscleGroups();
+        this.autoAdjustWorkoutMuscleGroups = true;
         this.timerDuration = input.getTimerDuration();
         this.autoStartTimer = input.isAutoStartTimer();
     }

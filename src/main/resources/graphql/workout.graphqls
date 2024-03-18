@@ -54,4 +54,5 @@ extend type Mutation {
     endWorkout(workoutId: ID!, zonedDateTimeString: String!): Workout
     deleteWorkout(id: ID!): Boolean
     updateWorkout(id: ID!, input: WorkoutInput!): Workout!
+    restartWorkout(id: ID!): Workout!
 }
