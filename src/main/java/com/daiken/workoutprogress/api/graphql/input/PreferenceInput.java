@@ -11,6 +11,7 @@ public class PreferenceInput {
     private boolean autoAdjustWorkoutMuscleGroups;
     private int timerDuration;
     private boolean autoStartTimer;
+    private boolean playTimerCompletionSound;
 
     public LogUnit getDistanceUnit() {
         return distanceUnit;
@@ -66,5 +67,13 @@ public class PreferenceInput {
 
     public void setAutoStartTimer(boolean autoStartTimer) {
         this.autoStartTimer = autoStartTimer;
+    }
+
+    public boolean isPlayTimerCompletionSound() {
+        return playTimerCompletionSound;
+    }
+
+    public void setPlayTimerCompletionSound(boolean playTimerCompletionSound) {
+        this.playTimerCompletionSound = playTimerCompletionSound;
     }
 }

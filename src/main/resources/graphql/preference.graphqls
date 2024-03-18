@@ -6,6 +6,7 @@ input PreferenceInput {
     autoAdjustWorkoutMuscleGroups: Boolean
     timerDuration: Int
     autoStartTimer: Boolean
+    playTimerCompletionSound: Boolean
 }
 
 type Preference {
@@ -16,6 +17,7 @@ type Preference {
     autoAdjustWorkoutMuscleGroups: Boolean
     timerDuration: Int
     autoStartTimer: Boolean
+    playTimerCompletionSound: Boolean
 }
 
 extend type Query {

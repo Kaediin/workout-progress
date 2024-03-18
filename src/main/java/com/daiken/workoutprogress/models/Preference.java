@@ -27,6 +27,7 @@ public class Preference {
 
     public int timerDuration;
     public boolean autoStartTimer;
+    public boolean playTimerCompletionSound;
 
     public Preference() {
     }
@@ -38,6 +39,7 @@ public class Preference {
         this.defaultRepetitions = 10;
         this.timerDuration = 120; // 120 seconds
         this.autoStartTimer = false;
+        this.playTimerCompletionSound = true;
     }
 
     public Preference(User user, PreferenceInput input) {
@@ -53,5 +55,6 @@ public class Preference {
         this.autoAdjustWorkoutMuscleGroups = input.isAutoAdjustWorkoutMuscleGroups();
         this.timerDuration = input.getTimerDuration();
         this.autoStartTimer = input.isAutoStartTimer();
+        this.playTimerCompletionSound = input.isPlayTimerCompletionSound();
     }
 }
