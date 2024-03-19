@@ -37,6 +37,7 @@ input ExerciseLogInput {
 
 extend type Query {
     latestLogsByExerciseId(exerciseId: ID!): [ExerciseLog]
+    latestLogsByExerciseIdAndNotWorkoutId(exerciseId: ID!, workoutId: String!): [ExerciseLog]
 }
 
 extend type Mutation {

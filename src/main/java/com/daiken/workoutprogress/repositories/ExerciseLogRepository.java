@@ -1,6 +1,7 @@
 package com.daiken.workoutprogress.repositories;
 
 import com.daiken.workoutprogress.models.ExerciseLog;
+import com.daiken.workoutprogress.models.Workout;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
@@ -43,6 +44,8 @@ public interface ExerciseLogRepository extends MongoRepository<ExerciseLog, Stri
             "{ '$limit' : 1 }"
     })
     Optional<ExerciseLog> findLastLogByUserIdAndExerciseId(String user_id, String exercise_id);
+
+    Optional<ExerciseLog> findFirstByUserIdAndExerciseIdAndWorkoutNotOrderByLogDateTimeDesc(String user_id, String exercise_id, Workout workout_id);
 
     List<ExerciseLog> findAllByUserIdAndExerciseId(String user_id, String exercise_id);
 
