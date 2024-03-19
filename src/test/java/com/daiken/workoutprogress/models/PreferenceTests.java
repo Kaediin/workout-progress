@@ -27,7 +27,7 @@ public class PreferenceTests {
         assertFalse(preference.autoAdjustWorkoutMuscleGroups);
         assertEquals(0, preference.timerDuration);
         assertFalse(preference.autoStartTimer);
-        assertTrue(preference.autoStartTimer);
+        assertFalse(preference.playTimerCompletionSound);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class PreferenceTests {
         assertEquals(10, preference.defaultRepetitions);
         assertEquals(120, preference.timerDuration);
         assertFalse(preference.autoStartTimer);
-        assertTrue(preference.autoStartTimer);
+        assertTrue(preference.playTimerCompletionSound);
     }
 
     @Test
