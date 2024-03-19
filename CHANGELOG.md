@@ -1,3 +1,15 @@
+## [v0.1.5]
+
+### Added
+
+- #28: Timer completion sound is now conditioned to the preferences
+- #30: Endpoint to restart workout
+- #31: Introduced endpoint that returns the logs of an exercise in the latest workout excluding the current active one
+
+### Changed
+
+- #30: Auto adjust workout muscle groups is now enabled by default and cannot be disabled
+
 ## [v0.1.4]
 
 ### Added
