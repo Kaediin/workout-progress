@@ -27,6 +27,7 @@ public class PreferenceTests {
         assertFalse(preference.autoAdjustWorkoutMuscleGroups);
         assertEquals(0, preference.timerDuration);
         assertFalse(preference.autoStartTimer);
+        assertTrue(preference.autoStartTimer);
     }
 
     @Test
@@ -40,6 +41,7 @@ public class PreferenceTests {
         assertEquals(10, preference.defaultRepetitions);
         assertEquals(120, preference.timerDuration);
         assertFalse(preference.autoStartTimer);
+        assertTrue(preference.autoStartTimer);
     }
 
     @Test
@@ -51,6 +53,7 @@ public class PreferenceTests {
         input.setDefaultRepetitions(15);
         input.setTimerDuration(180);
         input.setAutoStartTimer(true);
+        input.setPlayTimerCompletionSound(true);
 
         Preference preference = new Preference(user, input);
 
@@ -60,6 +63,7 @@ public class PreferenceTests {
         assertEquals(15, preference.defaultRepetitions);
         assertEquals(180, preference.timerDuration);
         assertTrue(preference.autoStartTimer);
+        assertTrue(preference.playTimerCompletionSound);
     }
 
     @Test
@@ -75,6 +79,7 @@ public class PreferenceTests {
         input.setAutoAdjustWorkoutMuscleGroups(true);
         input.setTimerDuration(180);
         input.setAutoStartTimer(true);
+        input.setPlayTimerCompletionSound(true);
 
         preference.update(input);
 
@@ -85,5 +90,6 @@ public class PreferenceTests {
         assertTrue(preference.autoAdjustWorkoutMuscleGroups);
         assertEquals(180, preference.timerDuration);
         assertTrue(preference.autoStartTimer);
+        assertTrue(preference.playTimerCompletionSound);
     }
 }
