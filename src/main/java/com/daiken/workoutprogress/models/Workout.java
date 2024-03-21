@@ -1,6 +1,9 @@
 package com.daiken.workoutprogress.models;
 
 import com.daiken.workoutprogress.api.graphql.input.WorkoutInput;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -10,24 +13,27 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Document
 public class Workout implements Comparable<Workout> {
 
     @Id
-    public String id;
+    private String id;
 
-    String name;
-    public List<MuscleGroup> muscleGroups;
+    private String name;
+    private List<MuscleGroup> muscleGroups;
 
     @DBRef(lazy = true)
-    public User user;
+    private User user;
 
-    public LocalDateTime startDateTime;
-    public LocalDateTime endDateTime;
+    private LocalDateTime startDateTime;
+    private LocalDateTime endDateTime;
 
-    public boolean active;
+    private boolean active;
 
-    public String remark;
+    private String remark;
 
     public Workout(String id, String name, List<MuscleGroup> muscleGroups) {
         this.id = id;
@@ -42,14 +48,11 @@ public class Workout implements Comparable<Workout> {
     }
 
     public Workout update(WorkoutInput input) {
-        this.name = input.getName();
-        this.muscleGroups = input.getMuscleGroups();
-        this.startDateTime = ZonedDateTime.parse(input.getZonedDateTime()).toLocalDateTime();
-        this.remark = input.getRemark();
+        this.name = input.name();
+        this.muscleGroups = input.muscleGroups();
+        this.startDateTime = ZonedDateTime.parse(input.zonedDateTime()).toLocalDateTime();
+        this.remark = input.remark();
         return this;
-    }
-
-    public Workout() {
     }
 
     public Workout endWorkout(LocalDateTime localDateTime) {

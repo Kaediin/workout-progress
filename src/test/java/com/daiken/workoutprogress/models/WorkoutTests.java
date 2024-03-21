@@ -24,14 +24,14 @@ public class WorkoutTests {
 
     @Test
     public void testDefaultConstructor() {
-        assertNull(workout.id);
-        assertNull(workout.name);
-        assertNull(workout.muscleGroups);
-        assertNull(workout.user);
-        assertNull(workout.startDateTime);
-        assertNull(workout.endDateTime);
-        assertFalse(workout.active);
-        assertNull(workout.remark);
+        assertNull(workout.getId());
+        assertNull(workout.getName());
+        assertNull(workout.getMuscleGroups());
+        assertNull(workout.getUser());
+        assertNull(workout.getStartDateTime());
+        assertNull(workout.getEndDateTime());
+        assertFalse(workout.isActive());
+        assertNull(workout.getRemark());
     }
 
     @Test
@@ -43,27 +43,28 @@ public class WorkoutTests {
 
         Workout workout = new Workout(id, name, muscleGroups);
 
-        assertEquals(id, workout.id);
-        assertEquals(name, workout.name);
-        assertEquals(muscleGroups, workout.muscleGroups);
+        assertEquals(id, workout.getId());
+        assertEquals(name, workout.getName());
+        assertEquals(muscleGroups, workout.getMuscleGroups());
     }
 
     @Test
     public void testUpdate() {
-        WorkoutInput input = new WorkoutInput();
-        input.setName("Updated Workout");
         List<MuscleGroup> updatedMuscleGroups = new ArrayList<>();
         updatedMuscleGroups.add(MuscleGroup.ABDUCTOR);
-        input.setMuscleGroups(updatedMuscleGroups);
-        input.setZonedDateTime("2023-01-01T12:00:00Z");
-        input.setRemark("Updated remark");
+        WorkoutInput input = new WorkoutInput(
+                "Updated Workout",
+                updatedMuscleGroups,
+                "2023-01-01T12:00:00Z",
+                "Updated remark"
+        );
 
         Workout updatedWorkout = workout.update(input);
 
-        assertEquals(input.getName(), updatedWorkout.name);
-        assertEquals(updatedMuscleGroups, updatedWorkout.muscleGroups);
-        assertEquals(ZonedDateTime.parse(input.getZonedDateTime()).toLocalDateTime(), updatedWorkout.startDateTime);
-        assertEquals(input.getRemark(), updatedWorkout.remark);
+        assertEquals(input.name(), updatedWorkout.getName());
+        assertEquals(updatedMuscleGroups, updatedWorkout.getMuscleGroups());
+        assertEquals(ZonedDateTime.parse(input.zonedDateTime()).toLocalDateTime(), updatedWorkout.getStartDateTime());
+        assertEquals(input.remark(), updatedWorkout.getRemark());
     }
 
     @Test
@@ -71,17 +72,17 @@ public class WorkoutTests {
         LocalDateTime endDateTime = LocalDateTime.now();
         Workout endedWorkout = workout.endWorkout(endDateTime);
 
-        assertEquals(endDateTime, endedWorkout.endDateTime);
-        assertFalse(endedWorkout.active);
+        assertEquals(endDateTime, endedWorkout.getEndDateTime());
+        assertFalse(endedWorkout.isActive());
     }
 
     @Test
     public void testCompareTo() {
         Workout workout1 = new Workout();
-        workout1.startDateTime = LocalDateTime.parse("2023-01-01T10:00:00");
+        workout1.setStartDateTime(LocalDateTime.parse("2023-01-01T10:00:00"));
 
         Workout workout2 = new Workout();
-        workout2.startDateTime = LocalDateTime.parse("2023-01-01T12:00:00");
+        workout2.setStartDateTime(LocalDateTime.parse("2023-01-01T12:00:00"));
 
         // Ensure that workout2 comes before workout1 due to earlier startDateTime.
         assertTrue(workout2.compareTo(workout1) < 0);

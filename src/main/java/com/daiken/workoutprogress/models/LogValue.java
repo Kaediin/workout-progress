@@ -1,52 +1,27 @@
 package com.daiken.workoutprogress.models;
 
 import com.daiken.workoutprogress.api.graphql.input.LogValueInput;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Getter
+@Setter
 @Document
+@AllArgsConstructor
+@NoArgsConstructor
 public class LogValue {
 
     private Integer base;
     private Integer fraction;
     private LogUnit unit;
 
-    public LogValue(Integer base, Integer fraction, LogUnit unit) {
-        this.base = base;
-        this.fraction = fraction;
-        this.unit = unit;
-    }
-
     public LogValue(LogValueInput input) {
-        this.base = input.getBase();
-        this.fraction = input.getFraction();
-        this.unit = input.getUnit();
-    }
-
-    public LogValue() {
-    }
-
-    public Integer getBase() {
-        return base;
-    }
-
-    public void setBase(Integer base) {
-        this.base = base;
-    }
-
-    public Integer getFraction() {
-        return fraction;
-    }
-
-    public void setFraction(Integer fraction) {
-        this.fraction = fraction;
-    }
-
-    public LogUnit getUnit() {
-        return unit;
-    }
-
-    public void setUnit(LogUnit unit) {
-        this.unit = unit;
+        this.base = input.base();
+        this.fraction = input.fraction();
+        this.unit = input.unit();
     }
 
     @Override

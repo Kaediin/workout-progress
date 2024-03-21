@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
+@PreAuthorize("isAuthenticated()")
 public class WorkoutQueryResolver implements GraphQLQueryResolver {
 
     private final UserService userService;
@@ -27,7 +28,6 @@ public class WorkoutQueryResolver implements GraphQLQueryResolver {
         this.workoutRepository = workoutRepository;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public List<Workout> myWorkouts() {
         User me = userService.getContextUser();
         List<Workout> workouts = workoutRepository.findWorkoutByUserId(me.getId());
@@ -35,14 +35,12 @@ public class WorkoutQueryResolver implements GraphQLQueryResolver {
         return workouts;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Boolean meHasActiveWorkout() {
         User me = userService.getContextUser();
         long workouts = workoutRepository.countWorkoutsByUserAndActive(me, true);
         return workouts > 0;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Workout workoutById(String id) {
         return workoutRepository.findById(id).orElse(null);
     }

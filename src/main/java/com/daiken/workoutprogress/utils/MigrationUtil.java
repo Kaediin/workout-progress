@@ -2,6 +2,7 @@ package com.daiken.workoutprogress.utils;
 
 import com.daiken.workoutprogress.annotation.Migratable;
 import com.daiken.workoutprogress.annotation.Migration;
+import lombok.Getter;
 import org.springframework.core.annotation.AnnotationUtils;
 
 import java.lang.reflect.Method;
@@ -9,6 +10,7 @@ import java.lang.reflect.Method;
 /**
  * Helper class that contains a migration, the class it's contained in and references to its respective annotations.
  */
+@Getter
 public class MigrationUtil {
 
     public Object migratable;
@@ -33,22 +35,6 @@ public class MigrationUtil {
      */
     public static MigrationUtil of(Object migratable, Method migration) {
         return new MigrationUtil(migratable, migration);
-    }
-
-    public Object getMigratable() {
-        return migratable;
-    }
-
-    public Method getMigration() {
-        return migration;
-    }
-
-    public Migratable getMigratableAnnotation() {
-        return migratableAnnotation;
-    }
-
-    public Migration getMigrationAnnotation() {
-        return migrationAnnotation;
     }
 
     public int order() {

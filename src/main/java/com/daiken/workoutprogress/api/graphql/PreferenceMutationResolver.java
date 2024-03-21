@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+@PreAuthorize("isAuthenticated()")
 @Component
 public class PreferenceMutationResolver implements GraphQLMutationResolver {
 
@@ -23,7 +24,6 @@ public class PreferenceMutationResolver implements GraphQLMutationResolver {
         this.userService = userService;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Preference updateMyPreference(PreferenceInput input) {
         User me = userService.getContextUser();
         Preference preference = preferenceRepository.findByUserId(me.getId()).orElse(null);

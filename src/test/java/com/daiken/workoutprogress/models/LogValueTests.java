@@ -17,10 +17,7 @@ public class LogValueTests {
 
     @Test
     public void testParameterizedConstructor() {
-        LogValueInput input = new LogValueInput();
-        input.setBase(10);
-        input.setFraction(5);
-        input.setUnit(LogUnit.KG);
+        LogValueInput input = new LogValueInput(10, 5, LogUnit.KG);
 
         LogValue logValue = new LogValue(input);
 

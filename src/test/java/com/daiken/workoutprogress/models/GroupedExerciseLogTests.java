@@ -28,9 +28,9 @@ public class GroupedExerciseLogTests {
 
     @Test
     public void testDefaultConstructor() {
-        GroupedExerciseLog groupedExerciseLog = new GroupedExerciseLog();
-        assertNull(groupedExerciseLog.getExercise());
-        assertNull(groupedExerciseLog.getLogs());
+        GroupedExerciseLog groupedExerciseLog = new GroupedExerciseLog(null, null);
+        assertNull(groupedExerciseLog.exercise());
+        assertNull(groupedExerciseLog.logs());
     }
 
     @Test
@@ -38,33 +38,31 @@ public class GroupedExerciseLogTests {
         List<ExerciseLog> mockLogs = new ArrayList<>();
         when(exercise.getName()).thenReturn("Test Exercise");
         GroupedExerciseLog groupedExerciseLog = new GroupedExerciseLog(exercise, mockLogs);
-        assertEquals(exercise, groupedExerciseLog.getExercise());
-        assertEquals(mockLogs, groupedExerciseLog.getLogs());
+        assertEquals(exercise, groupedExerciseLog.exercise());
+        assertEquals(mockLogs, groupedExerciseLog.logs());
     }
 
     @Test
     public void testGetExercise() {
         GroupedExerciseLog groupedExerciseLog = new GroupedExerciseLog(exercise, logs);
-        assertEquals(exercise, groupedExerciseLog.getExercise());
+        assertEquals(exercise, groupedExerciseLog.exercise());
     }
 
     @Test
     public void testGetLogs() {
         GroupedExerciseLog groupedExerciseLog = new GroupedExerciseLog(exercise, logs);
-        assertEquals(logs, groupedExerciseLog.getLogs());
+        assertEquals(logs, groupedExerciseLog.logs());
     }
 
     @Test
     public void testSetExercise() {
-        GroupedExerciseLog groupedExerciseLog = new GroupedExerciseLog();
-        groupedExerciseLog.setExercise(exercise);
-        assertEquals(exercise, groupedExerciseLog.getExercise());
+        GroupedExerciseLog groupedExerciseLog = new GroupedExerciseLog(exercise, null);
+        assertEquals(exercise, groupedExerciseLog.exercise());
     }
 
     @Test
     public void testSetLogs() {
-        GroupedExerciseLog groupedExerciseLog = new GroupedExerciseLog();
-        groupedExerciseLog.setLogs(logs);
-        assertEquals(logs, groupedExerciseLog.getLogs());
+        GroupedExerciseLog groupedExerciseLog = new GroupedExerciseLog(null, logs);
+        assertEquals(logs, groupedExerciseLog.logs());
     }
 }

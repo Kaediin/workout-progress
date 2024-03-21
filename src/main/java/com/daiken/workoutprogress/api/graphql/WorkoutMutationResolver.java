@@ -17,6 +17,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
+@PreAuthorize("isAuthenticated()")
 @Component
 public class WorkoutMutationResolver implements GraphQLMutationResolver {
 
@@ -38,9 +39,8 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         this.workoutRepository = workoutRepository;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Workout meStartWorkout(WorkoutInput input) {
-        if (input.getName() == null) {
+        if (input.name() == null) {
             throw new NullPointerException("Input is not filled properly!");
         }
         User user = userService.getContextUser();
@@ -48,14 +48,13 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
 
         Workout activeWorkout = workoutRepository.findWorkoutByUserIdAndActive(user.getId(), true).orElse(null);
         if (activeWorkout != null) {
-            activeWorkout.active = false;
+            activeWorkout.setActive(false);
             workoutRepository.save(activeWorkout);
         }
 
         return workoutRepository.save(workout);
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Workout endWorkout(String workoutId, String zonedDateTimeString) {
         User me = userService.getContextUser();
         if (me == null) {
@@ -63,34 +62,31 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         }
         Workout workout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
         Optional<ExerciseLog> exerciseLog = exerciseLogRepository.findLastLogByUserIdAndWorkoutId(me.getId(), workoutId);
-        if (exerciseLog.isPresent() && exerciseLog.get().logDateTime != null) {
-            workout.endWorkout(exerciseLog.get().logDateTime);
+        if (exerciseLog.isPresent() && exerciseLog.get().getLogDateTime() != null) {
+            workout.endWorkout(exerciseLog.get().getLogDateTime());
         } else {
             workout.endWorkout(ZonedDateTime.parse(zonedDateTimeString).toLocalDateTime());
         }
         return workoutRepository.save(workout);
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Boolean deleteWorkout(String id) {
         Workout workout = workoutRepository.findById(id).orElseThrow(() -> new NullPointerException("Cant find workout with given id"));
-        List<ExerciseLog> logs = exerciseLogRepository.findAllByWorkoutId(workout.id);
+        List<ExerciseLog> logs = exerciseLogRepository.findAllByWorkoutId(workout.getId());
         exerciseLogRepository.deleteAll(logs);
         workoutRepository.delete(workout);
         return true;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Workout updateWorkout(String id, WorkoutInput input) {
         Workout workout = workoutRepository.findById(id).orElseThrow(() -> new NullPointerException("Cant find workout with given id"));
         return workoutRepository.save(workout.update(input));
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Workout restartWorkout(String id) {
         Workout workout = workoutRepository.findById(id).orElseThrow(() -> new NullPointerException("Cant find workout with given id"));
-        workout.active = true;
-        workout.endDateTime = null;
+        workout.setActive(true);
+        workout.setEndDateTime(null);
         return workoutRepository.save(workout);
     }
 }

@@ -18,16 +18,16 @@ public class PreferenceTests {
     public void testDefaultConstructor() {
         Preference preference = new Preference();
 
-        assertNull(preference.id);
-        assertNull(preference.user);
-        assertNull(preference.distanceUnit);
-        assertNull(preference.weightUnit);
-        assertEquals(0, preference.defaultRepetitions);
-        assertFalse(preference.hideUnitSelector);
-        assertFalse(preference.autoAdjustWorkoutMuscleGroups);
-        assertEquals(0, preference.timerDuration);
-        assertFalse(preference.autoStartTimer);
-        assertFalse(preference.playTimerCompletionSound);
+        assertNull(preference.getId());
+        assertNull(preference.getUser());
+        assertNull(preference.getDistanceUnit());
+        assertNull(preference.getWeightUnit());
+        assertEquals(0, preference.getDefaultRepetitions());
+        assertFalse(preference.isHideUnitSelector());
+        assertFalse(preference.isAutoAdjustWorkoutMuscleGroups());
+        assertEquals(0, preference.getTimerDuration());
+        assertFalse(preference.isAutoStartTimer());
+        assertFalse(preference.isPlayTimerCompletionSound());
     }
 
     @Test
@@ -35,35 +35,42 @@ public class PreferenceTests {
         User user = new User();
         Preference preference = new Preference(user);
 
-        assertEquals(user, preference.user);
-        assertEquals(LogUnit.KG, preference.weightUnit);
-        assertEquals(LogUnit.KM, preference.distanceUnit);
-        assertEquals(10, preference.defaultRepetitions);
-        assertEquals(120, preference.timerDuration);
-        assertFalse(preference.autoStartTimer);
-        assertTrue(preference.playTimerCompletionSound);
+        assertEquals(user, preference.getUser());
+        assertEquals(LogUnit.KG, preference.getWeightUnit());
+        assertEquals(LogUnit.KM, preference.getDistanceUnit());
+        assertEquals(10, preference.getDefaultRepetitions());
+        assertEquals(120, preference.getTimerDuration());
+        assertFalse(preference.isHideUnitSelector());
+        assertTrue(preference.isAutoAdjustWorkoutMuscleGroups());
+        assertFalse(preference.isAutoStartTimer());
+        assertTrue(preference.isPlayTimerCompletionSound());
     }
 
     @Test
     public void testParameterizedConstructorWithInput() {
         User user = new User();
-        PreferenceInput input = new PreferenceInput();
-        input.setWeightUnit(LogUnit.LBS);
-        input.setDistanceUnit(LogUnit.MI);
-        input.setDefaultRepetitions(15);
-        input.setTimerDuration(180);
-        input.setAutoStartTimer(true);
-        input.setPlayTimerCompletionSound(true);
+        PreferenceInput input = new PreferenceInput(
+                LogUnit.MI,
+                LogUnit.LBS,
+                15,
+                true,
+                true,
+                180,
+                true,
+                true
+        );
 
         Preference preference = new Preference(user, input);
 
-        assertEquals(user, preference.user);
-        assertEquals(LogUnit.LBS, preference.weightUnit);
-        assertEquals(LogUnit.MI, preference.distanceUnit);
-        assertEquals(15, preference.defaultRepetitions);
-        assertEquals(180, preference.timerDuration);
-        assertTrue(preference.autoStartTimer);
-        assertTrue(preference.playTimerCompletionSound);
+        assertEquals(user, preference.getUser());
+        assertEquals(LogUnit.LBS, preference.getWeightUnit());
+        assertEquals(LogUnit.MI, preference.getDistanceUnit());
+        assertEquals(15, preference.getDefaultRepetitions());
+        assertEquals(180, preference.getTimerDuration());
+        assertTrue(preference.isHideUnitSelector());
+        assertTrue(preference.isAutoAdjustWorkoutMuscleGroups());
+        assertTrue(preference.isAutoStartTimer());
+        assertTrue(preference.isPlayTimerCompletionSound());
     }
 
     @Test
@@ -71,25 +78,27 @@ public class PreferenceTests {
         User user = new User();
         Preference preference = new Preference(user);
 
-        PreferenceInput input = new PreferenceInput();
-        input.setWeightUnit(LogUnit.LBS);
-        input.setDistanceUnit(LogUnit.MI);
-        input.setDefaultRepetitions(15);
-        input.setHideUnitSelector(true);
-        input.setAutoAdjustWorkoutMuscleGroups(true);
-        input.setTimerDuration(180);
-        input.setAutoStartTimer(true);
-        input.setPlayTimerCompletionSound(true);
+        PreferenceInput input = new PreferenceInput(
+                LogUnit.MI,
+                LogUnit.LBS,
+                15,
+                true,
+                true,
+                180,
+                true,
+                true
+        );
 
         preference.update(input);
 
-        assertEquals(LogUnit.LBS, preference.weightUnit);
-        assertEquals(LogUnit.MI, preference.distanceUnit);
-        assertEquals(15, preference.defaultRepetitions);
-        assertTrue(preference.hideUnitSelector);
-        assertTrue(preference.autoAdjustWorkoutMuscleGroups);
-        assertEquals(180, preference.timerDuration);
-        assertTrue(preference.autoStartTimer);
-        assertTrue(preference.playTimerCompletionSound);
+        assertEquals(user, preference.getUser());
+        assertEquals(LogUnit.LBS, preference.getWeightUnit());
+        assertEquals(LogUnit.MI, preference.getDistanceUnit());
+        assertEquals(15, preference.getDefaultRepetitions());
+        assertEquals(180, preference.getTimerDuration());
+        assertTrue(preference.isHideUnitSelector());
+        assertTrue(preference.isAutoAdjustWorkoutMuscleGroups());
+        assertTrue(preference.isAutoStartTimer());
+        assertTrue(preference.isPlayTimerCompletionSound());
     }
 }

@@ -2,35 +2,38 @@ package com.daiken.workoutprogress.models;
 
 
 import com.daiken.workoutprogress.api.graphql.input.PreferenceInput;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+@Getter
+@Setter
 @Document
+@NoArgsConstructor
 public class Preference {
 
     @Id
-    public String id;
+    private String id;
 
     @Indexed(unique = true)
     @DBRef(lazy = true)
-    public User user;
+    private User user;
 
-    public LogUnit distanceUnit;
-    public LogUnit weightUnit;
+    private LogUnit distanceUnit;
+    private LogUnit weightUnit;
 
-    public int defaultRepetitions;
-    public boolean hideUnitSelector;
+    private int defaultRepetitions;
+    private boolean hideUnitSelector;
 
-    public boolean autoAdjustWorkoutMuscleGroups;
+    private boolean autoAdjustWorkoutMuscleGroups;
 
-    public int timerDuration;
-    public boolean autoStartTimer;
-    public boolean playTimerCompletionSound;
-
-    public Preference() {
-    }
+    private int timerDuration;
+    private boolean autoStartTimer;
+    private boolean playTimerCompletionSound;
 
     public Preference(User user) {
         this.user = user;
@@ -49,13 +52,13 @@ public class Preference {
     }
 
     public void update(PreferenceInput input) {
-        this.weightUnit = input.getWeightUnit();
-        this.distanceUnit = input.getDistanceUnit();
-        this.defaultRepetitions = input.getDefaultRepetitions();
-        this.hideUnitSelector = input.isHideUnitSelector();
+        this.weightUnit = input.weightUnit();
+        this.distanceUnit = input.distanceUnit();
+        this.defaultRepetitions = input.defaultRepetitions();
+        this.hideUnitSelector = input.hideUnitSelector();
         this.autoAdjustWorkoutMuscleGroups = true;
-        this.timerDuration = input.getTimerDuration();
-        this.autoStartTimer = input.isAutoStartTimer();
-        this.playTimerCompletionSound = input.isPlayTimerCompletionSound();
+        this.timerDuration = input.timerDuration();
+        this.autoStartTimer = input.autoStartTimer();
+        this.playTimerCompletionSound = input.playTimerCompletionSound();
     }
 }

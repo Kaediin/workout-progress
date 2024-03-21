@@ -1,13 +1,5 @@
 package com.daiken.workoutprogress.api.graphql.input;
 
 
-public class UserInput {
-
-    public String firstName;
-    public String middleName;
-    public String lastName;
-
-    public String email;
-
-    public String password;
+public record UserInput(String firstName, String middleName, String lastName, String email, String password) {
 }

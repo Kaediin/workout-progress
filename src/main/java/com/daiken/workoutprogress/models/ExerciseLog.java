@@ -1,6 +1,9 @@
 package com.daiken.workoutprogress.models;
 
 import com.daiken.workoutprogress.api.graphql.input.ExerciseLogInput;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -8,33 +11,33 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Document
 public class ExerciseLog {
 
     @Id
-    public String id;
+    private String id;
 
-    public LocalDateTime logDateTime;
-
-    @DBRef(lazy = true)
-    public Exercise exercise;
+    private LocalDateTime logDateTime;
 
     @DBRef(lazy = true)
-    public Workout workout;
+    private Exercise exercise;
 
     @DBRef(lazy = true)
-    public User user;
+    private Workout workout;
 
-    long repetitions;
+    @DBRef(lazy = true)
+    private User user;
 
-    public LogValue logValue;
+    private long repetitions;
 
-    Boolean warmup;
+    private LogValue logValue;
 
-    String remark;
+    private Boolean warmup;
 
-    public ExerciseLog() {
-    }
+    private String remark;
 
     public ExerciseLog(ExerciseLog copyLog, String zonedDateTimeString) {
         this.user = copyLog.user;
@@ -57,18 +60,18 @@ public class ExerciseLog {
     }
 
     public void update(ExerciseLogInput input) {
-        if (input.getZonedDateTimeString() != null) {
-            this.logDateTime = ZonedDateTime.parse(input.getZonedDateTimeString()).toLocalDateTime();
+        if (input.zonedDateTimeString() != null) {
+            this.logDateTime = ZonedDateTime.parse(input.zonedDateTimeString()).toLocalDateTime();
         }
-        this.repetitions = input.repetitions;
-        if (input.logValue != null) {
-            this.logValue = new LogValue(input.logValue);
+        this.repetitions = input.repetitions();
+        if (input.logValue() != null) {
+            this.logValue = new LogValue(input.logValue());
         }
-        if (input.warmup != null) {
-            this.warmup = input.warmup;
+        if (input.warmup() != null) {
+            this.warmup = input.warmup();
         }
-        if (input.remark != null) {
-            this.remark = input.remark;
+        if (input.remark() != null) {
+            this.remark = input.remark();
         }
     }
 }

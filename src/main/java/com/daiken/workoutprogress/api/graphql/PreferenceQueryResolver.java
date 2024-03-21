@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+@PreAuthorize("isAuthenticated()")
 @Component
 public class PreferenceQueryResolver implements GraphQLQueryResolver {
 
@@ -22,7 +23,6 @@ public class PreferenceQueryResolver implements GraphQLQueryResolver {
         this.userService = userService;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Preference myPreference() {
         User me = userService.getContextUser();
         Preference preference = preferenceRepository.findByUserId(me.getId()).orElse(null);

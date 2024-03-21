@@ -1,6 +1,0 @@
-#mutation ($input: UserInput!){
-#    createUser(userInput: $input) {
-#        id
-#        fid
-#    }
-#}

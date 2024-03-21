@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+@PreAuthorize("isAuthenticated()")
 @Component
 public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
 
@@ -37,7 +38,6 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         this.workoutService = workoutService;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Workout addExerciseLog(String workoutId, ExerciseLogInput input, Boolean autoAdjust) {
         User me = userService.getContextUser();
         if (me == null) {
@@ -45,7 +45,7 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         }
 
         Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
-        Exercise exercise = exerciseRepository.findById(input.exerciseId).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
+        Exercise exercise = exerciseRepository.findById(input.exerciseId()).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
         exerciseLogRepository.save(new ExerciseLog(input, me, currentWorkout, exercise));
 
 
@@ -56,7 +56,6 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         return currentWorkout;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Workout updateExerciseLog(String exerciseLogId, ExerciseLogInput input) {
         User me = userService.getContextUser();
         if (me == null) {
@@ -65,20 +64,18 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         ExerciseLog exerciseLog = exerciseLogRepository.findById(exerciseLogId).orElseThrow(() -> new NullPointerException("Can't find exerciselog with given id"));
         exerciseLog.update(input);
         exerciseLogRepository.save(exerciseLog);
-        return workoutRepository.findById(exerciseLog.workout.id).orElse(null);
+        return workoutRepository.findById(exerciseLog.getWorkout().getId()).orElse(null);
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Boolean removeExerciseLog(String exerciseLogId, boolean autoAdjust) {
         ExerciseLog exerciseLog = exerciseLogRepository.findById(exerciseLogId).orElseThrow(() -> new NullPointerException("ExerciseLog not found with given id"));
         exerciseLogRepository.delete(exerciseLog);
         if (autoAdjust) {
-            workoutService.adjustWorkoutMuscleGroups(exerciseLog.workout.id);
+            workoutService.adjustWorkoutMuscleGroups(exerciseLog.getWorkout().getId());
         }
         return true;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Workout reLogLatestLog(String workoutId, String zonedDateTimeString, Boolean autoAdjust) {
         User me = userService.getContextUser();
         if (me == null) {
@@ -97,7 +94,6 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         return currentWorkout;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public Workout reLogLog(String workoutId, ExerciseLogInput input) {
         User me = userService.getContextUser();
         if (me == null) {
@@ -105,7 +101,7 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         }
 
         Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
-        Exercise exercise = exerciseRepository.findById(input.exerciseId).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
+        Exercise exercise = exerciseRepository.findById(input.exerciseId()).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
         exerciseLogRepository.save(new ExerciseLog(input, me, currentWorkout, exercise));
 
         return currentWorkout;

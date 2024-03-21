@@ -55,7 +55,7 @@ public class WorkoutServiceTest {
     void adjustWorkoutMuscleGroupsByIdShouldAdjustMuscleGroups() {
         String workoutId = "workout-123";
         Workout workout = new Workout();
-        workout.id = workoutId;
+        workout.setId(workoutId);
 
         // Set up Exercise and ExerciseLog with valid IDs
         Exercise exercise1 = new Exercise();
@@ -67,10 +67,10 @@ public class WorkoutServiceTest {
         exercise2.setSecondaryMuscles(Arrays.asList(MuscleGroup.TRICEPS, MuscleGroup.CALVES, MuscleGroup.TRICEPS));
 
         ExerciseLog log1 = new ExerciseLog();
-        log1.exercise = exercise1;
+        log1.setExercise(exercise1);
 
         ExerciseLog log2 = new ExerciseLog();
-        log2.exercise = exercise2;
+        log2.setExercise(exercise2);
 
         when(workoutRepository.findById(workoutId)).thenReturn(Optional.of(workout));
         when(exerciseLogRepository.findAllByWorkoutId(workoutId)).thenReturn(List.of(log1, log2));
@@ -84,7 +84,7 @@ public class WorkoutServiceTest {
         verify(exerciseRepository).findById("exercise1-id");
         verify(exerciseRepository).findById("exercise2-id");
 
-        assertTrue(workout.muscleGroups.containsAll(exercise1.getPrimaryMuscles()));
-        assertTrue(workout.muscleGroups.contains(MuscleGroup.TRICEPS));
+        assertTrue(workout.getMuscleGroups().containsAll(exercise1.getPrimaryMuscles()));
+        assertTrue(workout.getMuscleGroups().contains(MuscleGroup.TRICEPS));
     }
 }

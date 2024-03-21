@@ -1,10 +1,18 @@
 package com.daiken.workoutprogress.models;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Objects;
+
+@Getter
+@Setter
 @Document
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -14,25 +22,6 @@ public class User {
     private String fid;
 
     public User(String fid) {
-        this.fid = fid;
-    }
-
-    public User() {
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getFid() {
-        return fid;
-    }
-
-    public void setFid(String fid) {
         this.fid = fid;
     }
 
@@ -46,15 +35,15 @@ public class User {
             return true;
         }
 
-        if (((User) obj).getFid() == null && getFid() == null && ((User) obj).getId().equals(getId())) {
+        if (((User) obj).getFid() == null && getFid() == null && Objects.equals(((User) obj).getId(), getId())) {
             return true;
         }
 
-        if (((User) obj).getId() == null && getId() == null && ((User) obj).getFid().equals(getFid())) {
+        if (((User) obj).getId() == null && getId() == null && Objects.equals(((User) obj).getFid(), getFid())) {
             return true;
         }
 
-        return ((User) obj).getFid().equals(getFid()) &&
-                ((User) obj).getId().equals(getId());
+        return Objects.equals(((User) obj).getFid(), getFid()) &&
+                Objects.equals(((User) obj).getId(), getId());
     }
 }

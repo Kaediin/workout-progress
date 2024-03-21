@@ -1,6 +1,8 @@
 package com.daiken.workoutprogress.models;
 
 import com.devskiller.friendly_id.FriendlyId;
+import lombok.Getter;
+import lombok.Setter;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.AttributeType;
 import software.amazon.awssdk.services.cognitoidentityprovider.model.UserType;
 
@@ -11,20 +13,22 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Getter
+@Setter
 public class CognitoUser {
 
-    public String name;
-    public String userName;
-    public String fid;
-    public String given_name;
-    public String family_name;
-    public String middle_name;
-    public String nickname;
-    public String email;
-    public String gender;
-    public String zoneinfo;
-    public String locale;
-    public Date createdDate;
+    private String name;
+    private String userName;
+    private String fid;
+    private String given_name;
+    private String family_name;
+    private String middle_name;
+    private String nickname;
+    private String email;
+    private String gender;
+    private String zoneinfo;
+    private String locale;
+    private Date createdDate;
 
     public CognitoUser() {
     }

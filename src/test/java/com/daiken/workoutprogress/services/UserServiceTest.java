@@ -67,7 +67,7 @@ public class UserServiceTest {
     @Test
     void findUserShouldReturnUserWhenFIDExists() {
         CognitoUser cognitoUser = new CognitoUser();
-        cognitoUser.fid = "existing-fid";
+        cognitoUser.setFid("existing-fid");
         when(userRepository.findOneByFid("existing-fid")).thenReturn(Optional.of(new User("existing-fid")));
 
         Optional<User> result = userService.findUser(cognitoUser);

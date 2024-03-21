@@ -33,9 +33,9 @@ public class WorkoutService {
     }
 
     public void adjustWorkoutMuscleGroups(Workout workout) {
-        List<Exercise> exercisesDoneThisWorkout = exerciseLogRepository.findAllByWorkoutId(workout.id)
+        List<Exercise> exercisesDoneThisWorkout = exerciseLogRepository.findAllByWorkoutId(workout.getId())
                 .stream()
-                .map(it -> exerciseRepository.findById(it.exercise.id).orElse(null))
+                .map(it -> exerciseRepository.findById(it.getExercise().getId()).orElse(null))
                 .filter(Objects::nonNull)
                 .toList();
 
@@ -48,7 +48,7 @@ public class WorkoutService {
         Set<MuscleGroup> groupsBasedOnSecondary = exercisesDoneThisWorkout
                 .stream()
                 .filter(it -> it.getSecondaryMuscles() != null)
-                .filter(distinctByKey(it -> it.id))
+                .filter(distinctByKey(Exercise::getId))
                 .flatMap(it -> it.getSecondaryMuscles().stream())
                 .collect(Collectors.groupingBy(i -> i, Collectors.counting()))
                 .entrySet().stream()
@@ -58,10 +58,10 @@ public class WorkoutService {
 
         groupsBasedOnPrimary.addAll(groupsBasedOnSecondary);
 
-        workout.muscleGroups = groupsBasedOnPrimary
+        workout.setMuscleGroups(groupsBasedOnPrimary
                 .stream()
                 .sorted(Comparator.comparing(MuscleGroup::name))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList()));
         workoutRepository.save(workout);
     }
 

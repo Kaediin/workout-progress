@@ -5,8 +5,10 @@ import com.daiken.workoutprogress.models.User;
 import com.daiken.workoutprogress.repositories.UserRepository;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+@PreAuthorize("isAuthenticated()")
 @Component
 public class UserMutationResolver implements GraphQLMutationResolver {
 

@@ -5,15 +5,15 @@ buildscript {
 }
 
 plugins {
-    id 'org.springframework.boot' version '2.6.8'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version '3.2.3'
+    id 'io.spring.dependency-management' version '1.1.4'
     id 'java'
     id "io.sentry.jvm.gradle" version "3.14.0"
 }
 
 group = 'com.daiken'
 version = '0.1.5-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '21'
 
 repositories {
     mavenCentral()
@@ -35,8 +35,14 @@ sentry {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    // Lombok
+    implementation 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+
     // Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation "org.springframework.security:spring-security-web"
+    implementation "org.springframework.security:spring-security-config"
 
     // Auth0 JWT authorization
     implementation 'com.auth0:jwks-rsa:0.21.1'
@@ -52,12 +58,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
     // Graphql
-    implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:7.2.0'
-    implementation 'com.graphql-java-kickstart:graphql-java-tools:6.1.0'
-    implementation 'com.zhokhov.graphql:graphql-datetime-spring-boot-starter:2.3.1'
-    implementation 'org.projectlombok:lombok:1.18.22'
+    implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:15.1.0'
+    implementation 'com.graphql-java-kickstart:graphql-java-tools:13.1.1'
+    implementation("com.tailrocks.graphql:graphql-datetime-spring-boot-starter:6.0.0")
     testImplementation 'junit:junit:4.13.1'
-    runtimeOnly 'com.graphql-java-kickstart:graphiql-spring-boot-starter:7.2.0'
+    runtimeOnly 'com.graphql-java-kickstart:graphql-spring-boot-starter:15.1.0'
 
     // AWS
     implementation platform('software.amazon.awssdk:bom:2.17.196')
@@ -67,10 +72,9 @@ dependencies {
     implementation 'software.amazon.awssdk:sdk-core'
 
     // testing facilities
-//    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:7.2.0'
+    testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:15.1.0'
 }
 
 tasks.named('test') {

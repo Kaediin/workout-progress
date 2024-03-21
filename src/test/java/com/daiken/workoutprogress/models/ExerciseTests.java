@@ -29,7 +29,7 @@ public class ExerciseTests {
     @Test
     public void testDefaultConstructor() {
         Exercise exercise = new Exercise();
-        assertNull(exercise.id);
+        assertNull(exercise.getId());
         assertNull(exercise.getName());
         assertNull(exercise.getUser());
         assertNull(exercise.getPrimaryMuscles());
@@ -40,10 +40,10 @@ public class ExerciseTests {
 
     @Test
     public void testParameterizedConstructor() {
-        when(exerciseInput.getName()).thenReturn("Test Exercise");
+        when(exerciseInput.name()).thenReturn("Test Exercise");
         Exercise exercise = new Exercise(exerciseInput, user);
 
-        assertNull(exercise.id); // No id set in the constructor
+        assertNull(exercise.getId()); // No id set in the constructor
         assertEquals("Test Exercise", exercise.getName());
         assertEquals(user, exercise.getUser());
         assertIterableEquals(exercise.getPrimaryMuscles(), new ArrayList<>());
@@ -56,14 +56,14 @@ public class ExerciseTests {
     public void testUpdate() {
         Exercise exercise = new Exercise();
 
-        when(exerciseInput.getName()).thenReturn("Updated Exercise");
-        when(exerciseInput.getPrimaryMuscles()).thenReturn(new ArrayList<>());
-        when(exerciseInput.getSecondaryMuscles()).thenReturn(new ArrayList<>());
-        when(exerciseInput.getNotes()).thenReturn("Updated Notes");
+        when(exerciseInput.name()).thenReturn("Updated Exercise");
+        when(exerciseInput.primaryMuscles()).thenReturn(new ArrayList<>());
+        when(exerciseInput.secondaryMuscles()).thenReturn(new ArrayList<>());
+        when(exerciseInput.notes()).thenReturn("Updated Notes");
 
         exercise.update(exerciseInput);
 
-        assertNull(exercise.id); // Id should remain null
+        assertNull(exercise.getId()); // ID should remain null
         assertEquals("Updated Exercise", exercise.getName());
         assertTrue(exercise.getPrimaryMuscles().isEmpty());
         assertTrue(exercise.getSecondaryMuscles().isEmpty());
@@ -75,7 +75,7 @@ public class ExerciseTests {
     public void testGetId() {
         Exercise exercise = new Exercise();
         exercise.setId("testId");
-        assertEquals("testId", exercise.id);
+        assertEquals("testId", exercise.getId());
     }
 
     @Test

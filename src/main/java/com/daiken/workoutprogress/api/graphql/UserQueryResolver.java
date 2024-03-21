@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@PreAuthorize("isAuthenticated()")
 @Component
 public class UserQueryResolver implements GraphQLQueryResolver {
 
@@ -27,12 +28,10 @@ public class UserQueryResolver implements GraphQLQueryResolver {
         return userRepository.findAll();
     }
 
-    @PreAuthorize("isAuthenticated()")
     public User userById(String id) {
         return userRepository.findById(id).orElse(null);
     }
 
-    @PreAuthorize("isAuthenticated()")
     public User me() {
         return userService.getContextUser();
     }

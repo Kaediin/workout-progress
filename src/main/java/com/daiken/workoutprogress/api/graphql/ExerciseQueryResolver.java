@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@PreAuthorize("isAuthenticated()")
 @Component
 public class ExerciseQueryResolver implements GraphQLQueryResolver {
 
@@ -24,7 +25,6 @@ public class ExerciseQueryResolver implements GraphQLQueryResolver {
         this.userService = userService;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public List<Exercise> myExercises() {
         User me = userService.getContextUser();
         return exerciseRepository.findAllByUserId(me.getId());

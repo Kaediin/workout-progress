@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@PreAuthorize("isAuthenticated()")
 @Component
 public class WorkoutResolver implements GraphQLResolver<Workout> {
 
@@ -32,34 +33,32 @@ public class WorkoutResolver implements GraphQLResolver<Workout> {
         this.userService = userService;
     }
 
-    @PreAuthorize("isAuthenticated()")
     public List<ExerciseLog> exerciseLogs(Workout workout) {
         User me = userService.getContextUser();
         return exerciseLogRepository
-                .findAllByUserIdAndWorkoutId(me.getId(), workout.id)
-                .peek(log -> log.exercise = exerciseRepository.findById(log.exercise.id).orElse(null))
-                .filter(log -> log.exercise != null)
+                .findAllByUserIdAndWorkoutId(me.getId(), workout.getId())
+                .peek(log -> log.setExercise(exerciseRepository.findById(log.getExercise().getId()).orElse(null)))
+                .filter(log -> log.getExercise() != null)
                 .collect(Collectors.toList());
 
     }
 
-    @PreAuthorize("isAuthenticated()")
     public List<GroupedExerciseLog> groupedExerciseLogs(Workout workout) {
         User me = userService.getContextUser();
         List<ExerciseLog> logs = exerciseLogRepository
-                .findAllByUserIdAndWorkoutId(me.getId(), workout.id)
-                .peek(log -> log.exercise = exerciseRepository.findById(log.exercise.id).orElse(null))
-                .filter(log -> log.exercise != null)
+                .findAllByUserIdAndWorkoutId(me.getId(), workout.getId())
+                .peek(log -> log.setExercise(exerciseRepository.findById(log.getExercise().getId()).orElse(null)))
+                .filter(log -> log.getExercise() != null)
                 .toList();
 
         List<GroupedExerciseLog> groupedLogs = new ArrayList<>();
 
         for (ExerciseLog log : logs) {
-            if (groupedLogs.isEmpty() || groupedLogs.stream().noneMatch(groupedLog -> groupedLog.getExercise().getName().equals(log.exercise.getName()))) {
+            if (groupedLogs.isEmpty() || groupedLogs.stream().noneMatch(groupedLog -> groupedLog.exercise().getName().equals(log.getExercise().getName()))) {
                 groupedLogs.add(
                         new GroupedExerciseLog(
-                                log.exercise,
-                                logs.stream().filter(it -> it.exercise.getName().equals(log.exercise.getName())).collect(Collectors.toList())
+                                log.getExercise(),
+                                logs.stream().filter(it -> it.getExercise().getName().equals(log.getExercise().getName())).collect(Collectors.toList())
                         )
                 );
             }

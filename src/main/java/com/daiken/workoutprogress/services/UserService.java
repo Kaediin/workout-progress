@@ -42,7 +42,7 @@ public class UserService {
     }
 
     public Optional<User> findUser(CognitoUser cognitoUser) {
-        Optional<String> fid = Optional.ofNullable(cognitoUser.fid);
+        Optional<String> fid = Optional.ofNullable(cognitoUser.getFid());
         if (fid.isEmpty()) {
             return Optional.empty();
         }
