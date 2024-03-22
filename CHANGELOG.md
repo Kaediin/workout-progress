@@ -1,3 +1,19 @@
+## [v0.2.0]
+
+### Added/ Changed
+
+- #29: Gradle version to 8.6
+- #29: Java version to 21
+- #29: Spring Boot version to 3.2.3
+- #29: Updated most deps to support newer framework version
+- #29: Implemented Lombok
+- #29: Implemented record classes
+- #32: Endpoint to get all exercises by ID
+- #32: Endpoint to get exercise chart data
+- #33: Endpoint for total logged workout time
+- #33: Endpoint for total workouts
+- #33: Endpoint for muscle group chart data
+
 ## [v0.1.5]
 
 ### Added
