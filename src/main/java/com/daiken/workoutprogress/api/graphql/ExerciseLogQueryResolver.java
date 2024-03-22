@@ -1,17 +1,21 @@
 package com.daiken.workoutprogress.api.graphql;
 
+import com.daiken.workoutprogress.models.ExerciseLineChartData;
 import com.daiken.workoutprogress.models.ExerciseLog;
 import com.daiken.workoutprogress.models.User;
 import com.daiken.workoutprogress.models.Workout;
 import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
 import com.daiken.workoutprogress.repositories.ExerciseRepository;
 import com.daiken.workoutprogress.repositories.WorkoutRepository;
+import com.daiken.workoutprogress.services.ExerciseLogService;
 import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,16 +24,19 @@ import java.util.stream.Collectors;
 public class ExerciseLogQueryResolver implements GraphQLQueryResolver {
 
     private final ExerciseLogRepository exerciseLogRepository;
+    private final ExerciseLogService exerciseLogService;
     private final ExerciseRepository exerciseRepository;
     private final UserService userService;
     private final WorkoutRepository workoutRepository;
 
     @Autowired
     public ExerciseLogQueryResolver(ExerciseLogRepository exerciseLogRepository,
+                                    ExerciseLogService exerciseLogService,
                                     ExerciseRepository exerciseRepository,
                                     UserService userService,
                                     WorkoutRepository workoutRepository) {
         this.exerciseLogRepository = exerciseLogRepository;
+        this.exerciseLogService = exerciseLogService;
         this.exerciseRepository = exerciseRepository;
         this.userService = userService;
         this.workoutRepository = workoutRepository;
@@ -47,6 +54,19 @@ public class ExerciseLogQueryResolver implements GraphQLQueryResolver {
         if (workout == null) return null;
         ExerciseLog latestLoggedExercise = exerciseLogRepository.findFirstByUserIdAndExerciseIdAndWorkoutNotOrderByLogDateTimeDesc(me.getId(), exerciseLogId, workout).orElse(null);
         return getExerciseLogsByExerciseId(exerciseLogId, latestLoggedExercise);
+    }
+
+    public List<ExerciseLog> allLogsByExerciseId(String exerciseId) {
+        User me = userService.getContextUser();
+        return exerciseLogRepository.findAllByUserIdAndExerciseId(me.getId(), exerciseId).reversed();
+    }
+
+    public List<ExerciseLineChartData> chartDataOfXMonthsByExerciseId(String exerciseId, int months, String zonedDateTimeString) {
+        User me = userService.getContextUser();
+        LocalDateTime from = LocalDateTime.now().minusMonths(months);
+        List<ExerciseLog> exerciseLogs = exerciseLogRepository.findAllByUserIdAndExerciseIdAndLogDateTimeBetween(me.getId(), exerciseId, from, ZonedDateTime.parse(zonedDateTimeString).toLocalDateTime());
+
+        return exerciseLogService.mapLogsToChartData(exerciseLogs);
     }
 
     private List<ExerciseLog> getExerciseLogsByExerciseId(String exerciseLogId, ExerciseLog latestLoggedExercise) {

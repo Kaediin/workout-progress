@@ -35,9 +35,20 @@ input ExerciseLogInput {
     remark: String
 }
 
+type ExerciseLineChartData {
+    monthLabel: String!
+    logs: [ExerciseLog!]!
+}
+
 extend type Query {
+    "Get all of the latest logs by exercise id from the same workout"
     latestLogsByExerciseId(exerciseId: ID!): [ExerciseLog]
+    "Get all of the latest logs by exercise id from the same workout except given workout Id"
     latestLogsByExerciseIdAndNotWorkoutId(exerciseId: ID!, workoutId: String!): [ExerciseLog]
+    "Get all logs by excerice id"
+    allLogsByExerciseId(exerciseId: ID!): [ExerciseLog!]!
+    "Get chart data of last x months for logs by exercise id"
+    chartDataOfXMonthsByExerciseId(exerciseId: ID!, months: Int!, zonedDateTimeString: String!): [ExerciseLineChartData!]!
 }
 
 extend type Mutation {

@@ -72,44 +72,32 @@ public class WorkoutService {
     }
 
     public List<MuscleGroupChartData> mapMuscleGroupsToChartData(List<MuscleGroup> muscleGroups) {
-        List<MuscleGroupChartData> chartData = new ArrayList<>();
+        Map<MuscleGroup, Long> muscleGroupCounter = muscleGroups
+                .stream()
+                .collect(Collectors.groupingBy(muscleGroup -> muscleGroup, Collectors.counting()));
 
-        // Create counter per muscle group
-        Map<MuscleGroup, Integer> muscleGroupCounter = new HashMap<>();
-
-        // Count all muscle groups
-        for (MuscleGroup muscleGroup : muscleGroups) {
-            if (muscleGroupCounter.containsKey(muscleGroup)) {
-                muscleGroupCounter.replace(muscleGroup, muscleGroupCounter.get(muscleGroup) + 1);
-            } else {
-                muscleGroupCounter.put(muscleGroup, 1);
-            }
-        }
-
-        // Match color per muscle group entry and make object
-        muscleGroupCounter.forEach((muscleGroup, counter) -> {
-            String color = mapMuscleGroupToColor(muscleGroup);
-            chartData.add(new MuscleGroupChartData(muscleGroup, color, counter));
-        });
-
-        return chartData;
+        return muscleGroupCounter
+                .entrySet()
+                .stream()
+                .map(entry -> new MuscleGroupChartData(entry.getKey(), mapMuscleGroupToColor(entry.getKey()), entry.getValue().intValue()))
+                .collect(Collectors.toList());
     }
 
     private String mapMuscleGroupToColor(MuscleGroup muscleGroup) {
         return switch (muscleGroup) {
-            case ABDUCTOR -> "#6666ff";
+            case ABDUCTOR -> "#0a7ab2";
             case ABS -> "#336699";
             case ADDUCTOR -> "#3366cc";
             case BACK_SHOULDERS -> "#003399";
             case BICEPS -> "#3399ff";
-            case CALVES -> "#0000cc";
-            case CHEST -> "#6600ff";
+            case CALVES -> "#4aa1a1";
+            case CHEST -> "#5b99d7";
             case FOREARMS -> "#66ccff";
             case FRONT_SHOULDERS -> "#006699";
             case GLUTES -> "#0099cc";
             case HAMSTRINGS -> "#0066cc";
             case HANDS -> "#0033cc";
-            case LATS -> "#0000ff";
+            case LATS -> "#3e9393";
             case LOWER_BACK -> "#3333ff";
             case NECK -> "#6699ff";
             case OBLIQUES -> "#009999";

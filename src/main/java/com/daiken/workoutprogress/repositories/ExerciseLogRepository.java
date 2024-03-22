@@ -5,6 +5,7 @@ import com.daiken.workoutprogress.models.Workout;
 import org.springframework.data.mongodb.repository.Aggregation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -50,4 +51,6 @@ public interface ExerciseLogRepository extends MongoRepository<ExerciseLog, Stri
     List<ExerciseLog> findAllByUserIdAndExerciseId(String user_id, String exercise_id);
 
     List<ExerciseLog> findAllByWorkoutId(String workout_id);
+
+    List<ExerciseLog> findAllByUserIdAndExerciseIdAndLogDateTimeBetween(String user_id, String exercise_id, LocalDateTime from, LocalDateTime to);
 }
