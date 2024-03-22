@@ -2,6 +2,7 @@ package com.daiken.workoutprogress.services;
 
 import com.daiken.workoutprogress.models.Exercise;
 import com.daiken.workoutprogress.models.MuscleGroup;
+import com.daiken.workoutprogress.models.MuscleGroupChartData;
 import com.daiken.workoutprogress.models.Workout;
 import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
 import com.daiken.workoutprogress.repositories.ExerciseRepository;
@@ -68,5 +69,54 @@ public class WorkoutService {
     public static <T> java.util.function.Predicate<T> distinctByKey(java.util.function.Function<? super T, ?> keyExtractor) {
         java.util.Map<Object, Boolean> seen = new java.util.concurrent.ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
+    public List<MuscleGroupChartData> mapMuscleGroupsToChartData(List<MuscleGroup> muscleGroups) {
+        List<MuscleGroupChartData> chartData = new ArrayList<>();
+
+        // Create counter per muscle group
+        Map<MuscleGroup, Integer> muscleGroupCounter = new HashMap<>();
+
+        // Count all muscle groups
+        for (MuscleGroup muscleGroup : muscleGroups) {
+            if (muscleGroupCounter.containsKey(muscleGroup)) {
+                muscleGroupCounter.replace(muscleGroup, muscleGroupCounter.get(muscleGroup) + 1);
+            } else {
+                muscleGroupCounter.put(muscleGroup, 1);
+            }
+        }
+
+        // Match color per muscle group entry and make object
+        muscleGroupCounter.forEach((muscleGroup, counter) -> {
+            String color = mapMuscleGroupToColor(muscleGroup);
+            chartData.add(new MuscleGroupChartData(muscleGroup, color, counter));
+        });
+
+        return chartData;
+    }
+
+    private String mapMuscleGroupToColor(MuscleGroup muscleGroup) {
+        return switch (muscleGroup) {
+            case ABDUCTOR -> "#6666ff";
+            case ABS -> "#336699";
+            case ADDUCTOR -> "#3366cc";
+            case BACK_SHOULDERS -> "#003399";
+            case BICEPS -> "#3399ff";
+            case CALVES -> "#0000cc";
+            case CHEST -> "#6600ff";
+            case FOREARMS -> "#66ccff";
+            case FRONT_SHOULDERS -> "#006699";
+            case GLUTES -> "#0099cc";
+            case HAMSTRINGS -> "#0066cc";
+            case HANDS -> "#0033cc";
+            case LATS -> "#0000ff";
+            case LOWER_BACK -> "#3333ff";
+            case NECK -> "#6699ff";
+            case OBLIQUES -> "#009999";
+            case QUADS -> "#33cccc";
+            case SHINS -> "#00ccff";
+            case TRICEPS -> "#0099ff";
+            case UPPER_BACK -> "#0066ff";
+        };
     }
 }

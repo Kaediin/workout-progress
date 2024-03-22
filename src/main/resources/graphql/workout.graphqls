@@ -42,17 +42,38 @@ input WorkoutInput {
     remark: String
 }
 
-extend type Query {
-    myWorkouts: [Workout!]
+type MuscleGroupChartData {
+    muscleGroup: MuscleGroup!
+    color: String!
+    count: Int!
+}
 
+extend type Query {
+    "Fetch all my current workouts"
+    myWorkouts: [Workout!]
+    "Check if me has an active workout ie. one that hasn't ended yet"
     meHasActiveWorkout: Boolean!
+    "Fetch workout by ID"
     workoutById(id: ID!): Workout
+    "Fetch all workouts of user by current month with given timestamp"
+    workoutsOfCurrentMonth(zonedDateTimeString: String!): [Workout!]!
+    "Get total time of all workouts"
+    countTotalTimeAllMyWorkoutsInMinutes: Float!
+    "Count my workouts"
+    countMyWorkouts: Int!
+    "Get chart data per muscle group"
+    chartDataMuscleGroups: [MuscleGroupChartData!]!
 }
 
 extend type Mutation {
+    "Start a new workout for me"
     meStartWorkout(input: WorkoutInput!): Workout
+    "End workout by ID"
     endWorkout(workoutId: ID!, zonedDateTimeString: String!): Workout
+    "Delete workout by ID"
     deleteWorkout(id: ID!): Boolean
+    "Update workout by ID"
     updateWorkout(id: ID!, input: WorkoutInput!): Workout!
+    "Restart workout by ID. This only removes end date and set active to false"
     restartWorkout(id: ID!): Workout!
 }
