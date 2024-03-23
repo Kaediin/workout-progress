@@ -48,7 +48,7 @@ public interface ExerciseLogRepository extends MongoRepository<ExerciseLog, Stri
 
     Optional<ExerciseLog> findFirstByUserIdAndExerciseIdAndWorkoutNotOrderByLogDateTimeDesc(String user_id, String exercise_id, Workout workout_id);
 
-    List<ExerciseLog> findAllByUserIdAndExerciseId(String user_id, String exercise_id);
+    List<ExerciseLog> findAllByUserIdAndExerciseIdOrderByLogDateTimeDesc(String user_id, String exercise_id);
 
     List<ExerciseLog> findAllByWorkoutId(String workout_id);
 

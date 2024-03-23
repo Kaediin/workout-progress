@@ -58,7 +58,7 @@ public class ExerciseLogQueryResolver implements GraphQLQueryResolver {
 
     public List<ExerciseLog> allLogsByExerciseId(String exerciseId) {
         User me = userService.getContextUser();
-        return exerciseLogRepository.findAllByUserIdAndExerciseId(me.getId(), exerciseId).reversed();
+        return exerciseLogRepository.findAllByUserIdAndExerciseIdOrderByLogDateTimeDesc(me.getId(), exerciseId);
     }
 
     public List<ExerciseLineChartData> chartDataOfXMonthsByExerciseId(String exerciseId, int months, String zonedDateTimeString) {

@@ -13,7 +13,7 @@ plugins {
 
 group = 'com.daiken'
 version = '0.2.0-SNAPSHOT'
-sourceCompatibility = '21'
+sourceCompatibility = '17'
 
 repositories {
     mavenCentral()

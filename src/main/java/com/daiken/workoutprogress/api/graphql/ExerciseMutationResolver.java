@@ -45,7 +45,7 @@ public class ExerciseMutationResolver implements GraphQLMutationResolver {
     public Boolean deleteExercise(String id) {
         User me = userService.getContextUser();
         Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
-        List<ExerciseLog> logs = exerciseLogRepository.findAllByUserIdAndExerciseId(me.getId(), exercise.getId());
+        List<ExerciseLog> logs = exerciseLogRepository.findAllByUserIdAndExerciseIdOrderByLogDateTimeDesc(me.getId(), exercise.getId());
         exerciseLogRepository.deleteAll(logs);
         exerciseRepository.delete(exercise);
         return true;

@@ -62,8 +62,8 @@ public class WebSecurityConfiguration {
                 httpSecurityCsrfConfigurer.disable()
                         .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> authorizationManagerRequestMatcherRegistry
                                 // Need to permit all requests for graphql for the inspection (npm run generate:gql)
-                                .requestMatchers("/graphql")
-                                .permitAll()
+//                                .requestMatchers("/graphql")
+//                                .permitAll()
                                 .anyRequest()
                                 .authenticated()
                         )
