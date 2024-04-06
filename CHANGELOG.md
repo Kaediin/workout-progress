@@ -1,3 +1,9 @@
+## [v0.2.1]
+
+### Added
+
+- #35: Units for Minutes and Seconds
+
 ## [v0.2.0]
 
 ### Added/ Changed
