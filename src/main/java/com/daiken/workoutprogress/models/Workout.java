@@ -1,5 +1,6 @@
 package com.daiken.workoutprogress.models;
 
+import com.daiken.workoutprogress.api.graphql.input.ExternalHealthProviderData;
 import com.daiken.workoutprogress.api.graphql.input.WorkoutInput;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,8 @@ public class Workout implements Comparable<Workout> {
     private boolean active;
 
     private String remark;
+
+    private ExternalHealthProviderData externalHealthProviderData;
 
     public Workout(String id, String name, List<MuscleGroup> muscleGroups) {
         this.id = id;

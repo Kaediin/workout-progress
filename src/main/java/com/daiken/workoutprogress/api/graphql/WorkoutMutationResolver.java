@@ -1,11 +1,11 @@
 package com.daiken.workoutprogress.api.graphql;
 
+import com.daiken.workoutprogress.api.graphql.input.ExternalHealthProviderData;
 import com.daiken.workoutprogress.api.graphql.input.WorkoutInput;
 import com.daiken.workoutprogress.models.ExerciseLog;
 import com.daiken.workoutprogress.models.User;
 import com.daiken.workoutprogress.models.Workout;
 import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
-import com.daiken.workoutprogress.repositories.ExerciseRepository;
 import com.daiken.workoutprogress.repositories.WorkoutRepository;
 import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
@@ -22,19 +22,16 @@ import java.util.Optional;
 public class WorkoutMutationResolver implements GraphQLMutationResolver {
 
     private final ExerciseLogRepository exerciseLogRepository;
-    private final ExerciseRepository exerciseRepository;
     private final UserService userService;
     private final WorkoutRepository workoutRepository;
 
     @Autowired
     public WorkoutMutationResolver(
             ExerciseLogRepository exerciseLogRepository,
-            ExerciseRepository exerciseRepository,
             UserService userService,
             WorkoutRepository workoutRepository
     ) {
         this.exerciseLogRepository = exerciseLogRepository;
-        this.exerciseRepository = exerciseRepository;
         this.userService = userService;
         this.workoutRepository = workoutRepository;
     }
@@ -87,6 +84,12 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         Workout workout = workoutRepository.findById(id).orElseThrow(() -> new NullPointerException("Cant find workout with given id"));
         workout.setActive(true);
         workout.setEndDateTime(null);
+        return workoutRepository.save(workout);
+    }
+
+    public Workout addExternalHealthProviderData(String workoutId, ExternalHealthProviderData providerData) {
+        Workout workout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Cant find workout with given id"));
+        workout.setExternalHealthProviderData(providerData);
         return workoutRepository.save(workout);
     }
 }

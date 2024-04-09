@@ -16,7 +16,7 @@ type User {
 type CognitoUser {
     email: String!
     family_name: String!
-    gender: String!
+    gender: String
     given_name: String!
     locale: String!
     name: String!

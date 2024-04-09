@@ -23,6 +23,20 @@ enum MuscleGroup {
     UPPER_BACK
 }
 
+enum ExternalHealthProvider {
+    APPLE_HEALTH
+}
+
+type ExternalHealthProviderData {
+    appleHealthId: ID!
+    provider: ExternalHealthProvider!
+}
+
+input ExternalHealthProviderDataInput {
+    appleHealthId: ID!
+    provider: ExternalHealthProvider!
+}
+
 type Workout {
     id: ID!
     name: String!
@@ -33,6 +47,7 @@ type Workout {
     exerciseLogs: [ExerciseLog!]!
     groupedExerciseLogs: [GroupedExerciseLog!]!
     remark: String
+    externalHealthProviderData: ExternalHealthProviderData
 }
 
 input WorkoutInput {
@@ -76,4 +91,6 @@ extend type Mutation {
     updateWorkout(id: ID!, input: WorkoutInput!): Workout!
     "Restart workout by ID. This only removes end date and set active to false"
     restartWorkout(id: ID!): Workout!
+    "Add external health provider data to workout"
+    addExternalHealthProviderData(workoutId: ID!, input: ExternalHealthProviderDataInput!): Workout!
 }
