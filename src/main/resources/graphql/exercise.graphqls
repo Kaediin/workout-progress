@@ -27,10 +27,12 @@ input ExerciseInput {
 
 extend type Query {
     myExercises: [Exercise!]
+    onboardingExercises: [Exercise!]!
 }
 
 extend type Mutation {
     createExercise(input: ExerciseInput): Exercise
+    addOnboardingExercises(ids: [String!]!): Boolean
     updateExercise(id: ID! input: ExerciseInput): Exercise
     deleteExercise(id: ID!): Boolean!
 }

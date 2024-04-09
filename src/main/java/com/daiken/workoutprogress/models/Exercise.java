@@ -36,6 +36,12 @@ public class Exercise {
         update(input);
     }
 
+    public Exercise(String id, ExerciseInput input, User me) {
+        this.id = id;
+        this.user = me;
+        update(input);
+    }
+
     public Exercise() {
     }
 

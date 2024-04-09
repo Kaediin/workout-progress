@@ -10,6 +10,7 @@ type User {
     id: ID!
     fid: String!
     cognitoUser: CognitoUser!
+    onboardingCompleted: Boolean
 }
 
 type CognitoUser {
@@ -31,4 +32,5 @@ type Query {
 
 type Mutation {
     createUser(userInput: UserInput!): User
+    completeOnboarding: User!
 }

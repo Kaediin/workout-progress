@@ -6,6 +6,7 @@ import com.daiken.workoutprogress.models.ExerciseLog;
 import com.daiken.workoutprogress.models.User;
 import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
 import com.daiken.workoutprogress.repositories.ExerciseRepository;
+import com.daiken.workoutprogress.services.ExerciseService;
 import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,20 +21,34 @@ public class ExerciseMutationResolver implements GraphQLMutationResolver {
 
     ExerciseLogRepository exerciseLogRepository;
     ExerciseRepository exerciseRepository;
+    ExerciseService exerciseService;
     UserService userService;
 
     @Autowired
     public ExerciseMutationResolver(ExerciseLogRepository exerciseLogRepository,
                                     ExerciseRepository exerciseRepository,
+                                    ExerciseService exerciseService,
                                     UserService userService) {
         this.exerciseLogRepository = exerciseLogRepository;
         this.exerciseRepository = exerciseRepository;
+        this.exerciseService = exerciseService;
         this.userService = userService;
     }
 
     public Exercise createExercise(ExerciseInput input) {
         User me = userService.getContextUser();
         return exerciseRepository.save(new Exercise(input, me));
+    }
+
+    public Boolean addOnboardingExercises(List<String> ids) {
+        // Get the onboarding exercises that match the given ids
+        List<Exercise> exercises = exerciseService.getOnboardingExercises()
+                .stream()
+                .filter(exercise -> ids.contains(exercise.getId()))
+                .peek(exercise -> exercise.setId(null))
+                .toList();
+        exerciseRepository.saveAll(exercises);
+        return true;
     }
 
     public Exercise updateExercise(String id, ExerciseInput input) {

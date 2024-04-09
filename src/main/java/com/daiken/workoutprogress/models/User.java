@@ -21,6 +21,8 @@ public class User {
     @Indexed(unique = true)
     private String fid;
 
+    private Boolean onboardingCompleted;
+
     public User(String fid) {
         this.fid = fid;
     }
