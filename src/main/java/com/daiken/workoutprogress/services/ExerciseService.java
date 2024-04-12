@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Service for Exercise operations.
+ */
 @Service
 public class ExerciseService {
 
@@ -17,6 +20,11 @@ public class ExerciseService {
         this.userService = userService;
     }
 
+    /**
+     * Get the onboarding exercises.
+     *
+     * @return List of onboarding exercises
+     */
     public List<Exercise> getOnboardingExercises() {
         User me = userService.getContextUser();
         return List.of(

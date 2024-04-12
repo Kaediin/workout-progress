@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+/**
+ * Resolver for User
+ */
 @PreAuthorize("isAuthenticated()")
 @Component
 public class UserResolver implements GraphQLResolver<User> {
@@ -26,10 +29,21 @@ public class UserResolver implements GraphQLResolver<User> {
         this.cognitoService = cognitoService;
     }
 
+    /**
+     * Get cognito user
+     *
+     * @param user User
+     * @return Cognito user
+     */
     public CognitoUser cognitoUser(User user) {
         return cognitoService.findUser(user.getFid()).orElse(null);
     }
 
+    /**
+     * Get latest weight biometrics log
+     * @param user User
+     * @return Latest weight biometrics log
+     */
     public BiometricsLog weight(User user) {
         return biometricsLogRepository.findLatestByUserAndType(user.getId(), BiometricsType.WEIGHT).orElse(null);
     }

@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mutation resolver for exercise logs
+ */
 @Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component
@@ -40,6 +43,14 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         this.workoutService = workoutService;
     }
 
+    /**
+     * Add exercise log
+     *
+     * @param workoutId  workout id
+     * @param input      exercise log input
+     * @param autoAdjust auto adjust muscle groups in workout
+     * @return workout with added exercise log
+     */
     public Workout addExerciseLog(String workoutId, ExerciseLogInput input, Boolean autoAdjust) {
         User me = userService.getContextUser();
         Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> {
@@ -60,6 +71,12 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         return currentWorkout;
     }
 
+    /**
+     * Update exercise log
+     * @param exerciseLogId exercise log id
+     * @param input exercise log input
+     * @return workout with updated exercise log
+     */
     public Workout updateExerciseLog(String exerciseLogId, ExerciseLogInput input) {
         User me = userService.getContextUser();
 
@@ -73,6 +90,12 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         return workoutRepository.findById(exerciseLog.getWorkout().getId()).orElse(null);
     }
 
+    /**
+     * Remove exercise log
+     * @param exerciseLogId exercise log id
+     * @param autoAdjust auto adjust muscle groups in workout
+     * @return true if removed successfully
+     */
     public Boolean removeExerciseLog(String exerciseLogId, boolean autoAdjust) {
         ExerciseLog exerciseLog = exerciseLogRepository.findById(exerciseLogId).orElseThrow(() -> {
             log.error("[removeExerciseLog] ExerciseLog not found with given id: {}", exerciseLogId);
@@ -85,6 +108,13 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         return true;
     }
 
+    /**
+     * Re-log latest log
+     * @param workoutId workout id
+     * @param zonedDateTimeString zoned date time string
+     * @param autoAdjust auto adjust muscle groups in workout
+     * @return workout with re-logged latest log
+     */
     public Workout reLogLatestLog(String workoutId, String zonedDateTimeString, Boolean autoAdjust) {
         User me = userService.getContextUser();
 
@@ -106,6 +136,12 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         return currentWorkout;
     }
 
+    /**
+     * Re-log any log
+     * @param workoutId workout id
+     * @param input exercise log input
+     * @return workout with re-logged log
+     */
     public Workout reLogLog(String workoutId, ExerciseLogInput input) {
         User me = userService.getContextUser();
 

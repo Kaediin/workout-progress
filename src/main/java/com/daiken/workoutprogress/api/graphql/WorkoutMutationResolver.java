@@ -18,6 +18,9 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Mutation resolver for Workout
+ */
 @Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component
@@ -38,6 +41,12 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         this.workoutRepository = workoutRepository;
     }
 
+    /**
+     * Start a workout
+     *
+     * @param input Workout input
+     * @return Started workout
+     */
     public Workout meStartWorkout(WorkoutInput input) {
         if (input.name() == null) {
             log.error("[meStartWorkout] Input is not filled properly! {}", input);
@@ -56,6 +65,12 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         return workoutRepository.save(workout);
     }
 
+    /**
+     * End a workout with a end time of last log if there is any, otherwise end workout with given time
+     * @param workoutId Workout id
+     * @param zonedDateTimeString Zoned date time string
+     * @return Ended workout
+     */
     public Workout endWorkout(String workoutId, String zonedDateTimeString) {
         User me = userService.getContextUser();
 
@@ -74,6 +89,11 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         return workoutRepository.save(workout);
     }
 
+    /**
+     * Delete a workout
+     * @param id Workout id
+     * @return True if successful
+     */
     public Boolean deleteWorkout(String id) {
         Workout workout = workoutRepository.findById(id).orElseThrow(() -> {
             log.error("[deleteWorkout] Cant find workout with given id {}", id);
@@ -85,6 +105,12 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         return true;
     }
 
+    /**
+     * Update a workout
+     * @param id Workout id
+     * @param input Workout input
+     * @return Updated workout
+     */
     public Workout updateWorkout(String id, WorkoutInput input) {
         Workout workout = workoutRepository.findById(id).orElseThrow(() -> {
             log.error("[updateWorkout] Cant find workout with given id {}", id);
@@ -93,6 +119,11 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         return workoutRepository.save(workout.update(input));
     }
 
+    /**
+     * Restart a workout
+     * @param id Workout id
+     * @return Restarted workout
+     */
     public Workout restartWorkout(String id) {
         Workout workout = workoutRepository.findById(id).orElseThrow(() -> {
             log.error("[restartWorkout] Cant find workout with given id {}", id);
@@ -103,6 +134,12 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         return workoutRepository.save(workout);
     }
 
+    /**
+     * Add external health provider data
+     * @param workoutId workout id
+     * @param providerData external health provider data
+     * @return Updated workout
+     */
     public Workout addExternalHealthProviderData(String workoutId, ExternalHealthProviderData providerData) {
         Workout workout = workoutRepository.findById(workoutId).orElseThrow(() -> {
             log.error("[addExternalHealthProviderData] Cant find workout with given id {}", workoutId);
@@ -112,6 +149,12 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         return workoutRepository.save(workout);
     }
 
+    /**
+     * Add estimated calories burned
+     * @param workoutId workout id
+     * @param estimatedCaloriesBurned estimated calories burned
+     * @return Updated workout
+     */
     public Workout addEstimatedCaloriesBurned(String workoutId, Long estimatedCaloriesBurned) {
         Workout workout = workoutRepository.findById(workoutId).orElseThrow(() -> {
             log.error("[addEstimatedCaloriesBurned] Cant find workout with given id {}", workoutId);

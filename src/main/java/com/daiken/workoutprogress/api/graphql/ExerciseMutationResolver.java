@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Mutation resolver for Exercise
+ */
 @Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component
@@ -37,11 +40,22 @@ public class ExerciseMutationResolver implements GraphQLMutationResolver {
         this.userService = userService;
     }
 
+    /**
+     * Create an exercise
+     *
+     * @param input Exercise input
+     * @return Created exercise
+     */
     public Exercise createExercise(ExerciseInput input) {
         User me = userService.getContextUser();
         return exerciseRepository.save(new Exercise(input, me));
     }
 
+    /**
+     * Add onboarding exercises
+     * @param ids List of onboarding exercise ids
+     * @return True if successful
+     */
     public Boolean addOnboardingExercises(List<String> ids) {
         // Get the onboarding exercises that match the given ids
         List<Exercise> exercises = exerciseService.getOnboardingExercises()
@@ -53,6 +67,12 @@ public class ExerciseMutationResolver implements GraphQLMutationResolver {
         return true;
     }
 
+    /**
+     * Update an exercise
+     * @param id Exercise id
+     * @param input Exercise input
+     * @return Updated exercise
+     */
     public Exercise updateExercise(String id, ExerciseInput input) {
         Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> {
             log.error("[updateExercise] Exercise not found with given id {}", id);
@@ -62,6 +82,11 @@ public class ExerciseMutationResolver implements GraphQLMutationResolver {
         return exerciseRepository.save(exercise);
     }
 
+    /**
+     * Delete an exercise and its logs
+     * @param id Exercise id
+     * @return True if successful
+     */
     public Boolean deleteExercise(String id) {
         User me = userService.getContextUser();
         Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> {

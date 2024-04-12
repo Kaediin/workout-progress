@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+/**
+ * Query resolver for Preference
+ */
 @Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component
@@ -25,6 +28,11 @@ public class PreferenceQueryResolver implements GraphQLQueryResolver {
         this.userService = userService;
     }
 
+    /**
+     * Get users preference
+     *
+     * @return users preference
+     */
     public Preference myPreference() {
         User me = userService.getContextUser();
         Preference preference = preferenceRepository.findByUserId(me.getId()).orElse(null);

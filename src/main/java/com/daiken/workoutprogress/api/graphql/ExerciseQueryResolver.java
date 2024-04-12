@@ -13,6 +13,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Query resolver for Exercise
+ */
 @Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component
@@ -31,11 +34,20 @@ public class ExerciseQueryResolver implements GraphQLQueryResolver {
         this.userService = userService;
     }
 
+    /**
+     * Get all users exercises
+     *
+     * @return List of users exercises
+     */
     public List<Exercise> myExercises() {
         User me = userService.getContextUser();
         return exerciseRepository.findAllByUserId(me.getId());
     }
 
+    /**
+     * Get all hardcoded onboarding exercises
+     * @return List of onboarding exercises
+     */
     public List<Exercise> onboardingExercises() {
         return this.exerciseService.getOnboardingExercises();
     }

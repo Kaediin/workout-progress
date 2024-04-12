@@ -18,6 +18,9 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.ListUsersRe
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * Service for interacting with AWS Cognito.
+ */
 @Slf4j
 @Service
 public class CognitoService {
@@ -39,6 +42,11 @@ public class CognitoService {
     public CognitoService() {
     }
 
+    /**
+     * Get the CognitoIdentityProviderClient for the given Cognito ID, Cognito Key, and region.
+     *
+     * @return CognitoIdentityProviderClient
+     */
     private CognitoIdentityProviderClient getIdentityProvider() {
         if (identityProvider == null) {
             identityProvider = getIdentityProvider(cognitoId, cognitoKey, region);
@@ -46,6 +54,13 @@ public class CognitoService {
         return identityProvider;
     }
 
+    /**
+     * Get the CognitoIdentityProviderClient for the given Cognito ID, Cognito Key, and region.
+     * @param cognitoId Cognito ID
+     * @param cognitoKey Cognito Key
+     * @param region Region
+     * @return CognitoIdentityProviderClient
+     */
     private CognitoIdentityProviderClient getIdentityProvider(String cognitoId, String cognitoKey, String region) {
         AwsCredentials credentials = AwsBasicCredentials.create(cognitoId, cognitoKey);
         AwsCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials);
@@ -56,6 +71,11 @@ public class CognitoService {
                 .build();
     }
 
+    /**
+     * Find a user by their friendly ID.
+     * @param fid Friendly ID
+     * @return Optional of CognitoUser
+     */
     public Optional<CognitoUser> findUser(String fid) {
         if (fid == null) {
             log.error("[findUser] fid is null");
@@ -65,6 +85,11 @@ public class CognitoService {
         return findCognitoUserBySubjectFilter("sub=\"" + FriendlyId.toUuid(fid) + "\"");
     }
 
+    /**
+     * Find a user by their subject filter.
+     * @param subjectFilter Subject filter
+     * @return Optional of CognitoUser
+     */
     public Optional<CognitoUser> findCognitoUserBySubjectFilter(String subjectFilter) {
         ListUsersRequest listUsersRequest = ListUsersRequest.builder()
                 .limit(1)

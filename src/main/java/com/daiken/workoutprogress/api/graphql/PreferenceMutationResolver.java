@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mutation resolver for Preference
+ */
 @Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component
@@ -26,6 +29,12 @@ public class PreferenceMutationResolver implements GraphQLMutationResolver {
         this.userService = userService;
     }
 
+    /**
+     * Update my preference
+     *
+     * @param input Preference input
+     * @return Updated preference
+     */
     public Preference updateMyPreference(PreferenceInput input) {
         User me = userService.getContextUser();
         Preference preference = preferenceRepository.findByUserId(me.getId()).orElse(null);

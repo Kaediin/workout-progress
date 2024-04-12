@@ -32,6 +32,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * Filter to authorize requests based on Cognito JWT tokens
+ */
 @Slf4j
 public class CognitoAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -57,6 +60,15 @@ public class CognitoAuthorizationFilter extends BasicAuthenticationFilter {
         this.region = region;
     }
 
+    /**
+     * Filter requests based on Cognito JWT tokens
+     *
+     * @param request  The request to be filtered
+     * @param response The response to be filtered
+     * @param chain    The filter chain
+     * @throws IOException      If an input or output exception occurs
+     * @throws ServletException If a servlet exception occurs
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -77,6 +89,12 @@ public class CognitoAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 
+    /**
+     * Get authentication based on Cognito JWT token
+     * @param token The JWT token
+     * @param response The response
+     * @return The authentication token
+     */
     private UsernamePasswordAuthenticationToken getAuthentication(String token, HttpServletResponse response) {
         // See if the 'mock' of CognitoService wants to process this token.
         UsernamePasswordAuthenticationToken processedToken = cognitoService.processAuthenticationToken(token);

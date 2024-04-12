@@ -9,12 +9,22 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+/**
+ * Filter to add security headers to GraphQL responses
+ */
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class GraphQLResponseHeaderFilter implements Filter {
 
     private static final String GRAPHQL_URI = "/graphql";
 
+    /**
+     * Process the request and response
+     *
+     * @param request  The request to process
+     * @param response The response associated with the request
+     * @param chain    Provides access to the next filter in the chain for this filter to pass the request
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {

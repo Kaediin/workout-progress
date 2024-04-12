@@ -18,6 +18,9 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 
+/**
+ * Filter to authorize requests based on a whitelist of allowed clients and remotes
+ */
 public class WhitelistAuthorizationFilter extends BasicAuthenticationFilter {
 
     private static final String ROLE_WHITELIST_ONLY = "ROLE_WHITELIST_ONLY";
@@ -44,6 +47,13 @@ public class WhitelistAuthorizationFilter extends BasicAuthenticationFilter {
         this.allowedRemotes = allowedRemotes;
     }
 
+    /**
+     * Process the request and response
+     *
+     * @param request  The request to process
+     * @param response The response associated with the request
+     * @param chain    Provides access to the next filter in the chain for this filter to pass the request
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
@@ -109,6 +119,10 @@ public class WhitelistAuthorizationFilter extends BasicAuthenticationFilter {
         chain.doFilter(request, response);
     }
 
+    /**
+     * Get authentication for whitelisted clients
+     * @return Authentication
+     */
     private Authentication getAuthentication() {
         return new UsernamePasswordAuthenticationToken(
                 "",

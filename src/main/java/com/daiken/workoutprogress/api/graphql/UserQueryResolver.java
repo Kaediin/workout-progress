@@ -11,6 +11,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Query resolver for User
+ */
 @Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component
@@ -26,14 +29,28 @@ public class UserQueryResolver implements GraphQLQueryResolver {
         this.userService = userService;
     }
 
+    /**
+     * Get all users
+     *
+     * @return List of users
+     */
     public List<User> users() {
         return userRepository.findAll();
     }
 
+    /**
+     * Get user by id
+     * @param id User id
+     * @return User
+     */
     public User userById(String id) {
         return userRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Get current user
+     * @return Current user
+     */
     public User me() {
         return userService.getContextUser();
     }

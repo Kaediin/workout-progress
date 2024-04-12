@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Resolver for Workout
+ */
 @PreAuthorize("isAuthenticated()")
 @Component
 public class WorkoutResolver implements GraphQLResolver<Workout> {
@@ -33,6 +36,12 @@ public class WorkoutResolver implements GraphQLResolver<Workout> {
         this.userService = userService;
     }
 
+    /**
+     * Get all exercise logs for a workout
+     *
+     * @param workout Workout
+     * @return List of exercise logs
+     */
     public List<ExerciseLog> exerciseLogs(Workout workout) {
         User me = userService.getContextUser();
         return exerciseLogRepository
@@ -43,6 +52,11 @@ public class WorkoutResolver implements GraphQLResolver<Workout> {
 
     }
 
+    /**
+     * Get all exercise logs for a workout grouped by exercise
+     * @param workout Workout
+     * @return List of grouped exercise logs
+     */
     public List<GroupedExerciseLog> groupedExerciseLogs(Workout workout) {
         User me = userService.getContextUser();
         List<ExerciseLog> logs = exerciseLogRepository

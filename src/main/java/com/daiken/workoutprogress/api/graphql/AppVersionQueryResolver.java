@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+/**
+ * Resolver for the app version query
+ */
 @Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component

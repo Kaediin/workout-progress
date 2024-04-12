@@ -9,12 +9,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Service for ExerciseLog operations.
+ */
 @Service
 public class ExerciseLogService {
 
     public ExerciseLogService() {
     }
 
+    /**
+     * Map a list of ExerciseLogs to a list of ExerciseLineChartData.
+     *
+     * @param logs List of ExerciseLogs
+     * @return List of ExerciseLineChartData
+     */
     public List<ExerciseLineChartData> mapLogsToChartData(List<ExerciseLog> logs) {
         Map<Month, List<ExerciseLog>> logMap = logs
                 .stream()

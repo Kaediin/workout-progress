@@ -13,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mutation resolver for User
+ */
 @Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component
@@ -35,12 +38,22 @@ public class UserMutationResolver implements GraphQLMutationResolver {
         return null;
     }
 
+    /**
+     * Complete onboarding
+     *
+     * @return Updated user
+     */
     public User completeOnboarding() {
         User me = userService.getContextUser();
         me.setOnboardingCompleted(true);
         return userRepository.save(me);
     }
 
+    /**
+     * Log biometrics
+     * @param input Biometrics log input
+     * @return Updated user
+     */
     public User logBiometrics(BiometricsLogInput input) {
         User me = userService.getContextUser();
         BiometricsLog biometricsLog = new BiometricsLog(me, input);

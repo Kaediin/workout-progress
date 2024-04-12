@@ -13,6 +13,9 @@ import java.util.Optional;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
+/**
+ * Service for User operations.
+ */
 @Slf4j
 @Service
 public class UserService {
@@ -29,10 +32,21 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    /**
+     * Update a user
+     *
+     * @param user User to update
+     * @return Updated user
+     */
     public User updateUser(User user) {
         return userRepository.save(user);
     }
 
+    /**
+     * Find a user by their FID
+     * @param fid FID
+     * @return User
+     */
     public Optional<User> findUserByFID(String fid) {
         Optional<CognitoUser> cognitoUser = cognitoService.findUser(fid);
 
@@ -43,6 +57,11 @@ public class UserService {
         return findUser(cognitoUser.get());
     }
 
+    /**
+     * Find a user by their CognitoUser
+     * @param cognitoUser CognitoUser
+     * @return User
+     */
     public Optional<User> findUser(CognitoUser cognitoUser) {
         Optional<String> fid = Optional.ofNullable(cognitoUser.getFid());
         if (fid.isEmpty()) {
@@ -58,6 +77,10 @@ public class UserService {
         return user;
     }
 
+    /**
+     * Get the current user from the context
+     * @return User
+     */
     public User getContextUser() {
         Authentication auth = getContext().getAuthentication();
         String fid = auth.getDetails().toString();

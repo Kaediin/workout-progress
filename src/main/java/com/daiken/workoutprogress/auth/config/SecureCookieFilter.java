@@ -13,12 +13,22 @@ import org.springframework.web.filter.GenericFilterBean;
 import java.io.IOException;
 import java.util.Collection;
 
+/**
+ * Filter to secure cookies
+ */
 @Slf4j
 public class SecureCookieFilter extends GenericFilterBean {
 
     private static final String COOKIE_SPEC_PRODUCTION = "SameSite=Strict;Secure";
 
 
+    /**
+     * Process the request and response
+     *
+     * @param _request  The request to process
+     * @param _response The response associated with the request
+     * @param chain     Provides access to the next filter in the chain for this filter to pass the request
+     */
     @Override
     public void doFilter(ServletRequest _request, ServletResponse _response, FilterChain chain)
             throws IOException, ServletException {

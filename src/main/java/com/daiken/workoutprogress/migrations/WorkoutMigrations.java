@@ -9,10 +9,20 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+/**
+ * Migrations for Workout
+ */
 @Slf4j
 @Migratable
 public class WorkoutMigrations {
 
+    /**
+     * Update workout muscle groups
+     *
+     * @param messages          List of messages to add to
+     * @param workoutRepository Workout repository
+     * @param workoutService    Workout service
+     */
     @Migration(key = "updateWorkoutMuscleGroups", order = 4, author = "Kaedin")
     public void weightLogToWeightValue(List<String> messages, WorkoutRepository workoutRepository, WorkoutService workoutService) {
         log.info("[weightLogToWeightValue] Started updating workout muscle groups");

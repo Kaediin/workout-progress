@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Service for Workout operations.
+ */
 @Slf4j
 @Service
 public class WorkoutService {
@@ -31,6 +34,11 @@ public class WorkoutService {
         this.workoutRepository = workoutRepository;
     }
 
+    /**
+     * Adjust the muscle groups for a workout.
+     *
+     * @param workoutId Workout ID
+     */
     public void adjustWorkoutMuscleGroups(String workoutId) {
         adjustWorkoutMuscleGroups(workoutRepository.findById(workoutId).orElseThrow(() -> {
             log.error("Cant find workout with given id {}", workoutId);
@@ -38,6 +46,10 @@ public class WorkoutService {
         }));
     }
 
+    /**
+     * Adjust the muscle groups for a workout.
+     * @param workout Workout
+     */
     public void adjustWorkoutMuscleGroups(Workout workout) {
         List<Exercise> exercisesDoneThisWorkout = exerciseLogRepository.findAllByWorkoutId(workout.getId())
                 .stream()
@@ -71,11 +83,22 @@ public class WorkoutService {
         workoutRepository.save(workout);
     }
 
+    /**
+     * Filter a list of objects by a key.
+     * @param keyExtractor Key extractor
+     * @return Predicate
+     * @param <T> Type of object
+     */
     public static <T> java.util.function.Predicate<T> distinctByKey(java.util.function.Function<? super T, ?> keyExtractor) {
         java.util.Map<Object, Boolean> seen = new java.util.concurrent.ConcurrentHashMap<>();
         return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 
+    /**
+     * Map a list of muscle groups to a list of muscle group chart data.
+     * @param muscleGroups List of muscle groups
+     * @return List of muscle group chart data
+     */
     public List<MuscleGroupChartData> mapMuscleGroupsToChartData(List<MuscleGroup> muscleGroups) {
         Map<MuscleGroup, Long> muscleGroupCounter = muscleGroups
                 .stream()
@@ -88,6 +111,11 @@ public class WorkoutService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Map a muscle group to a color.
+     * @param muscleGroup Muscle group
+     * @return Color
+     */
     private String mapMuscleGroupToColor(MuscleGroup muscleGroup) {
         return switch (muscleGroup) {
             case ABDUCTOR -> "#0a7ab2";
