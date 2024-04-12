@@ -1,3 +1,23 @@
+enum BiometricsType {
+    WEIGHT
+}
+
+input BiometricsLogInput {
+    type: BiometricsType!
+    value: Float!
+    unit: LogUnit!
+    logDate: String!
+    dataSource: ExternalHealthProvider
+}
+
+type BiometricsLog {
+    id: ID!
+    type: BiometricsType!
+    value: Float!
+    logDate: LocalDateTime!
+    dataSource: ExternalHealthProvider
+}
+
 input UserInput {
     firstName: String!
     middleName: String!
@@ -11,17 +31,21 @@ type User {
     fid: String!
     cognitoUser: CognitoUser!
     onboardingCompleted: Boolean
+    weight: BiometricsLog
 }
 
 type CognitoUser {
-    email: String!
-    family_name: String!
-    gender: String
-    given_name: String!
-    locale: String!
     name: String!
+    userName: String!
+    given_name: String!
+    family_name: String!
+    middle_name: String
     nickname: String!
+    email: String!
+    gender: String
     zoneinfo: String!
+    locale: String!
+    createdDate: String
 }
 
 type Query {
@@ -33,4 +57,5 @@ type Query {
 type Mutation {
     createUser(userInput: UserInput!): User
     completeOnboarding: User!
+    logBiometrics(biometricsLogInput: BiometricsLogInput!): User!
 }

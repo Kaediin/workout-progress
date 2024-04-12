@@ -25,6 +25,7 @@ public class User {
 
     public User(String fid) {
         this.fid = fid;
+        this.onboardingCompleted = false;
     }
 
     @Override

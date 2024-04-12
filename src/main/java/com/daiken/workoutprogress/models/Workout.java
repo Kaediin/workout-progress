@@ -38,6 +38,8 @@ public class Workout implements Comparable<Workout> {
 
     private ExternalHealthProviderData externalHealthProviderData;
 
+    private Long estimatedCaloriesBurned;
+
     public Workout(String id, String name, List<MuscleGroup> muscleGroups) {
         this.id = id;
         this.name = name;

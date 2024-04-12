@@ -48,7 +48,7 @@ public class CognitoUser {
 
         return Stream.of(given_name, middle_name, family_name)
                 .filter(Objects::nonNull)
-                .filter(string -> !string.isEmpty())
+                .filter(string -> !string.isEmpty() && !string.isBlank())
                 .collect(Collectors.joining(" "));
     }
 

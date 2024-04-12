@@ -48,6 +48,7 @@ type Workout {
     groupedExerciseLogs: [GroupedExerciseLog!]!
     remark: String
     externalHealthProviderData: ExternalHealthProviderData
+    estimatedCaloriesBurned: Float
 }
 
 input WorkoutInput {
@@ -93,4 +94,6 @@ extend type Mutation {
     restartWorkout(id: ID!): Workout!
     "Add external health provider data to workout"
     addExternalHealthProviderData(workoutId: ID!, input: ExternalHealthProviderDataInput!): Workout!
+    "Add calories burned to workout"
+    addEstimatedCaloriesBurned(workoutId: ID!, estimatedCaloriesBurned: Float!): Workout!
 }

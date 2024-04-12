@@ -92,4 +92,10 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         workout.setExternalHealthProviderData(providerData);
         return workoutRepository.save(workout);
     }
+
+    public Workout addEstimatedCaloriesBurned(String workoutId, Long estimatedCaloriesBurned) {
+        Workout workout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Cant find workout with given id"));
+        workout.setEstimatedCaloriesBurned(estimatedCaloriesBurned);
+        return workoutRepository.save(workout);
+    }
 }
