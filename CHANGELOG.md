@@ -1,3 +1,14 @@
+## [v0.3.0]
+
+### Added
+
+- #38: Support for onboarding flow
+- #39: Endpoint linked to ENV-var to control the version-check in the frontend
+- #40: Support for Apple Health Kit
+- #41: Support for biometrics
+- #41: Support for weight logging
+- #41: Calorie burn on workout
+
 ## [v0.2.1]
 
 ### Added
