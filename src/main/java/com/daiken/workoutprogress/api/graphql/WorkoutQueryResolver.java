@@ -70,7 +70,8 @@ public class WorkoutQueryResolver implements GraphQLQueryResolver {
      * @return Workout
      */
     public Workout workoutById(String id) {
-        return workoutRepository.findById(id).orElse(null);
+        User me = userService.getContextUser();
+        return workoutRepository.findWorkoutByIdAndUserId(id, me.getId()).orElse(null);
     }
 
     /**

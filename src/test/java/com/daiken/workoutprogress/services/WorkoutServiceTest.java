@@ -1,9 +1,6 @@
 package com.daiken.workoutprogress.services;
 
-import com.daiken.workoutprogress.models.Exercise;
-import com.daiken.workoutprogress.models.ExerciseLog;
-import com.daiken.workoutprogress.models.MuscleGroup;
-import com.daiken.workoutprogress.models.Workout;
+import com.daiken.workoutprogress.models.*;
 import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
 import com.daiken.workoutprogress.repositories.ExerciseRepository;
 import com.daiken.workoutprogress.repositories.WorkoutRepository;
@@ -53,6 +50,11 @@ public class WorkoutServiceTest {
 
     @Test
     void adjustWorkoutMuscleGroupsByIdShouldAdjustMuscleGroups() {
+        // Create user
+        User me = new User();
+        me.setId("user-123");
+        me.setFid("fid-123");
+
         String workoutId = "workout-123";
         Workout workout = new Workout();
         workout.setId(workoutId);
@@ -73,14 +75,14 @@ public class WorkoutServiceTest {
         log2.setExercise(exercise2);
 
         when(workoutRepository.findById(workoutId)).thenReturn(Optional.of(workout));
-        when(exerciseLogRepository.findAllByWorkoutId(workoutId)).thenReturn(List.of(log1, log2));
+        when(exerciseLogRepository.findAllByWorkoutIdAndUserId(workoutId, me.getId())).thenReturn(List.of(log1, log2));
         when(exerciseRepository.findById("exercise1-id")).thenReturn(Optional.of(exercise1));
         when(exerciseRepository.findById("exercise2-id")).thenReturn(Optional.of(exercise2));
 
-        workoutService.adjustWorkoutMuscleGroups(workoutId);
+        workoutService.adjustWorkoutMuscleGroups(workoutId, me);
 
         verify(workoutRepository).findById(workoutId);
-        verify(exerciseLogRepository).findAllByWorkoutId(workoutId);
+        verify(exerciseLogRepository).findAllByWorkoutIdAndUserId(workoutId, me.getId());
         verify(exerciseRepository).findById("exercise1-id");
         verify(exerciseRepository).findById("exercise2-id");
 

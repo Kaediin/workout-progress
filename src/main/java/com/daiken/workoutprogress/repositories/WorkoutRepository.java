@@ -12,14 +12,16 @@ import java.util.Optional;
 
 public interface WorkoutRepository extends MongoRepository<Workout, String> {
 
-    List<Workout> findWorkoutByUserId(String user_id);
+    int countWorkoutsByUserId(String user_id);
 
     long countWorkoutsByUserAndActive(User user, boolean active);
 
+    Optional<Workout> findWorkoutByIdAndUserId(String id, String user_id);
+
     Optional<Workout> findWorkoutByUserIdAndActive(String user_id, boolean active);
+
+    List<Workout> findWorkoutByUserId(String user_id);
 
     @Query("{ 'user.id': ?0, 'startDateTime' : { $gte: ?1, $lt: ?2 } }")
     List<Workout> findByUserIdEndDateTimeYearAndMonth(String userId, LocalDate startOfMonth, LocalDate startOfNextMonth);
-
-    int countWorkoutsByUserId(String user_id);
 }

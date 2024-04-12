@@ -33,7 +33,7 @@ public interface ExerciseLogRepository extends MongoRepository<ExerciseLog, Stri
                     "}",
             "{ '$sort' : { 'logDateTime' : -1 } }"
     })
-    List<ExerciseLog> findLastLogsByWorkoutIdAndExerciseId(String workout_id, String exercise_id);
+    List<ExerciseLog> findLastLogsByUserIdWorkoutIdAndExerciseId(String user_id, String workout_id, String exercise_id);
 
     @Aggregation(pipeline = {
             "{ '$match': {$and: [" +
@@ -48,9 +48,11 @@ public interface ExerciseLogRepository extends MongoRepository<ExerciseLog, Stri
 
     Optional<ExerciseLog> findFirstByUserIdAndExerciseIdAndWorkoutNotOrderByLogDateTimeDesc(String user_id, String exercise_id, Workout workout_id);
 
+    Optional<ExerciseLog> findByIdAndUserId(String id, String user_id);
+
     List<ExerciseLog> findAllByUserIdAndExerciseIdOrderByLogDateTimeDesc(String user_id, String exercise_id);
 
-    List<ExerciseLog> findAllByWorkoutId(String workout_id);
+    List<ExerciseLog> findAllByWorkoutIdAndUserId(String workout_id, String user_id);
 
     List<ExerciseLog> findAllByUserIdAndExerciseIdAndLogDateTimeBetween(String user_id, String exercise_id, LocalDateTime from, LocalDateTime to);
 }

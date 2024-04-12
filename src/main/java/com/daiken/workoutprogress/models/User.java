@@ -16,7 +16,7 @@ import java.util.Objects;
 public class User {
 
     @Id
-    public String id;
+    private String id;
 
     @Indexed(unique = true)
     private String fid;

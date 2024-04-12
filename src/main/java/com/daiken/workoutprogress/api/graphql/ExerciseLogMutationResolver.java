@@ -53,11 +53,11 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
      */
     public Workout addExerciseLog(String workoutId, ExerciseLogInput input, Boolean autoAdjust) {
         User me = userService.getContextUser();
-        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> {
+        Workout currentWorkout = workoutRepository.findWorkoutByIdAndUserId(workoutId, me.getId()).orElseThrow(() -> {
             log.error("[addExerciseLog] Workout not found with given id: {}", workoutId);
             return new NullPointerException("Workout not found with given id");
         });
-        Exercise exercise = exerciseRepository.findById(input.exerciseId()).orElseThrow(() -> {
+        Exercise exercise = exerciseRepository.findExerciseByIdAndUserId(input.exerciseId(), me.getId()).orElseThrow(() -> {
             log.error("[addExerciseLog] Exercise not found with given id: {}", input.exerciseId());
             return new NullPointerException("Exercise not found with given id");
         });
@@ -65,7 +65,7 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
 
 
         if (autoAdjust) {
-            workoutService.adjustWorkoutMuscleGroups(currentWorkout);
+            workoutService.adjustWorkoutMuscleGroups(currentWorkout, me);
         }
 
         return currentWorkout;
@@ -80,14 +80,14 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
     public Workout updateExerciseLog(String exerciseLogId, ExerciseLogInput input) {
         User me = userService.getContextUser();
 
-        ExerciseLog exerciseLog = exerciseLogRepository.findById(exerciseLogId).orElseThrow(() -> {
+        ExerciseLog exerciseLog = exerciseLogRepository.findByIdAndUserId(exerciseLogId, me.getId()).orElseThrow(() -> {
             log.error("[updateExerciseLog] Can't find exerciselog with given id: {}", exerciseLogId);
             return new NullPointerException("Can't find exerciselog with given id");
         });
 
         exerciseLog.update(input);
         exerciseLogRepository.save(exerciseLog);
-        return workoutRepository.findById(exerciseLog.getWorkout().getId()).orElse(null);
+        return workoutRepository.findWorkoutByIdAndUserId(exerciseLog.getWorkout().getId(), me.getId()).orElse(null);
     }
 
     /**
@@ -97,13 +97,14 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
      * @return true if removed successfully
      */
     public Boolean removeExerciseLog(String exerciseLogId, boolean autoAdjust) {
-        ExerciseLog exerciseLog = exerciseLogRepository.findById(exerciseLogId).orElseThrow(() -> {
+        User me = userService.getContextUser();
+        ExerciseLog exerciseLog = exerciseLogRepository.findByIdAndUserId(exerciseLogId, me.getId()).orElseThrow(() -> {
             log.error("[removeExerciseLog] ExerciseLog not found with given id: {}", exerciseLogId);
             return new NullPointerException("ExerciseLog not found with given id");
         });
         exerciseLogRepository.delete(exerciseLog);
         if (autoAdjust) {
-            workoutService.adjustWorkoutMuscleGroups(exerciseLog.getWorkout().getId());
+            workoutService.adjustWorkoutMuscleGroups(exerciseLog.getWorkout().getId(), me);
         }
         return true;
     }
@@ -118,7 +119,7 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
     public Workout reLogLatestLog(String workoutId, String zonedDateTimeString, Boolean autoAdjust) {
         User me = userService.getContextUser();
 
-        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> {
+        Workout currentWorkout = workoutRepository.findWorkoutByIdAndUserId(workoutId, me.getId()).orElseThrow(() -> {
             log.error("[reLogLatestLog] Workout not found with given id: {}", workoutId);
             return new NullPointerException("Workout not found with given id");
         });
@@ -130,7 +131,7 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
         exerciseLogRepository.save(new ExerciseLog(exerciseLog, zonedDateTimeString));
 
         if (autoAdjust) {
-            workoutService.adjustWorkoutMuscleGroups(currentWorkout);
+            workoutService.adjustWorkoutMuscleGroups(currentWorkout, me);
         }
 
         return currentWorkout;
@@ -145,11 +146,11 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
     public Workout reLogLog(String workoutId, ExerciseLogInput input) {
         User me = userService.getContextUser();
 
-        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> {
+        Workout currentWorkout = workoutRepository.findWorkoutByIdAndUserId(workoutId, me.getId()).orElseThrow(() -> {
             log.error("[reLogLog] Workout not found with given id: {}", workoutId);
             return new NullPointerException("Workout not found with given id");
         });
-        Exercise exercise = exerciseRepository.findById(input.exerciseId()).orElseThrow(() -> {
+        Exercise exercise = exerciseRepository.findExerciseByIdAndUserId(input.exerciseId(), me.getId()).orElseThrow(() -> {
             log.error("[reLogLog] Exercise not found with given id: {}", input.exerciseId());
             return new NullPointerException("Exercise not found with given id");
         });

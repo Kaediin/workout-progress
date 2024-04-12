@@ -1,9 +1,6 @@
 package com.daiken.workoutprogress.services;
 
-import com.daiken.workoutprogress.models.Exercise;
-import com.daiken.workoutprogress.models.MuscleGroup;
-import com.daiken.workoutprogress.models.MuscleGroupChartData;
-import com.daiken.workoutprogress.models.Workout;
+import com.daiken.workoutprogress.models.*;
 import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
 import com.daiken.workoutprogress.repositories.ExerciseRepository;
 import com.daiken.workoutprogress.repositories.WorkoutRepository;
@@ -39,19 +36,19 @@ public class WorkoutService {
      *
      * @param workoutId Workout ID
      */
-    public void adjustWorkoutMuscleGroups(String workoutId) {
-        adjustWorkoutMuscleGroups(workoutRepository.findById(workoutId).orElseThrow(() -> {
+    public void adjustWorkoutMuscleGroups(String workoutId, User me) {
+        adjustWorkoutMuscleGroups(workoutRepository.findWorkoutByIdAndUserId(workoutId, me.getId()).orElseThrow(() -> {
             log.error("Cant find workout with given id {}", workoutId);
             return new NullPointerException("Cant find workout with given id");
-        }));
+        }), me);
     }
 
     /**
      * Adjust the muscle groups for a workout.
      * @param workout Workout
      */
-    public void adjustWorkoutMuscleGroups(Workout workout) {
-        List<Exercise> exercisesDoneThisWorkout = exerciseLogRepository.findAllByWorkoutId(workout.getId())
+    public void adjustWorkoutMuscleGroups(Workout workout, User me) {
+        List<Exercise> exercisesDoneThisWorkout = exerciseLogRepository.findAllByWorkoutIdAndUserId(workout.getId(), me.getId())
                 .stream()
                 .map(it -> exerciseRepository.findById(it.getExercise().getId()).orElse(null))
                 .filter(Objects::nonNull)

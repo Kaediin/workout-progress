@@ -46,7 +46,7 @@ public class WorkoutResolver implements GraphQLResolver<Workout> {
         User me = userService.getContextUser();
         return exerciseLogRepository
                 .findAllByUserIdAndWorkoutId(me.getId(), workout.getId())
-                .peek(log -> log.setExercise(exerciseRepository.findById(log.getExercise().getId()).orElse(null)))
+                .peek(log -> log.setExercise(exerciseRepository.findExerciseByIdAndUserId(log.getExercise().getId(), me.getId()).orElse(null)))
                 .filter(log -> log.getExercise() != null)
                 .collect(Collectors.toList());
 
@@ -61,7 +61,7 @@ public class WorkoutResolver implements GraphQLResolver<Workout> {
         User me = userService.getContextUser();
         List<ExerciseLog> logs = exerciseLogRepository
                 .findAllByUserIdAndWorkoutId(me.getId(), workout.getId())
-                .peek(log -> log.setExercise(exerciseRepository.findById(log.getExercise().getId()).orElse(null)))
+                .peek(log -> log.setExercise(exerciseRepository.findExerciseByIdAndUserId(log.getExercise().getId(), me.getId()).orElse(null)))
                 .filter(log -> log.getExercise() != null)
                 .toList();
 

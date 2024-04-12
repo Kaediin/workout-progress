@@ -74,7 +74,8 @@ public class ExerciseMutationResolver implements GraphQLMutationResolver {
      * @return Updated exercise
      */
     public Exercise updateExercise(String id, ExerciseInput input) {
-        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> {
+        User me = userService.getContextUser();
+        Exercise exercise = exerciseRepository.findExerciseByIdAndUserId(id, me.getId()).orElseThrow(() -> {
             log.error("[updateExercise] Exercise not found with given id {}", id);
             return new NullPointerException("Exercise not found with given id");
         });
@@ -89,7 +90,7 @@ public class ExerciseMutationResolver implements GraphQLMutationResolver {
      */
     public Boolean deleteExercise(String id) {
         User me = userService.getContextUser();
-        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> {
+        Exercise exercise = exerciseRepository.findExerciseByIdAndUserId(id, me.getId()).orElseThrow(() -> {
             log.error("[deleteExercise] Exercise not found with given id {}", id);
             return new NullPointerException("Exercise not found with given id");
         });

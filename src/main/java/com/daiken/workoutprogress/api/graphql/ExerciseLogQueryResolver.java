@@ -56,7 +56,7 @@ public class ExerciseLogQueryResolver implements GraphQLQueryResolver {
     public List<ExerciseLog> latestLogsByExerciseId(String exerciseLogId) {
         User me = userService.getContextUser();
         ExerciseLog latestLoggedExercise = exerciseLogRepository.findLastLogByUserIdAndExerciseId(me.getId(), exerciseLogId).orElse(null);
-        return getExerciseLogsByExerciseId(exerciseLogId, latestLoggedExercise);
+        return getExerciseLogsByExerciseId(me.getId(), exerciseLogId, latestLoggedExercise);
     }
 
     /**
@@ -67,13 +67,13 @@ public class ExerciseLogQueryResolver implements GraphQLQueryResolver {
      */
     public List<ExerciseLog> latestLogsByExerciseIdAndNotWorkoutId(String exerciseLogId, String workoutId) {
         User me = userService.getContextUser();
-        Workout workout = workoutRepository.findById(workoutId).orElse(null);
+        Workout workout = workoutRepository.findWorkoutByIdAndUserId(workoutId, me.getId()).orElse(null);
         if (workout == null) {
             log.error("[latestLogsByExerciseIdAndNotWorkoutId] Workout with id {} not found", workoutId);
             return null;
         }
         ExerciseLog latestLoggedExercise = exerciseLogRepository.findFirstByUserIdAndExerciseIdAndWorkoutNotOrderByLogDateTimeDesc(me.getId(), exerciseLogId, workout).orElse(null);
-        return getExerciseLogsByExerciseId(exerciseLogId, latestLoggedExercise);
+        return getExerciseLogsByExerciseId(me.getId(), exerciseLogId, latestLoggedExercise);
     }
 
     /**
@@ -103,20 +103,21 @@ public class ExerciseLogQueryResolver implements GraphQLQueryResolver {
 
     /**
      * Get all exercise logs by exercise id and workout id associated with the given last logged exercise
+     * @param meId user id
      * @param exerciseLogId exercise log id
      * @param latestLoggedExercise last logged exercise
      * @return list of exercise logs
      */
-    private List<ExerciseLog> getExerciseLogsByExerciseId(String exerciseLogId, ExerciseLog latestLoggedExercise) {
+    private List<ExerciseLog> getExerciseLogsByExerciseId(String meId, String exerciseLogId, ExerciseLog latestLoggedExercise) {
         if (latestLoggedExercise == null || latestLoggedExercise.getWorkout().getId() == null) {
             log.error("[getExerciseLogsByExerciseId] ExerciseLog is null or workout id is null. {}", latestLoggedExercise);
             return null;
         }
 
         return exerciseLogRepository
-                .findLastLogsByWorkoutIdAndExerciseId(latestLoggedExercise.getWorkout().getId(), exerciseLogId)
+                .findLastLogsByUserIdWorkoutIdAndExerciseId(meId, latestLoggedExercise.getWorkout().getId(), exerciseLogId)
                 .stream()
-                .peek(it -> it.setExercise(exerciseRepository.findById(it.getExercise().getId()).orElse(null)))
+                .peek(it -> it.setExercise(exerciseRepository.findExerciseByIdAndUserId(it.getExercise().getId(), meId).orElse(null)))
                 .filter(it -> it.getExercise() != null)
                 .collect(Collectors.toList());
     }
