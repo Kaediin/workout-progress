@@ -15,8 +15,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,6 +32,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class CognitoAuthorizationFilter extends BasicAuthenticationFilter {
 
     private static final String TOKEN_PREFIX = "Bearer ";
@@ -47,8 +47,6 @@ public class CognitoAuthorizationFilter extends BasicAuthenticationFilter {
     private final CognitoService cognitoService;
     private final String userPoolId;
     private final String region;
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public CognitoAuthorizationFilter(CognitoService cognitoService, String userPoolId, String region,
                                       AuthenticationManager authManager) {
@@ -65,6 +63,8 @@ public class CognitoAuthorizationFilter extends BasicAuthenticationFilter {
         String header = request.getHeader(HEADER_STRING);
 
         if (header == null || !header.startsWith(TOKEN_PREFIX)) {
+            log.error("[CognitoAuthorizationFilter] Access denied: The Authorization header is missing crucial " +
+                    "information to be able to grant access.");
             response.addHeader("Error", "[CognitoAuthorizationFilter] Access denied: The Authorization " +
                     "header is missing crucial information to be able to grant access.");
             chain.doFilter(request, response);
@@ -81,6 +81,7 @@ public class CognitoAuthorizationFilter extends BasicAuthenticationFilter {
         // See if the 'mock' of CognitoService wants to process this token.
         UsernamePasswordAuthenticationToken processedToken = cognitoService.processAuthenticationToken(token);
         if (processedToken != null) {
+            log.info("[CognitoAuthorizationFilter] Token processed by CognitoService mock.");
             return processedToken;
         }
 
@@ -104,7 +105,7 @@ public class CognitoAuthorizationFilter extends BasicAuthenticationFilter {
             // Check if issuer matches our Cognito pool
             String issuer = decodedJWT.getIssuer();
             if (!cognitoIdentityPoolUrl.equals(issuer)) {
-                logger.debug(String.format("Issuer %s in JWT token doesn't match Cognito Identity Pool %s", issuer, cognitoIdentityPoolUrl));
+                log.debug(String.format("Issuer %s in JWT token doesn't match Cognito Identity Pool %s", issuer, cognitoIdentityPoolUrl));
                 return null;
             }
 
@@ -122,15 +123,15 @@ public class CognitoAuthorizationFilter extends BasicAuthenticationFilter {
                         grantedAuthorities);
 
                 if (sub != null) {
-                    String asn = FriendlyId.toFriendlyId(UUID.fromString(sub));
+                    String friendlyId = FriendlyId.toFriendlyId(UUID.fromString(sub));
 
-                    upaToken.setDetails(asn);
+                    upaToken.setDetails(friendlyId);
                 }
 
                 return upaToken;
             }
         } catch (MalformedURLException | JwkException | JWTVerificationException e) {
-            logger.debug("Unable to verify JWT token", e);
+            log.debug("Unable to verify JWT token", e);
             response.addHeader("Error", "[CognitoAuthorizationFilter] Unable to verify JWT token: "
                     + e.getMessage());
             Sentry.captureException(e);

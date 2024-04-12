@@ -6,8 +6,7 @@ import com.daiken.workoutprogress.models.MigrationRecord;
 import com.daiken.workoutprogress.utils.MigrationHelper;
 import com.daiken.workoutprogress.utils.MigrationUtil;
 import io.sentry.Sentry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationContext;
@@ -23,10 +22,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Slf4j
 @Service
 public class MigrationService {
 
-    private static final Logger logger = LoggerFactory.getLogger(MigrationService.class);
     private static final String LOCK_KEY = "Migrations";
 
     private ApplicationContext context;
@@ -44,7 +43,7 @@ public class MigrationService {
     public void start(ApplicationReadyEvent event) {
         context = event.getApplicationContext();
 
-        logger.info("start: running ordered migrations...");
+        log.info("start: running ordered migrations...");
 
         List<MigrationUtil> migrations;
 
@@ -61,7 +60,7 @@ public class MigrationService {
                     .map(MigrationUtil::duration)
                     .reduce(0, Integer::sum);
         } catch (Exception e) {
-            logger.error("start: failure while computing duration of migrations to run", e);
+            log.error("start: failure while computing duration of migrations to run", e);
             Sentry.captureException(e);
             return;
         }
@@ -76,7 +75,7 @@ public class MigrationService {
                 throw new Exception(String.join(", ", errors));
             }
         } catch (Exception e) {
-            logger.error("start: failure validating migrations: " + e.getMessage(), e);
+            log.error("start: failure validating migrations: " + e.getMessage(), e);
             Sentry.captureException(e);
             return;
         }
@@ -92,12 +91,12 @@ public class MigrationService {
                 }
             }
         } catch (Exception e) {
-            logger.error("start: failure executing migration: " + e.getMessage() + "\nmessages:\n" +
+            log.error("start: failure executing migration: " + e.getMessage() + "\nmessages:\n" +
                     String.join("\n", messageList), e);
             Sentry.captureException(e);
         }
 
-        logger.info("start: finished running ordered migrations");
+        log.info("start: finished running ordered migrations");
     }
 
     /**
@@ -107,7 +106,7 @@ public class MigrationService {
      * @return An error string; `null` if no errors occurred.
      */
     public String runUnordered(String key) {
-        logger.info("runUnordered: running unordered migration '" + key + "'...");
+        log.info("runUnordered: running unordered migration '" + key + "'...");
 
         List<MigrationUtil> migrations = null;
 
@@ -123,7 +122,7 @@ public class MigrationService {
                     .map(MigrationUtil::duration)
                     .reduce(0, Integer::sum);
         } catch (Exception e) {
-            logger.error("runUnordered: failure while computing duration of migration '" + key + "': " +
+            log.error("runUnordered: failure while computing duration of migration '" + key + "': " +
                     e.getMessage(), e);
             Sentry.captureException(e);
             return "failure while computing duration of migration '" + key + "': " + e.getMessage();
@@ -140,19 +139,19 @@ public class MigrationService {
             }
         } catch (Exception e) {
 
-            logger.error("runUnordered: failure validating unordered migration '" + key + "': " + e.getMessage(), e);
+            log.error("runUnordered: failure validating unordered migration '" + key + "': " + e.getMessage(), e);
             Sentry.captureException(e);
             return "failure validating unordered migration '" + key + "': " + e.getMessage();
         }
 
         if (migrations.isEmpty()) {
 
-            logger.error("runUnordered: unordered migration '" + key + "' does not exist");
+            log.error("runUnordered: unordered migration '" + key + "' does not exist");
 
             return "unordered migration '" + key + "' does not exist";
         } else if (migrations.size() > 1) {
 
-            logger.error("runUnordered: unordered migration '" + key + "' is not unique");
+            log.error("runUnordered: unordered migration '" + key + "' is not unique");
 
             return "unordered migration '" + key + "' is not unique";
         }
@@ -166,10 +165,10 @@ public class MigrationService {
             }
         } catch (Exception e) {
 
-            logger.error("runUnordered: failure executing unordered migration '" + key + "': " + e.getMessage(), e);
+            log.error("runUnordered: failure executing unordered migration '" + key + "': " + e.getMessage(), e);
 
             for (String message : messageList) {
-                logger.error(message);
+                log.error(message);
             }
             Sentry.captureException(e);
             return "failure executing unordered migration '" + key + "': " + e.getMessage() + "\nmessages:\n" +
@@ -177,7 +176,7 @@ public class MigrationService {
         }
 
 
-        logger.info("runUnordered: finished running unordered migrations\nmessages:\n" +
+        log.info("runUnordered: finished running unordered migrations\nmessages:\n" +
                 String.join("\n", messageList));
 
         return "[OK]\n" + String.join("\n", messageList);

@@ -74,4 +74,20 @@ public class ExerciseLog {
             this.remark = input.remark();
         }
     }
+
+    @Override
+    public String toString() {
+        // All attributes are included in the toString method for debugging purposes with null checks
+        return "ExerciseLog{" +
+                "id='" + id + '\'' +
+                ", logDateTime=" + logDateTime +
+                ", exercise=" + (exercise != null ? exercise.getId() : null) +
+                ", workout=" + (workout != null ? workout.getId() : null) +
+                ", user=" + (user != null ? user.getId() : null) +
+                ", repetitions=" + repetitions +
+                ", logValue=" + logValue +
+                ", warmup=" + warmup +
+                ", remark='" + remark + '\'' +
+                '}';
+    }
 }

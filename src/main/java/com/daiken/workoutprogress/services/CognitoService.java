@@ -2,6 +2,7 @@ package com.daiken.workoutprogress.services;
 
 import com.daiken.workoutprogress.models.CognitoUser;
 import com.devskiller.friendly_id.FriendlyId;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import software.amazon.awssdk.services.cognitoidentityprovider.model.ListUsersRe
 import java.util.Collection;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class CognitoService {
 
@@ -55,7 +57,10 @@ public class CognitoService {
     }
 
     public Optional<CognitoUser> findUser(String fid) {
-        if (fid == null) return Optional.empty();
+        if (fid == null) {
+            log.error("[findUser] fid is null");
+            return Optional.empty();
+        }
 
         return findCognitoUserBySubjectFilter("sub=\"" + FriendlyId.toUuid(fid) + "\"");
     }

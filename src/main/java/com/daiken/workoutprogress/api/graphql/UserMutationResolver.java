@@ -8,10 +8,12 @@ import com.daiken.workoutprogress.repositories.BiometricsLogRepository;
 import com.daiken.workoutprogress.repositories.UserRepository;
 import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component
 public class UserMutationResolver implements GraphQLMutationResolver {
@@ -28,7 +30,8 @@ public class UserMutationResolver implements GraphQLMutationResolver {
     }
 
     public User createUser(UserInput userInput) {
-//        User user = new User(userInput);
+        // This function serves as a placeholder for the schema.graphqls,
+        // since that needs at least 1 mutation for it to be valid
         return null;
     }
 

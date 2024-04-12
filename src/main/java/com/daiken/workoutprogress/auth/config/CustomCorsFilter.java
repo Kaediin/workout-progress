@@ -3,6 +3,7 @@ package com.daiken.workoutprogress.auth.config;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.Arrays;
 
+@Slf4j
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CustomCorsFilter implements Filter {
@@ -32,6 +34,7 @@ public class CustomCorsFilter implements Filter {
                     .anyMatch(s -> s.equals("*") || s.equalsIgnoreCase(origin))) {
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", origin);
             } else {
+                log.error("[CustomCorsFilter] Rejected request. The allowed origins does NOT include the following origin: " + origin);
                 httpServletResponse.addHeader("Error", "[CustomCorsFilter] Rejected request. The allowed " +
                         "origins does NOT include the following origin: " + origin);
             }

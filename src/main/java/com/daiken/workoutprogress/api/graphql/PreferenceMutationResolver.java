@@ -6,10 +6,12 @@ import com.daiken.workoutprogress.models.User;
 import com.daiken.workoutprogress.repositories.PreferenceRepository;
 import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component
 public class PreferenceMutationResolver implements GraphQLMutationResolver {

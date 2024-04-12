@@ -10,6 +10,7 @@ import com.daiken.workoutprogress.repositories.WorkoutRepository;
 import com.daiken.workoutprogress.services.ExerciseLogService;
 import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLQueryResolver;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 @PreAuthorize("isAuthenticated()")
 @Service
 public class ExerciseLogQueryResolver implements GraphQLQueryResolver {
@@ -51,7 +53,10 @@ public class ExerciseLogQueryResolver implements GraphQLQueryResolver {
     public List<ExerciseLog> latestLogsByExerciseIdAndNotWorkoutId(String exerciseLogId, String workoutId) {
         User me = userService.getContextUser();
         Workout workout = workoutRepository.findById(workoutId).orElse(null);
-        if (workout == null) return null;
+        if (workout == null) {
+            log.error("[latestLogsByExerciseIdAndNotWorkoutId] Workout with id {} not found", workoutId);
+            return null;
+        }
         ExerciseLog latestLoggedExercise = exerciseLogRepository.findFirstByUserIdAndExerciseIdAndWorkoutNotOrderByLogDateTimeDesc(me.getId(), exerciseLogId, workout).orElse(null);
         return getExerciseLogsByExerciseId(exerciseLogId, latestLoggedExercise);
     }
@@ -70,7 +75,10 @@ public class ExerciseLogQueryResolver implements GraphQLQueryResolver {
     }
 
     private List<ExerciseLog> getExerciseLogsByExerciseId(String exerciseLogId, ExerciseLog latestLoggedExercise) {
-        if (latestLoggedExercise == null || latestLoggedExercise.getWorkout().getId() == null) return null;
+        if (latestLoggedExercise == null || latestLoggedExercise.getWorkout().getId() == null) {
+            log.error("[getExerciseLogsByExerciseId] ExerciseLog is null or workout id is null. {}", latestLoggedExercise);
+            return null;
+        }
 
         return exerciseLogRepository
                 .findLastLogsByWorkoutIdAndExerciseId(latestLoggedExercise.getWorkout().getId(), exerciseLogId)

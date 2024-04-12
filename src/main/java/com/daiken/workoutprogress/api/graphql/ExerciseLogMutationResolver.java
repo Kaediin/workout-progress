@@ -11,10 +11,12 @@ import com.daiken.workoutprogress.repositories.WorkoutRepository;
 import com.daiken.workoutprogress.services.UserService;
 import com.daiken.workoutprogress.services.WorkoutService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component
 public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
@@ -40,12 +42,14 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
 
     public Workout addExerciseLog(String workoutId, ExerciseLogInput input, Boolean autoAdjust) {
         User me = userService.getContextUser();
-        if (me == null) {
-            throw new NullPointerException("Me not found!");
-        }
-
-        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
-        Exercise exercise = exerciseRepository.findById(input.exerciseId()).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
+        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> {
+            log.error("[addExerciseLog] Workout not found with given id: {}", workoutId);
+            return new NullPointerException("Workout not found with given id");
+        });
+        Exercise exercise = exerciseRepository.findById(input.exerciseId()).orElseThrow(() -> {
+            log.error("[addExerciseLog] Exercise not found with given id: {}", input.exerciseId());
+            return new NullPointerException("Exercise not found with given id");
+        });
         exerciseLogRepository.save(new ExerciseLog(input, me, currentWorkout, exercise));
 
 
@@ -58,17 +62,22 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
 
     public Workout updateExerciseLog(String exerciseLogId, ExerciseLogInput input) {
         User me = userService.getContextUser();
-        if (me == null) {
-            throw new NullPointerException("Me not found!");
-        }
-        ExerciseLog exerciseLog = exerciseLogRepository.findById(exerciseLogId).orElseThrow(() -> new NullPointerException("Can't find exerciselog with given id"));
+
+        ExerciseLog exerciseLog = exerciseLogRepository.findById(exerciseLogId).orElseThrow(() -> {
+            log.error("[updateExerciseLog] Can't find exerciselog with given id: {}", exerciseLogId);
+            return new NullPointerException("Can't find exerciselog with given id");
+        });
+
         exerciseLog.update(input);
         exerciseLogRepository.save(exerciseLog);
         return workoutRepository.findById(exerciseLog.getWorkout().getId()).orElse(null);
     }
 
     public Boolean removeExerciseLog(String exerciseLogId, boolean autoAdjust) {
-        ExerciseLog exerciseLog = exerciseLogRepository.findById(exerciseLogId).orElseThrow(() -> new NullPointerException("ExerciseLog not found with given id"));
+        ExerciseLog exerciseLog = exerciseLogRepository.findById(exerciseLogId).orElseThrow(() -> {
+            log.error("[removeExerciseLog] ExerciseLog not found with given id: {}", exerciseLogId);
+            return new NullPointerException("ExerciseLog not found with given id");
+        });
         exerciseLogRepository.delete(exerciseLog);
         if (autoAdjust) {
             workoutService.adjustWorkoutMuscleGroups(exerciseLog.getWorkout().getId());
@@ -78,13 +87,16 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
 
     public Workout reLogLatestLog(String workoutId, String zonedDateTimeString, Boolean autoAdjust) {
         User me = userService.getContextUser();
-        if (me == null) {
-            throw new NullPointerException("Me not found!");
-        }
 
-        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
+        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> {
+            log.error("[reLogLatestLog] Workout not found with given id: {}", workoutId);
+            return new NullPointerException("Workout not found with given id");
+        });
         ExerciseLog exerciseLog = exerciseLogRepository.findLastLogByUserIdAndWorkoutId(me.getId(), workoutId)
-                .orElseThrow(() -> new NullPointerException("No log for given workout id!"));
+                .orElseThrow(() -> {
+                    log.error("[reLogLatestLog] No log for given workout id: {}", workoutId);
+                    return new NullPointerException("No log for given workout id!");
+                });
         exerciseLogRepository.save(new ExerciseLog(exerciseLog, zonedDateTimeString));
 
         if (autoAdjust) {
@@ -96,12 +108,15 @@ public class ExerciseLogMutationResolver implements GraphQLMutationResolver {
 
     public Workout reLogLog(String workoutId, ExerciseLogInput input) {
         User me = userService.getContextUser();
-        if (me == null) {
-            throw new NullPointerException("Me not found!");
-        }
 
-        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Workout not found with given id"));
-        Exercise exercise = exerciseRepository.findById(input.exerciseId()).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
+        Workout currentWorkout = workoutRepository.findById(workoutId).orElseThrow(() -> {
+            log.error("[reLogLog] Workout not found with given id: {}", workoutId);
+            return new NullPointerException("Workout not found with given id");
+        });
+        Exercise exercise = exerciseRepository.findById(input.exerciseId()).orElseThrow(() -> {
+            log.error("[reLogLog] Exercise not found with given id: {}", input.exerciseId());
+            return new NullPointerException("Exercise not found with given id");
+        });
         exerciseLogRepository.save(new ExerciseLog(input, me, currentWorkout, exercise));
 
         return currentWorkout;

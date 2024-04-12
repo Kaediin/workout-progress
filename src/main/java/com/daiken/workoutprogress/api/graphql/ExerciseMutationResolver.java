@@ -9,20 +9,22 @@ import com.daiken.workoutprogress.repositories.ExerciseRepository;
 import com.daiken.workoutprogress.services.ExerciseService;
 import com.daiken.workoutprogress.services.UserService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Slf4j
 @PreAuthorize("isAuthenticated()")
 @Component
 public class ExerciseMutationResolver implements GraphQLMutationResolver {
 
-    ExerciseLogRepository exerciseLogRepository;
-    ExerciseRepository exerciseRepository;
-    ExerciseService exerciseService;
-    UserService userService;
+    private final ExerciseLogRepository exerciseLogRepository;
+    private final ExerciseRepository exerciseRepository;
+    private final ExerciseService exerciseService;
+    private final UserService userService;
 
     @Autowired
     public ExerciseMutationResolver(ExerciseLogRepository exerciseLogRepository,
@@ -52,14 +54,20 @@ public class ExerciseMutationResolver implements GraphQLMutationResolver {
     }
 
     public Exercise updateExercise(String id, ExerciseInput input) {
-        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
+        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> {
+            log.error("[updateExercise] Exercise not found with given id {}", id);
+            return new NullPointerException("Exercise not found with given id");
+        });
         exercise.update(input);
         return exerciseRepository.save(exercise);
     }
 
     public Boolean deleteExercise(String id) {
         User me = userService.getContextUser();
-        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> new NullPointerException("Exercise not found with given id"));
+        Exercise exercise = exerciseRepository.findById(id).orElseThrow(() -> {
+            log.error("[deleteExercise] Exercise not found with given id {}", id);
+            return new NullPointerException("Exercise not found with given id");
+        });
         List<ExerciseLog> logs = exerciseLogRepository.findAllByUserIdAndExerciseIdOrderByLogDateTimeDesc(me.getId(), exercise.getId());
         exerciseLogRepository.deleteAll(logs);
         exerciseRepository.delete(exercise);

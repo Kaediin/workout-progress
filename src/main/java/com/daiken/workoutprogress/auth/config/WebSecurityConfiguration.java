@@ -2,6 +2,7 @@ package com.daiken.workoutprogress.auth.config;
 
 import com.daiken.workoutprogress.services.CognitoService;
 import io.sentry.Sentry;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -15,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, proxyTargetClass = true)
@@ -73,6 +75,7 @@ public class WebSecurityConfiguration {
                                 authenticationConfiguration.getAuthenticationManager()), CognitoAuthorizationFilter.class)
                         .addFilterAfter(new SecureCookieFilter(), CognitoAuthorizationFilter.class);
             } catch (Exception e) {
+                log.error("[filterChain] Error configuring security filter chain", e);
                 Sentry.captureException(e);
             }
         });

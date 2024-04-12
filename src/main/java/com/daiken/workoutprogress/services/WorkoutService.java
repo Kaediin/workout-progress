@@ -7,12 +7,14 @@ import com.daiken.workoutprogress.models.Workout;
 import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
 import com.daiken.workoutprogress.repositories.ExerciseRepository;
 import com.daiken.workoutprogress.repositories.WorkoutRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class WorkoutService {
 
@@ -30,7 +32,10 @@ public class WorkoutService {
     }
 
     public void adjustWorkoutMuscleGroups(String workoutId) {
-        adjustWorkoutMuscleGroups(workoutRepository.findById(workoutId).orElseThrow(() -> new NullPointerException("Cant find workout with given id")));
+        adjustWorkoutMuscleGroups(workoutRepository.findById(workoutId).orElseThrow(() -> {
+            log.error("Cant find workout with given id {}", workoutId);
+            return new NullPointerException("Cant find workout with given id");
+        }));
     }
 
     public void adjustWorkoutMuscleGroups(Workout workout) {

@@ -4,6 +4,7 @@ import com.daiken.workoutprogress.exceptions.UnauthorizedException;
 import com.daiken.workoutprogress.models.CognitoUser;
 import com.daiken.workoutprogress.models.User;
 import com.daiken.workoutprogress.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 import static org.springframework.security.core.context.SecurityContextHolder.getContext;
 
+@Slf4j
 @Service
 public class UserService {
 
@@ -49,6 +51,7 @@ public class UserService {
 
         Optional<User> user = userRepository.findOneByFid(fid.get());
         if (user.isEmpty()) {
+            log.info("[findUser] User not found, creating new one");
             // Create a new user
             return Optional.of(updateUser(new User(fid.get())));
         }
@@ -58,6 +61,9 @@ public class UserService {
     public User getContextUser() {
         Authentication auth = getContext().getAuthentication();
         String fid = auth.getDetails().toString();
-        return findUserByFID(fid).orElseThrow(() -> new UnauthorizedException("Cannot find user"));
+        return findUserByFID(fid).orElseThrow(() -> {
+            log.error("[getContextUser] Cannot find user");
+            return new UnauthorizedException("Cannot find user");
+        });
     }
 }
