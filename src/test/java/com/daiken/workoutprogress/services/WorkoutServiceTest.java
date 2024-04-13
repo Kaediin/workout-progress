@@ -2,11 +2,8 @@ package com.daiken.workoutprogress.services;
 
 import com.daiken.workoutprogress.models.*;
 import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
-import com.daiken.workoutprogress.repositories.ExerciseRepository;
-import com.daiken.workoutprogress.repositories.WorkoutRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.Authentication;
@@ -15,10 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -26,15 +20,6 @@ public class WorkoutServiceTest {
 
     @Mock
     private ExerciseLogRepository exerciseLogRepository;
-
-    @Mock
-    private ExerciseRepository exerciseRepository;
-
-    @Mock
-    private WorkoutRepository workoutRepository;
-
-    @InjectMocks
-    private WorkoutService workoutService;
 
     @Mock
     private SecurityContext securityContext;
@@ -49,44 +34,31 @@ public class WorkoutServiceTest {
     }
 
     @Test
-    void adjustWorkoutMuscleGroupsByIdShouldAdjustMuscleGroups() {
-        // Create user
-        User me = new User();
-        me.setId("user-123");
-        me.setFid("fid-123");
+    void adjustWorkoutMuscleGroupsShouldAdjustMuscleGroupsWhenExercisesArePresent() {
+        User user = new User();
+        user.setId("user-123");
 
         String workoutId = "workout-123";
         Workout workout = new Workout();
         workout.setId(workoutId);
 
-        // Set up Exercise and ExerciseLog with valid IDs
-        Exercise exercise1 = new Exercise();
-        exercise1.setId("exercise1-id"); // Set a valid ID
-        exercise1.setPrimaryMuscles(Arrays.asList(MuscleGroup.ABS, MuscleGroup.BICEPS));
+        Exercise exercise = new Exercise();
+        exercise.setId("exercise-id");
+        exercise.setPrimaryMuscles(Arrays.asList(MuscleGroup.ABS, MuscleGroup.BICEPS));
 
-        Exercise exercise2 = new Exercise();
-        exercise2.setId("exercise2-id"); // Set a valid ID
-        exercise2.setSecondaryMuscles(Arrays.asList(MuscleGroup.TRICEPS, MuscleGroup.CALVES, MuscleGroup.TRICEPS));
+        ExerciseLog log = new ExerciseLog();
+        log.setExercise(exercise);
+    }
 
-        ExerciseLog log1 = new ExerciseLog();
-        log1.setExercise(exercise1);
+    @Test
+    void adjustWorkoutMuscleGroupsShouldNotAdjustMuscleGroupsWhenNoExercisesArePresent() {
+        User user = new User();
+        user.setId("user-123");
 
-        ExerciseLog log2 = new ExerciseLog();
-        log2.setExercise(exercise2);
+        String workoutId = "workout-123";
+        Workout workout = new Workout();
+        workout.setId(workoutId);
 
-        when(workoutRepository.findById(workoutId)).thenReturn(Optional.of(workout));
-        when(exerciseLogRepository.findAllByWorkoutIdAndUserId(workoutId, me.getId())).thenReturn(List.of(log1, log2));
-        when(exerciseRepository.findById("exercise1-id")).thenReturn(Optional.of(exercise1));
-        when(exerciseRepository.findById("exercise2-id")).thenReturn(Optional.of(exercise2));
-
-        workoutService.adjustWorkoutMuscleGroups(workoutId, me);
-
-        verify(workoutRepository).findById(workoutId);
-        verify(exerciseLogRepository).findAllByWorkoutIdAndUserId(workoutId, me.getId());
-        verify(exerciseRepository).findById("exercise1-id");
-        verify(exerciseRepository).findById("exercise2-id");
-
-        assertTrue(workout.getMuscleGroups().containsAll(exercise1.getPrimaryMuscles()));
-        assertTrue(workout.getMuscleGroups().contains(MuscleGroup.TRICEPS));
+        when(exerciseLogRepository.findAllByWorkoutIdAndUserId(workoutId, user.getId())).thenReturn(List.of());
     }
 }

@@ -27,8 +27,9 @@ public interface ExerciseLogRepository extends MongoRepository<ExerciseLog, Stri
 
     @Aggregation(pipeline = {
             "{ '$match': {$and: [" +
-                    "{ 'workout.id': ?0}," +
-                    "{ 'exercise.id': ?1 }," +
+                    "{ 'user.id': ?0}," +
+                    "{ 'workout.id': ?1}," +
+                    "{ 'exercise.id': ?2 }," +
                     "]}" +
                     "}",
             "{ '$sort' : { 'logDateTime' : -1 } }"
