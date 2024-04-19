@@ -110,8 +110,8 @@ public class WorkoutQueryResolver implements GraphQLQueryResolver {
      * Get my workout chart data
      * @return List of workout chart data
      */
-    public List<MuscleGroupChartData> chartDataMuscleGroups() {
-        List<MuscleGroup> muscleGroupsPerWorkout = myWorkouts()
+    public List<MuscleGroupChartData> chartDataMuscleGroups(String zonedDateTimeString) {
+        List<MuscleGroup> muscleGroupsPerWorkout = (zonedDateTimeString != null ? workoutsOfCurrentMonth(zonedDateTimeString) : myWorkouts())
                 .stream()
                 .flatMap(workout -> workout.getMuscleGroups().stream()).toList();
         List<MuscleGroupChartData> muscleGroupChartData = workoutService.mapMuscleGroupsToChartData(muscleGroupsPerWorkout);

@@ -77,8 +77,8 @@ extend type Query {
     countTotalTimeAllMyWorkoutsInMinutes: Float!
     "Count my workouts"
     countMyWorkouts: Int!
-    "Get chart data per muscle group"
-    chartDataMuscleGroups: [MuscleGroupChartData!]!
+    "Get chart data per muscle group for all workouts of user by current month with given timestamp"
+    chartDataMuscleGroups(zonedDateTimeString: String): [MuscleGroupChartData!]!
 }
 
 extend type Mutation {
