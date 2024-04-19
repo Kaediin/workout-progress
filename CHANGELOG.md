@@ -1,3 +1,15 @@
+## [v0.3.1]
+
+### Added
+
+- #37: Logging for whole project
+- #37: Updated security by providing user checks for all queries and mutations
+- #37: JavaDoc for all classes and methods
+
+### Changed
+
+- #42: Improved pie chart data by returning muscle groups distribution for selection month
+
 ## [v0.3.0]
 
 ### Added
