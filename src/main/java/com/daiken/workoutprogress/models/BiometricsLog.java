@@ -21,7 +21,7 @@ public class BiometricsLog {
     @DBRef(lazy = true)
     private User user;
 
-    private Float value;
+    private Double value;
 
     private BiometricsType type;
 
@@ -36,7 +36,8 @@ public class BiometricsLog {
 
     public BiometricsLog(User user, BiometricsLogInput input) {
         this.user = user;
-        this.value = input.value();
+        // Round value to 2 decimal places
+        this.value = input.value() != null ? Math.round(input.value() * 100.0) / 100.0 : null;
         this.type = input.type();
         this.unit = input.unit();
         this.logDate = ZonedDateTime.parse(input.logDate()).toLocalDateTime();
