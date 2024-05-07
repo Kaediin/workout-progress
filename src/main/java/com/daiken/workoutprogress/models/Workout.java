@@ -28,6 +28,8 @@ public class Workout implements Comparable<Workout> {
 
     @DBRef(lazy = true)
     private User user;
+    @DBRef(lazy = true)
+    private Program program;
 
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
@@ -39,6 +41,8 @@ public class Workout implements Comparable<Workout> {
     private ExternalHealthProviderData externalHealthProviderData;
 
     private Long estimatedCaloriesBurned;
+
+    private WorkoutStatus status;
 
     public Workout(String id, String name, List<MuscleGroup> muscleGroups) {
         this.id = id;

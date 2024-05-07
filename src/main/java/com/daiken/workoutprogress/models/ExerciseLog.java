@@ -39,6 +39,8 @@ public class ExerciseLog {
 
     private String remark;
 
+    private Integer effort;
+
     public ExerciseLog(ExerciseLog copyLog, String zonedDateTimeString) {
         this.user = copyLog.user;
         this.exercise = copyLog.exercise;
@@ -72,6 +74,9 @@ public class ExerciseLog {
         }
         if (input.remark() != null) {
             this.remark = input.remark();
+        }
+        if (input.effort() != null) {
+            this.effort = input.effort();
         }
     }
 

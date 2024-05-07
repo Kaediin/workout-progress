@@ -49,7 +49,7 @@ public class WorkoutQueryResolver implements GraphQLQueryResolver {
      */
     public List<Workout> myWorkouts() {
         User me = userService.getContextUser();
-        List<Workout> workouts = workoutRepository.findWorkoutByUserId(me.getId());
+        List<Workout> workouts = workoutRepository.findWorkoutByUserIdAndProgramIsNull(me.getId());
         Collections.sort(workouts);
         return workouts;
     }

@@ -1,5 +1,9 @@
 scalar LocalDateTime
 
+enum WorkoutStatus {
+    STARTED, ENDED, SCHEDULED
+}
+
 enum MuscleGroup {
     ABDUCTOR
     ABS
@@ -49,6 +53,8 @@ type Workout {
     remark: String
     externalHealthProviderData: ExternalHealthProviderData
     estimatedCaloriesBurned: Float
+    status: WorkoutStatus!
+    program: Program
 }
 
 input WorkoutInput {

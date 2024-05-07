@@ -20,7 +20,7 @@ public interface WorkoutRepository extends MongoRepository<Workout, String> {
 
     Optional<Workout> findWorkoutByUserIdAndActive(String user_id, boolean active);
 
-    List<Workout> findWorkoutByUserId(String user_id);
+    List<Workout> findWorkoutByUserIdAndProgramIsNull(String user_id);
 
     @Query("{ 'user.id': ?0, 'startDateTime' : { $gte: ?1, $lt: ?2 } }")
     List<Workout> findByUserIdEndDateTimeYearAndMonth(String userId, LocalDate startOfMonth, LocalDate startOfNextMonth);

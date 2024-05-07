@@ -1,0 +1,120 @@
+enum ProgramLogGroupType {
+    WARMUP, MAIN, COOLDOWN
+}
+
+type ScheduledProgram {
+    id: ID!
+    program: Program!
+    user: User!
+    remark: String
+    "The date and time when the program is scheduled for."
+    scheduledDateTime: LocalDateTime!
+    "The date and time when the program is started."
+    startDateTime: LocalDateTime
+    "The date and time when the program is ended."
+    endedDateTime: LocalDateTime
+    "The date and time when the program is created."
+    createdDateTime: LocalDateTime!
+    "Workout created by scheduling a program"
+    workout: Workout!
+}
+
+input ScheduledProgramInput {
+    programId: ID!
+    workoutName: String!
+    scheduleZonedDateTime: String!
+    zonedDateTime: String!
+    remark: String
+}
+
+type Program {
+    id: ID!
+    name: String!
+    "The date and time when the program was created."
+    createdDateTime: LocalDateTime!
+    active: Boolean!
+    remark: String
+    "The external health provider data. (e.g. Apple Health)"
+    externalHealthProviderData: ExternalHealthProviderData
+    "The estimated calories burned by the program."
+    estimatedCaloriesBurned: Int
+    "The groups of the program."
+    logGroups: [ProgramLogGroup!]!
+}
+
+input ProgramInput {
+    name: String!
+    zonedDateTime: String!
+    remark: String
+}
+
+type ProgramLogGroup {
+    id: ID!
+    program: Program!
+    type: ProgramLogGroupType!
+    logs: [ProgramLog!]!
+}
+
+input ProgramLogGroupInput {
+    programId: ID!
+    type: ProgramLogGroupType!
+    logs: [ProgramLogInput!]!
+}
+
+type ProgramLog {
+    id: ID
+    "The program log group of the program log."
+    programLogGroup: ProgramLogGroup
+    "The program attached"
+    program: Program
+    repetitions: Int!
+    logValue: LogValue!
+    exercise: Exercise
+    "The subdivision of the program log."
+    subdivisions: [ProgramLog!]
+    "Interval in seconds."
+    intervalSeconds: Int
+    "Cooldown in seconds."
+    cooldownSeconds: Int
+    "Effort on scale of 1 to 100"
+    effort: Int
+}
+
+input ProgramLogInput {
+    programLogGroupId: ID!
+    exerciseId: ID
+    repetitions: Int!
+    logValue: LogValueInput!
+    subdivisions: [ProgramLogInput!]
+    intervalSeconds: Int
+    cooldownSeconds: Int
+    effort: Int
+}
+
+extend type Query {
+    "Fetch all my programs"
+    myPrograms: [Program!]
+    "Fetch all my scheduled programs"
+    myScheduledPrograms: [ScheduledProgram!]
+    "Fetch program by ID"
+    programById(id: ID!): Program
+    "Fetch all program log groups by program ID"
+    programLogGroupsByProgramId(programId: ID!): [ProgramLogGroup!]
+}
+
+extend type Mutation {
+    createProgram(input: ProgramInput): Program!
+    updateProgram(id: ID! input: ProgramInput): Program!
+    deleteProgram(id: ID!): Boolean!
+
+    createProgramLogGroup(input: ProgramLogGroupInput): ProgramLogGroup!
+    updateProgramLogGroup(id: ID! type: ProgramLogGroupType): ProgramLogGroup!
+    deleteProgramLogGroup(id: ID!): Boolean!
+
+    createProgramLog(input: ProgramLogInput): ProgramLog!
+    updateProgramLog(id: ID! input: ProgramLogInput): ProgramLog!
+    deleteProgramLog(id: ID!): Boolean!
+
+    scheduleProgram(input: ScheduledProgramInput!): ScheduledProgram!
+    deleteScheduledProgram(id: ID!): Boolean!
+}

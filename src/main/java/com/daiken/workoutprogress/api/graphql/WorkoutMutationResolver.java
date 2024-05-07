@@ -5,6 +5,7 @@ import com.daiken.workoutprogress.api.graphql.input.WorkoutInput;
 import com.daiken.workoutprogress.models.ExerciseLog;
 import com.daiken.workoutprogress.models.User;
 import com.daiken.workoutprogress.models.Workout;
+import com.daiken.workoutprogress.models.WorkoutStatus;
 import com.daiken.workoutprogress.repositories.ExerciseLogRepository;
 import com.daiken.workoutprogress.repositories.WorkoutRepository;
 import com.daiken.workoutprogress.services.UserService;
@@ -54,6 +55,7 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
         }
         User user = userService.getContextUser();
         Workout workout = new Workout(input, userService.getContextUser(), true);
+        workout.setStatus(WorkoutStatus.STARTED);
 
         // Deactivate the active workout if there is any
         Workout activeWorkout = workoutRepository.findWorkoutByUserIdAndActive(user.getId(), true).orElse(null);

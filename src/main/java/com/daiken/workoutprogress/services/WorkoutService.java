@@ -54,13 +54,25 @@ public class WorkoutService {
                 .filter(Objects::nonNull)
                 .toList();
 
-        Set<MuscleGroup> groupsBasedOnPrimary = exercisesDoneThisWorkout
+        workout.setMuscleGroups(getMuscleGroupsByExercises(exercisesDoneThisWorkout));
+
+        workoutRepository.save(workout);
+    }
+
+    /**
+     * Get the muscle groups for a list of exercises.
+     *
+     * @param exercises List of exercises
+     * @return List of muscle groups
+     */
+    public List<MuscleGroup> getMuscleGroupsByExercises(List<Exercise> exercises) {
+        Set<MuscleGroup> groupsBasedOnPrimary = exercises
                 .stream()
                 .filter(it -> it.getPrimaryMuscles() != null)
                 .flatMap(it -> it.getPrimaryMuscles().stream())
                 .collect(Collectors.toSet());
 
-        Set<MuscleGroup> groupsBasedOnSecondary = exercisesDoneThisWorkout
+        Set<MuscleGroup> groupsBasedOnSecondary = exercises
                 .stream()
                 .filter(it -> it.getSecondaryMuscles() != null)
                 .filter(distinctByKey(Exercise::getId))
@@ -73,11 +85,9 @@ public class WorkoutService {
 
         groupsBasedOnPrimary.addAll(groupsBasedOnSecondary);
 
-        workout.setMuscleGroups(groupsBasedOnPrimary
-                .stream()
+        return groupsBasedOnPrimary.stream()
                 .sorted(Comparator.comparing(MuscleGroup::name))
-                .collect(Collectors.toList()));
-        workoutRepository.save(workout);
+                .toList();
     }
 
     /**

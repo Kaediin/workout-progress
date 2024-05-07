@@ -20,6 +20,7 @@ type ExerciseLog {
     warmup: Boolean
     remark: String
     workout: Workout!
+    effort: Int
 }
 
 type GroupedExerciseLog {
@@ -34,6 +35,7 @@ input ExerciseLogInput {
     logValue: LogValueInput!
     warmup: Boolean!
     remark: String
+    effort: Int
 }
 
 type ExerciseLineChartData {

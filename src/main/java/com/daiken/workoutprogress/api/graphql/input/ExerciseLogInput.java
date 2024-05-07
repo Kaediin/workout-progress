@@ -9,8 +9,9 @@ package com.daiken.workoutprogress.api.graphql.input;
  * @param logValue            The value of the log
  * @param warmup              Whether the log is a warmup
  * @param remark              Any remarks about the log
+ * @param effort              The effort of the log
  */
 public record ExerciseLogInput(String zonedDateTimeString, String exerciseId, long repetitions, LogValueInput logValue,
-                               Boolean warmup, String remark) {
+                               Boolean warmup, String remark, Integer effort) {
 
 }
