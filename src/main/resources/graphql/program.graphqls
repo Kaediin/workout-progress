@@ -6,7 +6,6 @@ type ScheduledProgram {
     id: ID!
     program: Program!
     user: User!
-    remark: String
     "The date and time when the program is scheduled for."
     scheduledDateTime: LocalDateTime!
     "The date and time when the program is started."
@@ -116,5 +115,6 @@ extend type Mutation {
     deleteProgramLog(id: ID!): Boolean!
 
     scheduleProgram(input: ScheduledProgramInput!): ScheduledProgram!
+    updateScheduledProgram(id: ID! input: ScheduledProgramInput!): ScheduledProgram!
     deleteScheduledProgram(id: ID!): Boolean!
 }

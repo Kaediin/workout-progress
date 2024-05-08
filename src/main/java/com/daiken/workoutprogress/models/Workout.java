@@ -1,6 +1,7 @@
 package com.daiken.workoutprogress.models;
 
 import com.daiken.workoutprogress.api.graphql.input.ExternalHealthProviderData;
+import com.daiken.workoutprogress.api.graphql.input.ScheduledProgramInput;
 import com.daiken.workoutprogress.api.graphql.input.WorkoutInput;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -61,6 +62,16 @@ public class Workout implements Comparable<Workout> {
         this.muscleGroups = input.muscleGroups();
         this.startDateTime = ZonedDateTime.parse(input.zonedDateTime()).toLocalDateTime();
         this.remark = input.remark();
+        return this;
+    }
+
+    public Workout updateFromScheduledProgram(ScheduledProgramInput input) {
+        if (input.workoutName() != null) {
+            this.name = input.workoutName();
+        }
+        if (input.remark() != null) {
+            this.remark = input.remark();
+        }
         return this;
     }
 

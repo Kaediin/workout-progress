@@ -31,8 +31,6 @@ public class ScheduledProgram {
     private LocalDateTime startDateTime;
     private LocalDateTime endedDateTime;
 
-    private String remark;
-
     @DBRef(lazy = true)
     private Workout workout;
 
@@ -41,6 +39,11 @@ public class ScheduledProgram {
         this.user = user;
         this.scheduledDateTime = ZonedDateTime.parse(input.scheduleZonedDateTime()).toLocalDateTime();
         this.createdDateTime = ZonedDateTime.parse(input.zonedDateTime()).toLocalDateTime();
-        this.remark = input.remark();
+    }
+
+    public void update(ScheduledProgramInput input) {
+        if (input.scheduleZonedDateTime() != null) {
+            this.scheduledDateTime = ZonedDateTime.parse(input.scheduleZonedDateTime()).toLocalDateTime();
+        }
     }
 }

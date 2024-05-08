@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Mutation resolver for the Program entity.
@@ -124,19 +125,51 @@ public class ProgramMutationResolver implements GraphQLMutationResolver {
         // Create program
         ScheduledProgram scheduledProgram = new ScheduledProgram(input, program, me);
 
+        List<Exercise> exercises =
+                programLogs.stream()
+                        .flatMap(programLog -> programLog.getExercises().stream())
+                        .filter(Objects::nonNull)
+                        .toList();
+
         // Create workout
         Workout workout = new Workout();
         workout.setName(input.workoutName());
-        workout.setMuscleGroups(workoutService.getMuscleGroupsByExercises(
-                programLogs.stream().map(ProgramLog::getExercise).toList()
-        ));
+        workout.setMuscleGroups(workoutService.getMuscleGroupsByExercises(exercises));
         workout.setUser(me);
         workout.setActive(false);
         workout.setStatus(WorkoutStatus.SCHEDULED);
-        workout.setRemark(scheduledProgram.getRemark());
+        workout.setRemark(input.remark());
         workout.setProgram(program);
 
         scheduledProgram.setWorkout(workoutRepository.save(workout));
+
+        return scheduledProgramRepository.save(scheduledProgram);
+    }
+
+    public ScheduledProgram updateScheduledProgram(String id, ScheduledProgramInput input) {
+        User me = userService.getContextUser();
+        ScheduledProgram scheduledProgram = scheduledProgramRepository.findById(id).orElse(null);
+        if (scheduledProgram == null) {
+            Sentry.captureException(new NotFoundException("[updateScheduledProgram] Scheduled program not found! id: " + id));
+            log.error("[updateScheduledProgram] Scheduled program not found! id: {}", id);
+            return null;
+        }
+        if (!scheduledProgram.getUser().getId().equals(me.getId())) {
+            Sentry.captureException(new UnauthorizedException("[updateScheduledProgram] User is not authorized to update the scheduled program! id: " + id));
+            log.error("[updateScheduledProgram] User is not authorized to update the scheduled program! id: {}", id);
+            return null;
+        }
+
+        scheduledProgram.update(input);
+
+        Workout workout = workoutRepository.findById(scheduledProgram.getWorkout().getId()).orElse(null);
+        if (workout == null) {
+            Sentry.captureException(new NotFoundException("[updateScheduledProgram] Workout not found! id: " + scheduledProgram.getWorkout().getId()));
+            log.error("[updateScheduledProgram] Workout not found! id: {}", scheduledProgram.getWorkout().getId());
+            return null;
+        }
+
+        workoutRepository.save(workout.updateFromScheduledProgram(input));
 
         return scheduledProgramRepository.save(scheduledProgram);
     }
