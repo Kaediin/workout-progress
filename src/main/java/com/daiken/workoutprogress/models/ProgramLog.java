@@ -36,6 +36,9 @@ public class ProgramLog {
     @DBRef(lazy = true)
     private Exercise exercise;
 
+    @DBRef(lazy = true)
+    private ExerciseLog exerciseLog;
+
     private List<ProgramLog> subdivisions;
 
     public ProgramLog(ProgramLogInput programLogInput, ProgramLogGroup programLogGroup, Program program, Exercise exercise) {

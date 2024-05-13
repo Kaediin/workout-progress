@@ -135,6 +135,7 @@ public class WorkoutMutationResolver implements GraphQLMutationResolver {
             return new NullPointerException("Cant find workout with given id");
         });
         workout.setActive(true);
+        workout.setStatus(WorkoutStatus.STARTED);
         workout.setEndDateTime(null);
         return workoutRepository.save(workout);
     }

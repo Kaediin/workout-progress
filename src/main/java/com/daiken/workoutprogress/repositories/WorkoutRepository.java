@@ -2,6 +2,7 @@ package com.daiken.workoutprogress.repositories;
 
 import com.daiken.workoutprogress.models.User;
 import com.daiken.workoutprogress.models.Workout;
+import com.daiken.workoutprogress.models.WorkoutStatus;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -14,7 +15,7 @@ public interface WorkoutRepository extends MongoRepository<Workout, String> {
 
     int countWorkoutsByUserId(String user_id);
 
-    long countWorkoutsByUserAndActive(User user, boolean active);
+    long countWorkoutsByUserAndStatus(User user, WorkoutStatus status);
 
     Optional<Workout> findWorkoutByIdAndUserId(String id, String user_id);
 
@@ -24,4 +25,6 @@ public interface WorkoutRepository extends MongoRepository<Workout, String> {
 
     @Query("{ 'user.id': ?0, 'startDateTime' : { $gte: ?1, $lt: ?2 } }")
     List<Workout> findByUserIdEndDateTimeYearAndMonth(String userId, LocalDate startOfMonth, LocalDate startOfNextMonth);
+
+
 }

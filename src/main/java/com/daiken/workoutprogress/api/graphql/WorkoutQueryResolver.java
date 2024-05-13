@@ -1,9 +1,6 @@
 package com.daiken.workoutprogress.api.graphql;
 
-import com.daiken.workoutprogress.models.MuscleGroup;
-import com.daiken.workoutprogress.models.MuscleGroupChartData;
-import com.daiken.workoutprogress.models.User;
-import com.daiken.workoutprogress.models.Workout;
+import com.daiken.workoutprogress.models.*;
 import com.daiken.workoutprogress.repositories.WorkoutRepository;
 import com.daiken.workoutprogress.services.UserService;
 import com.daiken.workoutprogress.services.WorkoutService;
@@ -60,7 +57,7 @@ public class WorkoutQueryResolver implements GraphQLQueryResolver {
      */
     public Boolean meHasActiveWorkout() {
         User me = userService.getContextUser();
-        long workouts = workoutRepository.countWorkoutsByUserAndActive(me, true);
+        long workouts = workoutRepository.countWorkoutsByUserAndStatus(me, WorkoutStatus.STARTED);
         return workouts > 0;
     }
 

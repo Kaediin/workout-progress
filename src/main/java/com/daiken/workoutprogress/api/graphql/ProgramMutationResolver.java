@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -190,5 +192,24 @@ public class ProgramMutationResolver implements GraphQLMutationResolver {
         }
 
         return programService.deleteScheduledProgram(scheduledProgram.getId(), scheduledProgram.getWorkout().getId());
+    }
+
+    public Boolean startScheduledProgram(String id, String zonedDateTime) {
+        User me = userService.getContextUser();
+        ScheduledProgram scheduledProgram = scheduledProgramRepository.findById(id).orElse(null);
+        if (scheduledProgram == null) {
+            Sentry.captureException(new NotFoundException("[startScheduledProgram] Scheduled program not found! id: " + id));
+            log.error("[startScheduledProgram] Scheduled program not found! id: {}", id);
+            return null;
+        }
+        if (!scheduledProgram.getUser().getId().equals(me.getId())) {
+            Sentry.captureException(new UnauthorizedException("[startScheduledProgram] User is not authorized to start the scheduled program! id: " + id));
+            log.error("[startScheduledProgram] User is not authorized to start the scheduled program! id: {}", id);
+            return null;
+        }
+
+        LocalDateTime startDateTime = ZonedDateTime.parse(zonedDateTime).toLocalDateTime();
+
+        return programService.startScheduledProgram(scheduledProgram, startDateTime);
     }
 }

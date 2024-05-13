@@ -31,6 +31,9 @@ public class ExerciseLog {
     @DBRef(lazy = true)
     private User user;
 
+    @DBRef(lazy = true)
+    private ProgramLog programLog;
+
     private long repetitions;
 
     private LogValue logValue;
@@ -50,6 +53,7 @@ public class ExerciseLog {
         this.logValue = copyLog.logValue;
         this.warmup = copyLog.warmup;
         this.remark = copyLog.remark;
+        this.effort = copyLog.effort;
     }
 
     public ExerciseLog(ExerciseLogInput input, User user, Workout workout, Exercise exercise) {
@@ -59,6 +63,17 @@ public class ExerciseLog {
         if (input != null) {
             update(input);
         }
+    }
+
+    public ExerciseLog(User user, ProgramLog log, Workout workout, String zonedDateTimeString) {
+        this.user = user;
+        this.exercise = log.getExercise();
+        this.workout = workout;
+        this.logDateTime = ZonedDateTime.parse(zonedDateTimeString).toLocalDateTime();
+        this.repetitions = log.getRepetitions();
+        this.logValue = log.getLogValue();
+        this.warmup = false;
+        this.effort = log.getEffort();
     }
 
     public void update(ExerciseLogInput input) {

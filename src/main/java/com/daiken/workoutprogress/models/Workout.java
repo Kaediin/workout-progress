@@ -35,6 +35,7 @@ public class Workout implements Comparable<Workout> {
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
 
+    @Deprecated
     private boolean active;
 
     private String remark;
@@ -78,6 +79,14 @@ public class Workout implements Comparable<Workout> {
     public Workout endWorkout(LocalDateTime localDateTime) {
         this.endDateTime = localDateTime;
         this.active = false;
+        this.status = WorkoutStatus.ENDED;
+        return this;
+    }
+
+    public Workout start(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
+        this.active = true;
+        this.status = WorkoutStatus.STARTED;
         return this;
     }
 

@@ -24,15 +24,15 @@ public class ScheduledProgram {
     private Program program;
 
     @DBRef(lazy = true)
+    private Workout workout;
+
+    @DBRef(lazy = true)
     private User user;
 
     private LocalDateTime createdDateTime;
     private LocalDateTime scheduledDateTime;
     private LocalDateTime startDateTime;
     private LocalDateTime endedDateTime;
-
-    @DBRef(lazy = true)
-    private Workout workout;
 
     public ScheduledProgram(ScheduledProgramInput input, Program program, User user) {
         this.program = program;
@@ -45,5 +45,9 @@ public class ScheduledProgram {
         if (input.scheduleZonedDateTime() != null) {
             this.scheduledDateTime = ZonedDateTime.parse(input.scheduleZonedDateTime()).toLocalDateTime();
         }
+    }
+
+    public void start(LocalDateTime startDateTime) {
+        this.startDateTime = startDateTime;
     }
 }

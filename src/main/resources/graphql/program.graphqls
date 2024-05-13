@@ -77,6 +77,8 @@ type ProgramLog {
     cooldownSeconds: Int
     "Effort on scale of 1 to 100"
     effort: Int
+    "The exercise log of the program log."
+    exerciseLog: ExerciseLog
 }
 
 input ProgramLogInput {
@@ -113,8 +115,10 @@ extend type Mutation {
     createProgramLog(input: ProgramLogInput): ProgramLog!
     updateProgramLog(id: ID! input: ProgramLogInput): ProgramLog!
     deleteProgramLog(id: ID!): Boolean!
+    markLogAsCompleted(id: ID! workoutId: String! zonedDateTimeString: String!): ProgramLog!
 
     scheduleProgram(input: ScheduledProgramInput!): ScheduledProgram!
     updateScheduledProgram(id: ID! input: ScheduledProgramInput!): ScheduledProgram!
     deleteScheduledProgram(id: ID!): Boolean!
+    startScheduledProgram(id: ID! zonedDateTimeString: String!): Boolean!
 }
