@@ -21,10 +21,7 @@ public class ScheduledProgram {
     private String id;
 
     @DBRef(lazy = true)
-    private Program program;
-
-    @DBRef(lazy = true)
-    private Workout workout;
+    private ProgramWorkout programWorkout;
 
     @DBRef(lazy = true)
     private User user;
@@ -34,8 +31,8 @@ public class ScheduledProgram {
     private LocalDateTime startDateTime;
     private LocalDateTime endedDateTime;
 
-    public ScheduledProgram(ScheduledProgramInput input, Program program, User user) {
-        this.program = program;
+    public ScheduledProgram(ScheduledProgramInput input, ProgramWorkout programWorkout, User user) {
+        this.programWorkout = programWorkout;
         this.user = user;
         this.scheduledDateTime = ZonedDateTime.parse(input.scheduleZonedDateTime()).toLocalDateTime();
         this.createdDateTime = ZonedDateTime.parse(input.zonedDateTime()).toLocalDateTime();
@@ -49,5 +46,9 @@ public class ScheduledProgram {
 
     public void start(LocalDateTime startDateTime) {
         this.startDateTime = startDateTime;
+    }
+
+    public void end(LocalDateTime endDateTime) {
+        this.endedDateTime = endDateTime;
     }
 }

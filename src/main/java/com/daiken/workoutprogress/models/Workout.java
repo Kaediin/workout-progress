@@ -29,8 +29,6 @@ public class Workout implements Comparable<Workout> {
 
     @DBRef(lazy = true)
     private User user;
-    @DBRef(lazy = true)
-    private Program program;
 
     private LocalDateTime startDateTime;
     private LocalDateTime endDateTime;
@@ -92,6 +90,10 @@ public class Workout implements Comparable<Workout> {
 
     @Override
     public int compareTo(@NotNull Workout o) {
+        // Null check
+        if (startDateTime == null || o.startDateTime == null) {
+            return 1;
+        }
         return o.startDateTime.compareTo(startDateTime);
     }
 }

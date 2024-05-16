@@ -21,7 +21,7 @@ type ExerciseLog {
     remark: String
     workout: Workout!
     effort: Int
-    programLog: ProgramLog
+    programWorkoutLog: ProgramWorkoutLog
 }
 
 type GroupedExerciseLog {

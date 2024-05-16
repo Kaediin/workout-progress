@@ -18,8 +18,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * Mutation resolver for the Program entity.
@@ -117,33 +115,11 @@ public class ProgramMutationResolver implements GraphQLMutationResolver {
             log.error("[scheduledProgram] Program not found! id: {}", input.programId());
             return null;
         }
-        List<ProgramLog> programLogs = programLogRepository.findAllByProgramId(program.getId());
-        if (programLogs.isEmpty()) {
-            Sentry.captureException(new NotFoundException("[scheduledProgram] Program logs not found! programId: " + program.getId()));
-            log.error("[scheduledProgram] Program logs not found! programId: {}", program.getId());
-            return null;
-        }
 
-        // Create program
-        ScheduledProgram scheduledProgram = new ScheduledProgram(input, program, me);
+        ProgramWorkout programWorkout = programService.createProgramWorkout(program, input, me);
 
-        List<Exercise> exercises =
-                programLogs.stream()
-                        .flatMap(programLog -> programLog.getExercises().stream())
-                        .filter(Objects::nonNull)
-                        .toList();
-
-        // Create workout
-        Workout workout = new Workout();
-        workout.setName(input.workoutName());
-        workout.setMuscleGroups(workoutService.getMuscleGroupsByExercises(exercises));
-        workout.setUser(me);
-        workout.setActive(false);
-        workout.setStatus(WorkoutStatus.SCHEDULED);
-        workout.setRemark(input.remark());
-        workout.setProgram(program);
-
-        scheduledProgram.setWorkout(workoutRepository.save(workout));
+        // Create a new scheduled program
+        ScheduledProgram scheduledProgram = new ScheduledProgram(input, programWorkout, me);
 
         return scheduledProgramRepository.save(scheduledProgram);
     }
@@ -164,10 +140,10 @@ public class ProgramMutationResolver implements GraphQLMutationResolver {
 
         scheduledProgram.update(input);
 
-        Workout workout = workoutRepository.findById(scheduledProgram.getWorkout().getId()).orElse(null);
+        Workout workout = workoutRepository.findById(scheduledProgram.getProgramWorkout().getWorkout().getId()).orElse(null);
         if (workout == null) {
-            Sentry.captureException(new NotFoundException("[updateScheduledProgram] Workout not found! id: " + scheduledProgram.getWorkout().getId()));
-            log.error("[updateScheduledProgram] Workout not found! id: {}", scheduledProgram.getWorkout().getId());
+            Sentry.captureException(new NotFoundException("[updateScheduledProgram] Workout not found! id: " + scheduledProgram.getProgramWorkout().getWorkout().getId()));
+            log.error("[updateScheduledProgram] Workout not found! id: {}", scheduledProgram.getProgramWorkout().getWorkout().getId());
             return null;
         }
 
@@ -191,7 +167,7 @@ public class ProgramMutationResolver implements GraphQLMutationResolver {
             return false;
         }
 
-        return programService.deleteScheduledProgram(scheduledProgram.getId(), scheduledProgram.getWorkout().getId());
+        return programService.deleteScheduledProgram(scheduledProgram.getId(), scheduledProgram.getProgramWorkout().getWorkout().getId());
     }
 
     public Boolean startScheduledProgram(String id, String zonedDateTime) {
@@ -211,5 +187,24 @@ public class ProgramMutationResolver implements GraphQLMutationResolver {
         LocalDateTime startDateTime = ZonedDateTime.parse(zonedDateTime).toLocalDateTime();
 
         return programService.startScheduledProgram(scheduledProgram, startDateTime);
+    }
+
+    public Boolean endScheduledProgram(String id, String zonedDateTime) {
+        User me = userService.getContextUser();
+        ScheduledProgram scheduledProgram = scheduledProgramRepository.findById(id).orElse(null);
+        if (scheduledProgram == null) {
+            Sentry.captureException(new NotFoundException("[endScheduledProgram] Scheduled program not found! id: " + id));
+            log.error("[endScheduledProgram] Scheduled program not found! id: {}", id);
+            return null;
+        }
+        if (!scheduledProgram.getUser().getId().equals(me.getId())) {
+            Sentry.captureException(new UnauthorizedException("[endScheduledProgram] User is not authorized to end the scheduled program! id: " + id));
+            log.error("[endScheduledProgram] User is not authorized to end the scheduled program! id: {}", id);
+            return null;
+        }
+
+        LocalDateTime endDateTime = ZonedDateTime.parse(zonedDateTime).toLocalDateTime();
+
+        return programService.endScheduledProgram(scheduledProgram, endDateTime);
     }
 }

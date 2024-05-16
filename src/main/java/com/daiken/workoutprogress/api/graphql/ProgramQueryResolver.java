@@ -51,4 +51,9 @@ public class ProgramQueryResolver implements GraphQLQueryResolver {
         User me = userService.getContextUser();
         return programRepository.findByIdAndUserId(id, me.getId()).orElse(null);
     }
+
+    public ScheduledProgram scheduledProgramById(String id) {
+        User me = userService.getContextUser();
+        return scheduledProgramRepository.findById(id).orElse(null);
+    }
 }

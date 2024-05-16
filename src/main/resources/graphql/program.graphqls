@@ -4,7 +4,7 @@ enum ProgramLogGroupType {
 
 type ScheduledProgram {
     id: ID!
-    program: Program!
+    programWorkout: ProgramWorkout!
     user: User!
     "The date and time when the program is scheduled for."
     scheduledDateTime: LocalDateTime!
@@ -14,8 +14,6 @@ type ScheduledProgram {
     endedDateTime: LocalDateTime
     "The date and time when the program is created."
     createdDateTime: LocalDateTime!
-    "Workout created by scheduling a program"
-    workout: Workout!
 }
 
 input ScheduledProgramInput {
@@ -92,6 +90,30 @@ input ProgramLogInput {
     effort: Int
 }
 
+type ProgramWorkout {
+    id: ID!
+    groups: [ProgramWorkoutGroup!]!
+    program: Program!
+    workout: Workout!
+}
+
+type ProgramWorkoutGroup {
+    id: ID!
+    programWorkout: ProgramWorkout!
+    type: ProgramLogGroupType!
+    programWorkoutLogs: [ProgramWorkoutLog!]!
+}
+
+type ProgramWorkoutLog {
+    id: ID!
+    "The original program log of the scheduled program."
+    originalProgramLog: ProgramLog!
+    "The program log of the scheduled program. (target log)"
+    programLog: ProgramLog!
+    programWorkout: ProgramWorkout!
+    programWorkoutGroup: ProgramWorkoutGroup!
+}
+
 extend type Query {
     "Fetch all my programs"
     myPrograms: [Program!]
@@ -101,6 +123,8 @@ extend type Query {
     programById(id: ID!): Program
     "Fetch all program log groups by program ID"
     programLogGroupsByProgramId(programId: ID!): [ProgramLogGroup!]
+    "Fetch scheduled program by ID"
+    scheduledProgramById(id: ID!): ScheduledProgram
 }
 
 extend type Mutation {
@@ -121,4 +145,5 @@ extend type Mutation {
     updateScheduledProgram(id: ID! input: ScheduledProgramInput!): ScheduledProgram!
     deleteScheduledProgram(id: ID!): Boolean!
     startScheduledProgram(id: ID! zonedDateTimeString: String!): Boolean!
+    endScheduledProgram(id: ID! zonedDateTimeString: String!): Boolean!
 }

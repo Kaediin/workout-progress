@@ -54,7 +54,6 @@ type Workout {
     externalHealthProviderData: ExternalHealthProviderData
     estimatedCaloriesBurned: Float
     status: WorkoutStatus!
-    program: Program
 }
 
 input WorkoutInput {

@@ -32,7 +32,7 @@ public class ExerciseLog {
     private User user;
 
     @DBRef(lazy = true)
-    private ProgramLog programLog;
+    private ProgramWorkoutLog programWorkoutLog;
 
     private long repetitions;
 

@@ -52,6 +52,20 @@ public class ProgramLog {
         this.exercise = exercise;
     }
 
+    public ProgramLog(ProgramLog log) {
+        this.programLogGroup = log.programLogGroup;
+        this.program = log.program;
+        this.repetitions = log.repetitions;
+        this.intervalSeconds = log.intervalSeconds;
+        this.cooldownSeconds = log.cooldownSeconds;
+        this.effort = log.effort;
+        this.logValue = log.logValue;
+        this.exercise = log.exercise;
+        if (log.subdivisions != null) {
+            this.subdivisions = log.getSubdivisions();
+        }
+    }
+
     public void addSubdivision(ProgramLog programLog) {
         if (subdivisions == null) {
             subdivisions = new ArrayList<>();
@@ -77,4 +91,8 @@ public class ProgramLog {
         return exercises;
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
