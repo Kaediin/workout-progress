@@ -38,7 +38,7 @@ public class ProgramResolver implements GraphQLResolver<Program> {
      */
     public List<ProgramLogGroup> logGroups(Program program) {
         // Validate that the user is authorized to view the program
-        if (!program.getUser().getId().equals(userService.getContextUser().getId())) {
+        if (program == null || program.getUser() == null || !program.getUser().getId().equals(userService.getContextUser().getId())) {
             return null;
         }
 

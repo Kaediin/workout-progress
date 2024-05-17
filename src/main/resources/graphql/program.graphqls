@@ -93,7 +93,7 @@ input ProgramLogInput {
 type ProgramWorkout {
     id: ID!
     groups: [ProgramWorkoutGroup!]!
-    program: Program!
+    program: Program
     workout: Workout!
 }
 

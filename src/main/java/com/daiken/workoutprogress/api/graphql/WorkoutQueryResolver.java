@@ -88,7 +88,8 @@ public class WorkoutQueryResolver implements GraphQLQueryResolver {
      */
     public long countTotalTimeAllMyWorkoutsInMinutes() {
         return myWorkouts().stream()
-                .filter(workout -> !workout.isActive())
+                .filter(workout -> workout.getStatus() == WorkoutStatus.ENDED)
+                .filter(workout -> workout.getStartDateTime() != null && workout.getEndDateTime() != null)
                 .mapToLong(workout -> Duration.between(workout.getStartDateTime(), workout.getEndDateTime()).toMinutes())
                 .sum();
 
