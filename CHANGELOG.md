@@ -1,3 +1,13 @@
+## [v0.4.0]
+
+### Added
+
+- #43: Programs can be made by categorising them into different types: Warmup, Main, Cooldown
+- #43: More units
+- #43: Program scheduling
+- #43: Workout created when scheduling a program
+- #43: Effort slider
+
 ## [v0.3.1]
 
 ### Added
