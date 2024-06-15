@@ -47,9 +47,9 @@ public class CustomCorsFilter implements Filter {
                     .anyMatch(s -> s.equals("*") || s.equalsIgnoreCase(origin))) {
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", origin);
             } else {
-                log.error("[CustomCorsFilter] Rejected request. The allowed origins does NOT include the following origin: " + origin);
+//                log.error("[CustomCorsFilter] Rejected request. The allowed origins does NOT include the following origin: " + origin);
                 httpServletResponse.addHeader("Error", "[CustomCorsFilter] Rejected request. The allowed " +
-                        "origins does NOT include the following origin: " + origin);
+                        "origins does NOT include the required origin");
             }
 
             httpServletResponse.setHeader(

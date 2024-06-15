@@ -75,8 +75,8 @@ public class CognitoAuthorizationFilter extends BasicAuthenticationFilter {
         String header = request.getHeader(HEADER_STRING);
 
         if (header == null || !header.startsWith(TOKEN_PREFIX)) {
-            log.error("[CognitoAuthorizationFilter] Access denied: The Authorization header is missing crucial " +
-                    "information to be able to grant access.");
+//            log.error("[CognitoAuthorizationFilter] Access denied: The Authorization header is missing crucial " +
+//                    "information to be able to grant access.");
             response.addHeader("Error", "[CognitoAuthorizationFilter] Access denied: The Authorization " +
                     "header is missing crucial information to be able to grant access.");
             chain.doFilter(request, response);
